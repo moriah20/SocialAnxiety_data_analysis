@@ -14,29 +14,24 @@ def apply_binary(df, config):
 
         if rules["type"] == "numeric":
             threshold = rules["threshold"]
-            direction = rules["direction"]
 
-            if direction == "higher_is_healthier":
-                df[category] = (df[category] >= threshold).astype(int)
-
-            elif direction == "lower_is_healthier":
-                df[category] = (df[category] <= threshold).astype(int)
+            df[category] = df[category].between(threshold[0], threshold[1]).astype(int)
 
     return df[list(config.keys())]
 
-'''
+
 data = pd.read_csv("enhanced_anxiety_dataset.csv")
 
 config = {
     "Physical Activity (hrs/week)": {
         "type": "numeric",
-        "threshold": 3,
-        "direction": "higher_is_healthier"
+        "threshold": [3,5]
+        
     },
     "Alcohol Consumption (drinks/week)": {
         "type": "numeric",
-        "threshold": 5,
-        "direction": "lower_is_healthier"
+        "threshold": [5,7]
+       
     },
     "Family History of Anxiety": {
         "type": "binary",
@@ -46,4 +41,3 @@ config = {
 
 result = apply_binary(data, config)
 print(result)
-'''
