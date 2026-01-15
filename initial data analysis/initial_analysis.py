@@ -100,6 +100,7 @@ def frequency(df):
 
 
 print(is_null(data))
+
 plot_outliers(data)
 frequency(data)
 
