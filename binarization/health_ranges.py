@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-from binarization.binarize_category import apply_binary
-
 
 # --- הפונקציות (כמו שהגדרנו קודם) ---
 
@@ -30,6 +28,22 @@ def create_health_config(df, simple_rules):
             }
     return config
 
+def apply_binary(df, config):
+    """
+    ממירה את הדאטה ל-0 ו-1.
+    """
+    df = df.copy()
+    for category, rules in config.items():
+        if rules["type"] == "range":
+            # 1 אם בתוך הטווח, 0 אחרת
+            df[category] = df[category].between(rules["min"], rules["max"]).astype(int)
+            
+        elif rules["type"] == "binary":
+            col_clean = df[category].astype(str).str.strip().str.lower()
+            # 1 אם זה הערך ה"בריא", 0 אחרת
+            df[category] = col_clean.map(rules["mapping"]).fillna(0).astype(int)
+
+    return df[list(config.keys())]
 
 # --- החלק המותאם לדאטה שלך ---
 
