@@ -31,4 +31,4 @@ config = {
 
 result = apply_binary(data, config)
 
-print(f'{categorization(result, dicti).value_counts()}')
+#print(f'{categorization(result, dicti).value_counts()}')
