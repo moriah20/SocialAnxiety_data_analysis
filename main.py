@@ -1,9 +1,12 @@
 import pandas as pd
 import numpy as np
+import statsmodels.api as sm
+from scipy.stats import spearmanr 
 from binarization.binarize_category import apply_binary
 from binarization.health_ranges import create_health_config
 from Categorization.Categorization import categorization
 from spearman_and_multiple_regression.spearman_test import spearman_test
+from spearman_and_multiple_regression.multiple_linear_regression import run_multiple_regression
 
 
 # --- החלק המותאם לדאטה שלך ---
@@ -53,4 +56,9 @@ categorized_df = categorization(binarized_df,dicti_categ)
 #print(pd.DataFrame(config))
 #print(categorized_df)
 
-#stats
+#stats spearman
+spearman_test_results = spearman_test(categorized_df, df, target_col="Anxiety Level (1-10)" )
+print(spearman_test_results)
+
+#stats multi regression
+multi = run_multiple_regression(categorized_df, df, target_col="Anxiety Level (1-10)")

@@ -34,7 +34,7 @@ def spearman_test(scores_df, original_df, target_col="Anxiety Level (1-10)"):
             'Spearman Coeff': corr, 
             'P-value': p_val
         })
-        print(f"{col:<20} | {corr:.4f}{' ':>9} | {p_val:.4e}")
+        #print(f"{col:<20} | {corr:.4f}{' ':>9} | {p_val:.4e}")
 
     return pd.DataFrame(results)
 
@@ -44,5 +44,3 @@ def spearman_test(scores_df, original_df, target_col="Anxiety Level (1-10)"):
 # 1. data (The original DataFrame)
 # 2. scores_df (The DataFrame output from the categorization function)
 
-print("\n--- Running Spearman Test ---")
-spearman_results = spearman_test(scores_df, data)

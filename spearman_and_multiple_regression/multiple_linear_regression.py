@@ -34,6 +34,3 @@ def run_multiple_regression(scores_df, original_df, target_col="Anxiety Level (1
 
 # --- How to run this ---
 # Assuming you have 'scores_df' (X) and 'data' (Y) from previous steps:
-
-print("\n--- Running Multiple Linear Regression ---")
-regression_model = run_multiple_regression(scores_df, data)
