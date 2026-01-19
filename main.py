@@ -7,10 +7,13 @@ import statsmodels as sm
 from statsmodels.formula.api import ols
 import pingouin as pg
 from scipy.stats import spearmanr 
-from Binarization.binarize_category import apply_binary
+from binarization.binarize_category import apply_binary
 from Categorization.Categorization import categorization
 from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
 from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
+from Statistic_Analysis_for_Binaraziation.stat_visualization import plot_spearman_bar_chart
+from Statistic_Analysis_for_Binaraziation.stat_visualization import plot_regression_summary
+'''
 from Regression.regression import calculate_age_regression
 from Regression.regression import plot_regression
 from Regression.regression import extract_correlation_from_regression
@@ -22,7 +25,7 @@ from Two_Way_ANOVA.interctions import check_effects
 from Two_Way_ANOVA.interctions import main_effects_plots
 from Two_Way_ANOVA.interctions import calculate_interaction
 #from Two_Way_ANOVA.interctions import 
-
+'''
 
 
 try:
@@ -42,9 +45,11 @@ categorized_df = categorization(binarized_df,guideline)
 #stats spearman
 spearman_test_results = spearman_test(categorized_df, df, target_col="Anxiety Level (1-10)" )
 print(spearman_test_results)
+plot_spearman_bar_chart(spearman_test_results)
 
 #stats multi regression
 multi = run_multiple_regression(categorized_df, df, target_col="Anxiety Level (1-10)")
+plot_regression_summary(multi)
 
 '''
 main_effect_1,main_effect_2=main_effects(df, "Gender", "Occupation","Anxiety Level (1-10)")
