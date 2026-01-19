@@ -12,6 +12,17 @@ from Binarization.health_ranges import create_health_config
 from Categorization.Categorization import categorization
 from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
 from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
+from regression import calculate_age_regression
+from regression import plot_regression
+from regression import extract_correlation_from_regression
+from regeression import interpret_regression_significance
+from two_way_anova import two_way_anova_test
+from two_way_anova import run_post_hoc_analysis
+from interctions import main_effects
+from interctions import check_effects
+from interctions import main_effects_plots
+from interctions import calculate_interaction
+from interctions import plot_interaction
 
 
 # --- החלק המותאם לדאטה שלך ---
@@ -67,3 +78,15 @@ print(spearman_test_results)
 
 #stats multi regression
 multi = run_multiple_regression(categorized_df, df, target_col="Anxiety Level (1-10)")
+
+main_effect_1,main_effect_2=main_effects(df, "Gender", "Occupation","Anxiety Level (1-10)")
+check_effects=check_effects(main_effect_1, main_effect_2)
+main_effects_plots(main_effect_1, main_effect_2, "Gender", "Occupation","Anxiety Level (1-10)")
+status=calculate_interaction(df, "Anxiety Level (1-10)", "Gender", "Occupation")
+plot_interaction(df, "Anxiety Level (1-10)", "Gender", "Occupation")
+anova_tabel=two_way_anova_test(df,  "Anxiety Level (1-10)", "Gender", "Occupation", "Anxiety_Score")
+run_post_hoc_analysis(df,"Anxiety Level (1-10)", "Gender", "Occupation")
+regression_results=calculate_age_regression(df, "Anxiety Level (1-10)", "Age")
+plot_regression(df, "Age",  "Anxiety Level (1-10)")
+ correlation=extract_correlation_from_regression(regression_results)
+p_val=interpret_regression_significance(regression_results)
