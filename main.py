@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 import statsmodels.api as sm
 from scipy.stats import spearmanr 
-from binarization.binarize_category import apply_binary
-from binarization.health_ranges import create_health_config
+from Binarization.binarize_category import apply_binary
+from Binarization.health_ranges import create_health_config
 from Categorization.Categorization import categorization
-from spearman_and_multiple_regression.spearman_test import spearman_test
-from spearman_and_multiple_regression.multiple_linear_regression import run_multiple_regression
+from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
+from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
 
 
 # --- החלק המותאם לדאטה שלך ---
