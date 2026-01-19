@@ -6,7 +6,7 @@ import statsmodels as sm
 from statsmodels.formula.api import ols
 import pingouin as pg
 
- #Calculates group means for main effects analysis.
+#Calculates group means for main effects analysis.
 def main_effects(df, IV1, IV2, col_name):
     # Validate inputs: Check if df is a DataFrame and column names are strings
     if isinstance(df, pd.DataFrame) and all(isinstance(i, str) for i in [IV1, IV2, col_name]):
@@ -25,6 +25,7 @@ def main_effects(df, IV1, IV2, col_name):
         # Error handling for incorrect input types
         print("Error: Wrong variable types. Please enter valid DataFrame and strings.")
         return None, None
+
 
 
 #Validates that the input effects are Pandas Series with numeric data.
@@ -104,20 +105,12 @@ def calculate_interaction(df, col_name, IV1, IV2):
             # Determine significance status message
             status = "Significant" if is_significant else "Not Significant"
             print(f"* {type_of_effect}: {status} (p = {p_val:.4f})")
-            return status
             
     else:
         # Error handling for incorrect input types
         print("Error: Wrong variable types. Please ensure df is a DataFrame and names are strings.")
-        return False
 
-def plot_interaction(df, DV, IV1, IV2):
-    plt.figure(figsize=(10,6))
-    sns.pointplot(data=df, x=IV1 ,y=DV, hue=IV2, dodge=True, markers=['o', 's'], capsize=.1)
-    plt.title(f'Interaction: {IV1} and {IV2} on {DV}')
-    plt.ylabel(f'Mean {DV}')
-    plt.xlabel(  IV1 +'Status')
-    plt.show()
+
 
 
 
