@@ -12,6 +12,17 @@ from Binarization.health_ranges import create_health_config
 from Categorization.Categorization import categorization
 from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
 from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
+from Regression.regression import calculate_age_regression
+from Regression.regression import plot_regression
+from Regression.regression import extract_correlation_from_regression
+from Regression.regression import interpret_regression_significance
+from Two_Way_ANOVA import two_way_anova_test
+from Two_Way_ANOVA import run_post_hoc_analysis
+from Two_Way_ANOVA.interctions import main_effects
+from Two_Way_ANOVA.interctions import check_effects
+from Two_Way_ANOVA.interctions import main_effects_plots
+from Two_Way_ANOVA.interctions import calculate_interaction
+from Two_Way_ANOVA.interctions import plot_interaction
 
 
 # --- החלק המותאם לדאטה שלך ---
@@ -35,6 +46,3 @@ df = pd.read_csv('enhanced_anxiety_dataset.csv')
 #print(spearman_test_results)
 
 #stats multi regression
-#multi = run_multiple_regression(categorized_df, df, target_col="Anxiety Level (1-10)")
-
-
