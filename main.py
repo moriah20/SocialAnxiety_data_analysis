@@ -42,11 +42,11 @@ df = pd.read_csv('enhanced_anxiety_dataset.csv')
 #print(categorized_df)
 
 #stats spearman
-spearman_test_results = spearman_test(categorized_df, df, target_col="Anxiety Level (1-10)" )
-print(spearman_test_results)
+#spearman_test_results = spearman_test(categorized_df, df, target_col="Anxiety Level (1-10)" )
+#print(spearman_test_results)
 
 #stats multi regression
-multi = run_multiple_regression(categorized_df, df, target_col="Anxiety Level (1-10)")
+#multi = run_multiple_regression(categorized_df, df, target_col="Anxiety Level (1-10)")
 
 main_effect_1,main_effect_2=main_effects(df, "Gender", "Occupation","Anxiety Level (1-10)")
 check_effects=check_effects(main_effect_1, main_effect_2)
