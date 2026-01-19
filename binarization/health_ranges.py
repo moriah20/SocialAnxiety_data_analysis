@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from binarization.binarize_category import apply_binary
+from Binarization.binarize_category import apply_binary
 
 
 # --- הפונקציות (כמו שהגדרנו קודם) ---

@@ -25,6 +25,8 @@ def apply_binary(df, config):
 
 
 data = pd.read_csv("enhanced_anxiety_dataset.csv")
+guidelines = pd.read_excel("health_guidelines.xlsx")
+
 
 config = {
     "Physical Activity (hrs/week)": {
