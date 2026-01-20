@@ -46,36 +46,64 @@ def check_effects(main_effect_1, main_effect_2):
     # Return True if all checks pass
     return True
 
-# Generates bar plots for main effects visualization.       
+# Assuming logger is already configured in your project
+logger = logging.getLogger(__name__)
+
 def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
-    
-    # Validate that effects are Series and labels (IVs/DV) are strings
+    """
+    Generates vertical bar plots for main effects.
+    X-axis: Independent Variables (IV1, IV2)
+    Y-axis: Dependent Variable (DV) mean scores
+    """
+    # Clear any previous plots from memory
+    plt.close('all')
+
+    # Validate data types using your existing check_effects function
     if check_effects(main_effect_1, main_effect_2) and all(isinstance(i, str) for i in [IV1, IV2, DV]):
         
-        logger.info(f"Generating main effects plots for {IV1} and {IV2}")
-        plt.figure(figsize=(12, 5))
+        logger.info(f"Starting generation of main effects plots for {IV1} and {IV2}")
 
-        # Subplot 1: Main effect of the first independent variable
-        plt.subplot(1, 2, 1)
-        sns.barplot(x=main_effect_1.index, y=main_effect_1.values, palette='viridis')
-        plt.title(f'Mean {DV} by {IV1}')
-        plt.ylabel(f'Average {DV} Score')
+        try:
+            # Create a figure with two subplots side-by-side
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
 
-        # Subplot 2: Main effect of the second independent variable
-        plt.subplot(1, 2, 2)
-        sns.barplot(x=main_effect_2.index, y=main_effect_2.values, palette='magma')
-        plt.xticks(rotation=45) # Rotate x-axis labels for better readability
-        plt.title(f'Mean {DV} by {IV2}')
-        plt.ylabel(f'Average {DV} Score')
+            # --- Plot 1: Main effect of IV1 (e.g., Gender) ---
+            # Sort values descending to show highest scores first
+            m1 = main_effect_1.sort_values(ascending=False)
+            sns.barplot(ax=ax1, x=m1.index, y=m1.values, palette='viridis')
+            
+            ax1.set_title(f'Mean {DV} by {IV1}', fontsize=14)
+            ax1.set_xlabel(IV1)           # Independent Variable on X
+            ax1.set_ylabel(f'Mean {DV}')  # Dependent Variable on Y
+            ax1.tick_params(axis='x', rotation=45) # Slight rotation for readability
 
-        # Final layout adjustments
-        plt.tight_layout()
-        plt.show()
-        logger.info("Plots displayed successfully.")
-        
+            # --- Plot 2: Main effect of IV2 (e.g., Occupation) ---
+            # Sort values descending
+            m2 = main_effect_2.sort_values(ascending=False)
+            sns.barplot(ax=ax2, x=m2.index, y=m2.values, palette='magma')
+            
+            ax2.set_title(f'Mean {DV} by {IV2}', fontsize=14)
+            ax2.set_xlabel(IV2)           # Independent Variable on X
+            ax2.set_ylabel(f'Mean {DV}')  # Dependent Variable on Y
+            
+            # Rotate labels to 90 degrees to handle many categories (e.g., 13 occupations)
+            ax2.tick_params(axis='x', rotation=90) 
+
+            # Adjust layout to prevent labels from being cut off
+            plt.tight_layout()
+            
+            # Log success and show the plot
+            logger.info("Main effects plots generated successfully.")
+            plt.show()
+
+        except Exception as e:
+            logger.error(f"Failed to generate plots: {str(e)}")
+            
     else:
-        # Error handling for incorrect data types
-        logger.error("Error: Wrong variable types. Please check your inputs.")
+        # Error handling for incorrect input types
+        logger.error("Invalid input types provided to main_effects_plots function.")
+        print("Error: Please check the logs for more details on variable types.")
+
 
 # Analyzes ANOVA results to determine the significance of main effects and interactions.
 def calculate_interaction(df, col_name, IV1, IV2):
