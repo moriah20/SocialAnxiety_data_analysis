@@ -11,26 +11,26 @@ import pingouin as pg
 import os
 import logging
 from scipy.stats import spearmanr 
-from Initial_Data_Analysis.initial_analysis import is_null
-from Initial_Data_Analysis.initial_analysis import get_outliers_report
-from Initial_Data_Analysis.initial_analysis import plot_outliers
-from Initial_Data_Analysis.initial_analysis import frequency
+from Initial_Data_Analysis.initial_analysis import (is_null, 
+                                                    get_outliers_report, 
+                                                    plot_outliers, 
+                                                    frequency)
 from Binarization.binarize_category import apply_binary
 from Categorization.Categorization import categorization
 from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
 from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
-from Statistic_Analysis_for_Binaraziation.stat_visualization import plot_spearman_bar_chart
-from Statistic_Analysis_for_Binaraziation.stat_visualization import plot_regression_summary
-from Regression.regression import calculate_age_regression
-from Regression.regression import plot_regression
-from Regression.regression import extract_correlation_from_regression
-from Regression.regression import interpret_regression_significance
-from Two_Way_ANOVA.two_way_anova import two_way_anova_test
-from Two_Way_ANOVA.two_way_anova import run_post_hoc_analysis
-from Two_Way_ANOVA.interctions import main_effects
-from Two_Way_ANOVA.interctions import check_effects
-from Two_Way_ANOVA.interctions import main_effects_plots
-from Two_Way_ANOVA.interctions import calculate_interaction
+from Statistic_Analysis_for_Binaraziation.stat_visualization import (plot_spearman_bar_chart, 
+                                                                     plot_regression_summary)
+from Regression.regression import (calculate_age_regression, 
+                                   plot_regression, 
+                                   extract_correlation_from_regression, 
+                                   interpret_regression_significance)
+from Two_Way_ANOVA.two_way_anova import (two_way_anova_test, 
+                                         run_post_hoc_analysis)
+from Two_Way_ANOVA.interctions import (main_effects, 
+                                       check_effects, 
+                                       main_effects_plots, 
+                                       calculate_interaction)
 
 
 # --- Logger Configuration ---
@@ -66,11 +66,8 @@ variable_frequency = frequency(df)
 binarized_df = apply_binary(df, guideline)
 categorized_df = categorization(binarized_df,guideline)
 
-print(categorized_df)
-
 #stats spearman
 spearman_test_results = spearman_test(categorized_df, df, target_col="Anxiety Level (1-10)" )
-print(spearman_test_results)
 plot_spearman_bar_chart(spearman_test_results)
 
 #stats multi regression
