@@ -25,12 +25,8 @@ from Regression.regression import (calculate_age_regression,
                                    plot_regression, 
                                    extract_correlation_from_regression, 
                                    interpret_regression_significance)
-from Two_Way_ANOVA.two_way_anova import (two_way_anova_test, 
-                                         run_post_hoc_analysis)
-from Two_Way_ANOVA.interctions import (main_effects, 
-                                       check_effects, 
-                                       main_effects_plots, 
-                                       calculate_interaction)
+from Two_Way_ANOVA import two_way_anova as twa
+from Two_Way_ANOVA import interctions as inter
 
 
 # --- Logger Configuration ---
@@ -74,13 +70,14 @@ plot_spearman_bar_chart(spearman_test_results)
 multi = run_multiple_regression(categorized_df, df, target_col="Anxiety Level (1-10)")
 plot_regression_summary(multi)
 
-main_effect_1,main_effect_2=main_effects(df, "Gender", "Occupation","Anxiety Level (1-10)")
-check_effects=check_effects(main_effect_1, main_effect_2)
-main_effects_plots(main_effect_1, main_effect_2, "Gender", "Occupation","Anxiety Level (1-10)")
-status=calculate_interaction(df, "Anxiety Level (1-10)", "Gender", "Occupation")
+main_effect_1,main_effect_2=inter.main_effects(df, "Gender", "Occupation","Anxiety Level (1-10)")
+check_effects=inter.check_effects(main_effect_1, main_effect_2)
+inter.main_effects_plots(main_effect_1, main_effect_2, "Gender", "Occupation","Anxiety Level (1-10)")
+status=inter.calculate_interaction(df, "Anxiety Level (1-10)", "Gender", "Occupation")
 #plot_interaction(df, "Anxiety Level (1-10)", "Gender", "Occupation")
-anova_tabel=two_way_anova_test(df,  "Anxiety Level (1-10)", "Gender", "Occupation", "Anxiety_Score")
-run_post_hoc_analysis(df,"Anxiety Level (1-10)", "Gender", "Occupation")
+anova_tabel=twa.two_way_anova_test(df,  "Anxiety Level (1-10)", "Gender", "Occupation", "Anxiety_Score")
+twa.run_post_hoc_analysis(df,"Anxiety Level (1-10)", "Gender", "Occupation")
+twa.plot_anova_results(df, "Gender", "Occupation","Anxiety Level (1-10)")
 regression_results=calculate_age_regression(df, "Anxiety Level (1-10)", "Age")
 plot_regression(df, "Age",  "Anxiety Level (1-10)")
 correlation=extract_correlation_from_regression(regression_results)

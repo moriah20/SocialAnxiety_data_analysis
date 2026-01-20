@@ -7,7 +7,6 @@ from statsmodels.formula.api import ols
 import pingouin as pg
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 # Performs Two-Way ANOVA and returns the summary table.
