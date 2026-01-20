@@ -53,7 +53,3 @@ def plot_correlation_heatmap(results_df):
     plt.ylabel('') # Remove Y-axis label as categories are self-explanatory
     plt.tight_layout()
     plt.show()
-
-# --- Running the plot function ---
-print("Generating Heatmap...")
-plot_correlation_heatmap(spearman_results)
