@@ -7,15 +7,6 @@ from statsmodels.formula.api import ols
 import pingouin as pg
 import logging
 
-# --- Logger Configuration ---
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler("anova_detailed_analysis.log"), # Saves logs to this file
-        logging.StreamHandler()                            # Prints logs to the console
-    ]
-)
 logger = logging.getLogger(__name__)
 
 # Performs Two-Way ANOVA and returns the summary table.
