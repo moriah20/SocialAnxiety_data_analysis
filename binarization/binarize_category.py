@@ -1,36 +1,70 @@
-import numpy as np
 import pandas as pd
+import logging
+
+# Initialize module-level logger
+logger = logging.getLogger(__name__)
 
 def apply_binary(df, guidelines):
-    df = df.copy()  # לא לשנות את המקור
-    mapping = {"yes": 1, "no": 0}
-    try: 
-        for i, category in guidelines["Variable"].items():
-            try:
-               random = df[category] 
-            except:
-                 raise IndexError('database and guideline not aligned')
+    """
+    Processes binary and numeric transformations based on health guidelines.
+    """
+    # Define constants to avoid hard-coding
+    BINARY_TYPE = "binary"
+    NUMERIC_TYPE = "numeric"
+    MAPPING = {"yes": 1, "no": 0}
+    REVERSE_MAPPING = {0: 1, 1: 0}
+    
+    # Avoid modifying the original dataframe
+    processed_df = df.copy() 
+    
+    try:
+        logger.info("Starting data binarization process.")
         
-            if guidelines["Type"][i].lower() == "binary":
-                df[category] = df[category].astype(str).str.strip().str.lower()
-                df[category] = df[category].replace(mapping)
-                if guidelines["Condition"][i].lower() == "no":
-                    df[category] = df[category].replace({0:1, 1:0})
-
-
-                
-            elif guidelines["Type"][i].lower() == "numeric":
-                   df[category] = df[category].between(guidelines["Min"][i], guidelines["Max"][i]).astype(int)
-
+        for i, category in guidelines["Variable"].items():
+            # Validate if the column exists in the dataset
+            if category not in processed_df.columns:
+                logger.error(f"Alignment Error: Column '{category}' missing from dataset.")
+                raise KeyError(f"Column '{category}' not found in dataset.")
             
-        return df[list(guidelines["Variable"])]
+            var_type = str(guidelines["Type"][i]).lower()
 
-    except:
-        raise ImportError('add exception')
+            # Logic for binary classification
+            if var_type == BINARY_TYPE:
+                processed_df[category] = processed_df[category].astype(str).str.strip().str.lower()
+                processed_df[category] = processed_df[category].replace(MAPPING)
+                
+                # Reverse mapping if the condition is "no"
+                if str(guidelines["Condition"][i]).lower() == "no":
+                    processed_df[category] = processed_df[category].replace(REVERSE_MAPPING)
+                
+                logger.debug(f"Successfully processed binary column: {category}")
+
+            # Logic for numeric range binarization
+            elif var_type == NUMERIC_TYPE:
+                min_val, max_val = guidelines["Min"][i], guidelines["Max"][i]
+                processed_df[category] = processed_df[category].between(min_val, max_val).astype(int)
+                logger.debug(f"Successfully processed numeric column: {category}")
+            
+            else:
+                # If the type in Excel is neither binary nor numeric
+                raise ValueError(f"Unknown variable type '{var_type}' for category '{category}'.")
+
+        # Extract only relevant variables
+        target_cols = list(guidelines["Variable"])
+        logger.info(f"Transformation complete. Processed {len(target_cols)} variables.")
+        return processed_df[target_cols]
+
+    except (KeyError, ValueError) as e:
+        # Log specific data issues [cite: 45]
+        logger.error(f"Data Validation Error: {e}")
+        raise #stop run
+    except Exception as e:
+        # Log any other unexpected system errors [cite: 44]
+        logger.exception("Unexpected error during transformation stage.")
+        raise
+    
 
 
 
 data = pd.read_csv("enhanced_anxiety_dataset.csv")
 guidelines = pd.read_excel("health_guidelines.xlsx")
-
-

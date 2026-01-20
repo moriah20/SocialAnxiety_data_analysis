@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import logging
+import sys
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,7 +9,11 @@ import statsmodels as sm
 from statsmodels.formula.api import ols
 import pingouin as pg
 from scipy.stats import spearmanr 
-from binarization.binarize_category import apply_binary
+from Initial_Data_Analysis.initial_analysis import is_null
+from Initial_Data_Analysis.initial_analysis import get_outliers_report
+from Initial_Data_Analysis.initial_analysis import plot_outliers
+from Initial_Data_Analysis.initial_analysis import frequency
+from Binarization.binarize_category import apply_binary
 from Categorization.Categorization import categorization
 from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
 from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
@@ -27,11 +33,24 @@ from Two_Way_ANOVA.interctions import calculate_interaction
 #from Two_Way_ANOVA.interctions import 
 '''
 
+
+
+try:
+  df = pd.read_csv('enhanced_anxiety_dataset.csv')
+  guideline = pd.read_excel('health_guidelines.xlsx')
+except:
+  raise FileNotFoundError("can't find files")
+
+#initial data analysis
+null = is_null(df)
+outliers = plot_outliers(df)
+variable_frequency = frequency(df)
+
 #binarize and categorize
 binarized_df = apply_binary(df, guideline)
 categorized_df = categorization(binarized_df,guideline)
 
-#print(categorized_df)
+print(categorized_df)
 
 #stats spearman
 spearman_test_results = spearman_test(categorized_df, df, target_col="Anxiety Level (1-10)" )
