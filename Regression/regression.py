@@ -6,15 +6,7 @@ import math
 import logging
 import os
 
-# --- 1. Logger Configuration ---
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler("analysis_log.log"), # Saves logs to this file
-        logging.StreamHandler()                # Prints logs to the console
-    ]
-)
+
 logger = logging.getLogger(__name__)
 
 def calculate_age_regression(df, target_col, IV):

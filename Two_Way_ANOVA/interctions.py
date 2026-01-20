@@ -8,15 +8,6 @@ import pingouin as pg
 import logging
 
 
-# --- Logger Configuration ---
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler("anova_analysis.log"), # Saves logs to this file
-        logging.StreamHandler()                   # Prints logs to the console
-    ]
-)
 logger = logging.getLogger(__name__)
 
 # Calculates group means for main effects analysis.
@@ -128,6 +119,39 @@ def calculate_interaction(df, col_name, IV1, IV2):
         logger.error("Error: Wrong variable types. Please ensure df is a DataFrame and names are strings.")
         return None
 
+def plot_interaction(df, IV1, IV2, DV):
+    """
+    Generates an interaction plot and logs the process.
+    Saves the output as a PNG file.
+    """
+    try:
+        logger.info(f"Generating interaction plot for: {IV1} and {IV2} on {DV}")
+        
+        # 1. Set the visual style
+        sns.set_theme(style="whitegrid")
+        plt.figure(figsize=(10, 6))
+        
+        # 2. Create the interaction plot (point plot)
+        # dodge=True prevents markers from overlapping
+        plot = sns.pointplot(data=df, x=IV1, y=DV, hue=IV2, 
+                             dodge=True, markers=['o', 's'], capsize=.1)
+        
+        # 3. Add labels and title
+        plt.title(f'Interaction Effect: {IV1} x {IV2} on {DV}', fontsize=14)
+        plt.xlabel(f'{IV1}', fontsize=12)
+        plt.ylabel(f'Mean {DV}', fontsize=12)
+        
+        # 4. Save the plot to a file
+        filename = f"interaction_plot_{IV1}_{IV2}.png"
+        plt.savefig(filename)
+        
+        # 5. Log success
+        logger.info(f"Interaction plot successfully created and saved as {filename}")
+        
+        plt.show()
+        
+    except Exception as e:
+        logger.error(f"Failed to generate interaction plot: {e}")
 
 
 

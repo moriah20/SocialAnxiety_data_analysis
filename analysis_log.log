@@ -1,0 +1,8 @@
+2026-01-20 15:14:18,059 - INFO - Null check completed. Contains nulls: False
+2026-01-20 15:14:18,112 - INFO - Outlier detection completed. Found 666 outliers.
+2026-01-20 15:14:37,977 - INFO - Removing 666 rows due to outliers.
+2026-01-20 15:14:44,527 - INFO - Frequency plots generated successfully.
+2026-01-20 15:14:44,544 - INFO - Starting data binarization process.
+2026-01-20 15:14:44,611 - INFO - Transformation complete. Processed 14 variables.
+2026-01-20 15:14:44,613 - INFO - Starting categorization process
+2026-01-20 15:14:44,626 - INFO - Categorization completed successfully

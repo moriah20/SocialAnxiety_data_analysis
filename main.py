@@ -8,6 +8,8 @@ import seaborn as sns
 import statsmodels as sm
 from statsmodels.formula.api import ols
 import pingouin as pg
+import os
+import logging
 from scipy.stats import spearmanr 
 from Initial_Data_Analysis.initial_analysis import is_null
 from Initial_Data_Analysis.initial_analysis import get_outliers_report
@@ -19,7 +21,6 @@ from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
 from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
 from Statistic_Analysis_for_Binaraziation.stat_visualization import plot_spearman_bar_chart
 from Statistic_Analysis_for_Binaraziation.stat_visualization import plot_regression_summary
-'''
 from Regression.regression import calculate_age_regression
 from Regression.regression import plot_regression
 from Regression.regression import extract_correlation_from_regression
@@ -30,10 +31,25 @@ from Two_Way_ANOVA.interctions import main_effects
 from Two_Way_ANOVA.interctions import check_effects
 from Two_Way_ANOVA.interctions import main_effects_plots
 from Two_Way_ANOVA.interctions import calculate_interaction
-#from Two_Way_ANOVA.interctions import 
-'''
 
 
+# --- Logger Configuration ---
+# This setup should be at the very top of your main.py
+logging.basicConfig(
+    # Set the threshold for recorded messages (INFO captures all major steps)
+    level=logging.INFO,
+    
+    # Define the format: [Timestamp] - [Log Level] - [Your Message]
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    
+    handlers=[
+        # 1. FileHandler: Saves all logs to a permanent text file
+        logging.FileHandler("final_project_analysis.log"), 
+        
+        # 2. StreamHandler: Displays logs in the VS Code terminal in real-time
+        logging.StreamHandler()                            
+    ]
+)
 
 try:
   df = pd.read_csv('enhanced_anxiety_dataset.csv')
@@ -61,7 +77,6 @@ plot_spearman_bar_chart(spearman_test_results)
 multi = run_multiple_regression(categorized_df, df, target_col="Anxiety Level (1-10)")
 plot_regression_summary(multi)
 
-'''
 main_effect_1,main_effect_2=main_effects(df, "Gender", "Occupation","Anxiety Level (1-10)")
 check_effects=check_effects(main_effect_1, main_effect_2)
 main_effects_plots(main_effect_1, main_effect_2, "Gender", "Occupation","Anxiety Level (1-10)")
@@ -73,4 +88,3 @@ regression_results=calculate_age_regression(df, "Anxiety Level (1-10)", "Age")
 plot_regression(df, "Age",  "Anxiety Level (1-10)")
 correlation=extract_correlation_from_regression(regression_results)
 p_val=interpret_regression_significance(regression_results)
-'''
