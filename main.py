@@ -7,8 +7,8 @@ import statsmodels as sm
 from statsmodels.formula.api import ols
 import pingouin as pg
 from scipy.stats import spearmanr 
-from Binarization.binarize_category import apply_binary
-from Binarization.health_ranges import create_health_config
+from binarization.binarize_category import apply_binary
+from binarization.health_ranges import create_health_config
 from Categorization.Categorization import categorization
 from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
 from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
@@ -23,14 +23,6 @@ from Two_Way_ANOVA.interctions import check_effects
 from Two_Way_ANOVA.interctions import main_effects_plots
 from Two_Way_ANOVA.interctions import calculate_interaction
 from Two_Way_ANOVA.interctions import plot_interaction
-
-
-# --- החלק המותאם לדאטה שלך ---
-
-# 1. טעינת הקובץ
-df = pd.read_csv('enhanced_anxiety_dataset.csv')
-
-
 
 #binarize and categorize
 #config = create_health_config(df, health_guidelines)
