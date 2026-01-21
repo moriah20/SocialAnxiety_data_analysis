@@ -107,42 +107,60 @@ def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
 
 # Analyzes ANOVA results to determine the significance of main effects and interactions.
 def calculate_interaction(df, col_name, IV1, IV2):
-
-    # Validate inputs: Ensure df is a DataFrame and column names are strings
+    """
+    Performs Two-Way ANOVA and interprets the significance of main effects and interactions.
+    """
+    # 1. Validate basic input types
     if isinstance(df, pd.DataFrame) and all(isinstance(i, str) for i in [IV1, IV2, col_name]):
         
+        # 2. Check if columns actually exist in the DataFrame (Fixes KeyError in tests)
+        required_columns = [col_name, IV1, IV2]
+        if not all(col in df.columns for col in required_columns):
+            logger.error(f"Missing columns for interaction: {required_columns}")
+            return None
+
+        # 3. Check for sufficient data after removing NaNs (Fixes AssertionError in tests)
+        clean_df = df.dropna(subset=required_columns)
+        if len(clean_df) < 5:
+            logger.error(f"Insufficient data for ANOVA: {len(clean_df)} rows found, minimum 5 required.")
+            return None
+
         logger.info(f"Running Two-Way ANOVA for {IV1} and {IV2} on {col_name}")
-        # Run the Two-Way ANOVA
-        results = pg.anova(data=df, dv=col_name, between=[IV1, IV2])
-
-        logger.info("\n--- ANOVA Analysis Results ---")
-
-        # Iterate through the ANOVA table to interpret each source of variation
-        for index, row in results.iterrows():
-            source = row['Source']  # Factor name (IV1, IV2, or Interaction)
-            p_val = row['p-unc']    # Uncorrected p-value
-            
-            # Significance threshold (Alpha = 0.05)
-            is_significant = p_val < 0.05
-            
-            # Identify the type of effect based on the Source column
-            if source == IV1:
-                type_of_effect = f"Main Effect of {IV1}"
-            elif source == IV2:
-                type_of_effect = f"Main Effect of {IV2}"
-            elif ' * ' in source or ':' in source:
-                type_of_effect = f"Interaction Effect ({IV1} x {IV2})"
-            else:
-                continue
-
-            # Determine significance status message
-            status = "Significant" if is_significant else "Not Significant"
-            logger.info(f"* {type_of_effect}: {status} (p = {p_val:.4f})")
         
-        return results
+        try:
+            # 4. Run the Two-Way ANOVA using Pingouin
+            results = pg.anova(data=clean_df, dv=col_name, between=[IV1, IV2])
+
+            logger.info("\n--- ANOVA Analysis Results ---")
+
+            # 5. Iterate through the ANOVA table to interpret results
+            for index, row in results.iterrows():
+                source = row['Source']  # Factor name
+                p_val = row['p-unc']    # Uncorrected p-value
+                
+                # Significance threshold (Alpha = 0.05)
+                is_significant = p_val < 0.05
+                
+                # Identify effect type
+                if source == IV1:
+                    type_of_effect = f"Main Effect of {IV1}"
+                elif source == IV2:
+                    type_of_effect = f"Main Effect of {IV2}"
+                elif ' * ' in source or ':' in source:
+                    type_of_effect = f"Interaction Effect ({IV1} x {IV2})"
+                else:
+                    continue
+
+                status = "Significant" if is_significant else "Not Significant"
+                logger.info(f"* {type_of_effect}: {status} (p = {p_val:.4f})")
+            
+            return results
+
+        except Exception as e:
+            logger.error(f"Statistical calculation failed: {str(e)}")
+            return None
             
     else:
-        # Error handling for incorrect input types
         logger.error("Error: Wrong variable types. Please ensure df is a DataFrame and names are strings.")
         return None
 

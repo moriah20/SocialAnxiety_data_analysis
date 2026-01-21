@@ -88,18 +88,17 @@ def extract_correlation_from_regression(regression_results):
         logger.error(f"Error extracting correlation: {e}")
         return None
     
-def interpret_regression_significance(regression_results):
-    try:
-        p_val = regression_results.iloc[1]['p-val']
+    
+def interpret_regression(regression_results):
+    if regression_results is None:
+        return False
+    
+    # Locate the row for the actual variable (not the Intercept)
+    # Usually the second row (index 1)
+    if len(regression_results) > 1:
+        p_val = regression_results.iloc[1]['pval'] 
+        is_significant = p_val < 0.05
         
-        logger.info(f"Significance Analysis - P-value: {p_val:.4f}")
-        
-        if p_val < 0.05:
-            logger.info("Result: The relationship is Statistically Significant.")
-        else:
-            logger.info("Result: The relationship is NOT Statistically Significant (p > 0.05).")
-            
-        return p_val
-    except Exception as e:
-        logger.error(f"Could not extract p-value: {e}")
-        return None
+        logger.info(f"Regression p-value: {p_val:.4f}, Significant: {is_significant}")
+        return is_significant
+    return False

@@ -54,9 +54,9 @@ def test_calculate_interaction_success(anova_data):
     assert 'Source' in results.columns
     assert 'p-unc' in results.columns
 
+
 def test_calculate_interaction_error_handling(anova_data):
     """Should return None if column names are incorrect."""
+    # Ensure this returns None instead of raising KeyError
     results = calculate_interaction(anova_data, 'Wrong_Column', 'Gender', 'Treatment')
-    # Depending on your implementation, this might raise a KeyError or return None
-    # If the function handles missing columns via logging, result should be None
-    assert results is None or isinstance(results, pd.DataFrame)
+    assert results is None
