@@ -64,7 +64,3 @@ def apply_binary(df, guidelines):
         raise
     
 
-
-
-data = pd.read_csv("enhanced_anxiety_dataset.csv")
-guidelines = pd.read_excel("health_guidelines.xlsx")
