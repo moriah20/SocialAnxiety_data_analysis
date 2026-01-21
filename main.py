@@ -51,7 +51,7 @@ try:
   df = pd.read_csv('enhanced_anxiety_dataset.csv')
   guideline = pd.read_excel('health_guidelines.xlsx')
 except:
-  raise FileNotFoundError("can't find files")
+  raise FileNotFoundError("file not found")
 
 #initial data analysis
 null = is_null(df)
