@@ -3,7 +3,7 @@ import pytest
 # Use a non-GUI backend so matplotlib won't try to open windows during tests
 import matplotlib
 matplotlib.use("Agg")
-from binarization.binarize_category import apply_binary  # או מ-main אם לא פיצלת
+from category_realations.binarize_category import apply_binary  # או מ-main אם לא פיצלת
 
 # Sample guideline dataframe
 guidelines = pd.DataFrame({

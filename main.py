@@ -15,26 +15,40 @@ from Initial_Data_Analysis.initial_analysis import (is_null,
                                                     get_outliers_report, 
                                                     plot_outliers, 
                                                     frequency)
-from Binarization.binarize_category import apply_binary
-from Categorization.Categorization import categorization
-from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
-from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
-from Statistic_Analysis_for_Binaraziation.stat_visualization import (plot_spearman_bar_chart, 
+from Category_realations.binarize_category import apply_binary
+from Category_realations.Categorization import categorization
+from Category_realations.spearman_test import spearman_test
+from Category_realations.multiple_linear_regression import run_multiple_regression
+from Category_realations.stat_visualization import (plot_spearman_bar_chart, 
                                                                      plot_regression_summary)
-from Regression.regression import (calculate_age_regression, 
+from Age_Regression.regression import (calculate_age_regression, 
                                    plot_regression, 
                                    extract_correlation_from_regression, 
                                    interpret_regression)
-from Two_Way_ANOVA import two_way_anova as twa
-from Two_Way_ANOVA import interctions as inter
+from Occupation_Gender_Two_Way_ANOVA.two_way_anova import (two_way_anova_test, plot_anova_results, run_post_hoc_analysis )
+from Occupation_Gender_Two_Way_ANOVA.interctions import (main_effects, 
+                                       main_effects_plots, 
+                                       calculate_interaction, 
+                                       check_effects,
+                                       plot_interaction)
+
 def main():
     """
     Main execution pipeline for the Social Anxiety Data Analysis project.
     Flow: Load -> Clean/Categorize -> Correlation -> Regression -> ANOVA -> Interaction.
     """
-    # Initialize logging configuration
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    # Configure logging to write to a file
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler("SocialAnxiety_Project_log.log", mode='w', encoding='utf-8'), # Writes to file ('w' overwrites, 'a' appends)
+            logging.StreamHandler() # Also prints to the console
+        ]
+    )
+    
     logger = logging.getLogger(__name__)
+    logger.info("The application has started.")
     
     # --- Step 1: Data Acquisition ---
     try:
@@ -77,18 +91,18 @@ def main():
     logger.info(f"Analyzing main effects and interactions for {iv1} and {iv2}...")
     
     # Calculate main effects and generate the corrected side-by-side plots
-    m1_effect, m2_effect = inter.main_effects(df, iv1, iv2, dv)
-    inter.check_effects(m1_effect, m2_effect)
-    inter.main_effects_plots(m1_effect, m2_effect, iv1, iv2, dv)
+    m1_effect, m2_effect = main_effects(df, iv1, iv2, dv)
+    check_effects(m1_effect, m2_effect)
+    main_effects_plots(m1_effect, m2_effect, iv1, iv2, dv)
 
     # Interaction analysis
-    inter.calculate_interaction(df, dv, iv1, iv2)
-    inter.plot_interaction(df, dv, iv1, iv2)
+    calculate_interaction(df, dv, iv1, iv2)
+    plot_interaction(df, dv, iv1, iv2)
     
     # Full ANOVA table and Post-Hoc comparisons
-    twa.two_way_anova_test(df, dv, iv1, iv2, "Anxiety_Score")
-    twa.run_post_hoc_analysis(df, dv, iv1, iv2)
-    twa.plot_anova_results(df, iv1, iv2, dv)
+    two_way_anova_test(df, dv, iv1, iv2, "Anxiety_Score")
+    run_post_hoc_analysis(df, dv, iv1, iv2)
+    plot_anova_results(df, iv1, iv2, dv)
 
     # --- Step 7: Age-Based Regression Analysis ---
     logger.info("Running linear regression for Age vs Anxiety Level...")

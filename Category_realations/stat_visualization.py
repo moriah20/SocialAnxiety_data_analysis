@@ -106,10 +106,10 @@ def plot_regression_summary(model):
         
         # 4. Create the plot
         plt.figure(figsize=(10, 6))
-        
+
         # Plot coefficients as points with error bars
         plt.errorbar(
-            x=results_df.index, 
+            x=results_df.index.astype(str).tolist(), 
             y=results_df['coef'], 
             yerr=[yerr_lower, yerr_upper], 
             fmt='o',            # Circle marker
@@ -130,13 +130,15 @@ def plot_regression_summary(model):
         
         # 7. Add text annotations for exact values
         for i, txt in enumerate(results_df['coef']):
-            plt.annotate(f"{txt:.2f}", 
-                         # Note: Using .iloc to access values by position to avoid FutureWarning
-                         (results_df.index[i], results_df['coef'].iloc[i]), 
-                         xytext=(15, 0), 
-                         textcoords='offset points',
-                         fontsize=10, 
-                         fontweight='bold')
+            plt.annotate(
+                f"{txt:.2f}", 
+                # FIXED: Ensure the x-coordinate is passed as a string to match the list above
+                (str(results_df.index[i]), results_df['coef'].iloc[i]), 
+                xytext=(15, 0), 
+                textcoords='offset points',
+                fontsize=10, 
+                fontweight='bold'
+            )
 
         plt.grid(axis='y', linestyle=':', alpha=0.6)
         plt.tight_layout()

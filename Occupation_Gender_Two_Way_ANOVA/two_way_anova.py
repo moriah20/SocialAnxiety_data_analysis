@@ -104,8 +104,8 @@ def run_post_hoc_analysis(df, DV, IV1, IV2):
                                           between=[IV1, IV2], 
                                           padjust='bonferroni')
         
-        logger.info(f"--- Simple Main Effects Results ({IV1} within {IV2}) ---")
-        logger.info(f"\n{simple_effects.to_string()}")
+        #logger.info(f"--- Simple Main Effects Results ({IV1} within {IV2}) ---")
+        #logger.info(f"\n{simple_effects.to_string()}")
         
         return simple_effects
     
