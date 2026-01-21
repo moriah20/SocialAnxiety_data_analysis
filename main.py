@@ -25,12 +25,11 @@ from Age_Regression.regression import (calculate_age_regression,
                                    plot_regression, 
                                    extract_correlation_from_regression, 
                                    interpret_regression)
-from Occupation_Gender_Two_Way_ANOVA.two_way_anova import (two_way_anova_test, plot_anova_results, run_post_hoc_analysis )
 from Occupation_Gender_Two_Way_ANOVA.interctions import (main_effects, 
                                        main_effects_plots, 
                                        calculate_interaction, 
                                        check_effects,
-                                       plot_interaction)
+                                       plot_interaction_bar,run_post_hoc_tukey)
 
 def main():
     """
@@ -97,12 +96,11 @@ def main():
 
     # Interaction analysis
     calculate_interaction(df, dv, iv1, iv2)
-    plot_interaction(df, dv, iv1, iv2)
+    plot_interaction_bar(df, iv1, iv2,dv)
     
-    # Full ANOVA table and Post-Hoc comparisons
-    two_way_anova_test(df, dv, iv1, iv2, "Anxiety_Score")
-    run_post_hoc_analysis(df, dv, iv1, iv2)
-    plot_anova_results(df, iv1, iv2, dv)
+   
+    run_post_hoc_tukey(df,dv,iv1,iv2)
+    
 
     # --- Step 7: Age-Based Regression Analysis ---
     logger.info("Running linear regression for Age vs Anxiety Level...")

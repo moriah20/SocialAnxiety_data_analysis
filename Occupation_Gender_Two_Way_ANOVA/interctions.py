@@ -5,6 +5,7 @@ import seaborn as sns
 import statsmodels as sm
 from statsmodels.formula.api import ols
 import pingouin as pg
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
 import logging
 
 logger = logging.getLogger(__name__)
@@ -160,42 +161,112 @@ def calculate_interaction(df, col_name, IV1, IV2):
     else:
         logger.error("Error: Wrong variable types. Please ensure df is a DataFrame and names are strings.")
         return None
+    
 
-def plot_interaction(df, IV1, IV2, DV):
+def plot_interaction_bar(df, IV1, IV2, DV):
     """
-    Generates an interaction plot and logs the process.
-    Saves the output as a PNG file.
+    Creates a bar-plot interaction graph and adds statistical significance
+    information based on a Two-Way ANOVA test.
     """
+
+    logger.info(f"Running Two-Way ANOVA for interaction: {IV1} × {IV2} on {DV}")
+
+    # --- Step 1: Clean data ---
+    clean_df = df.dropna(subset=[DV, IV1, IV2])
+
+    # --- Step 2: Run Two-Way ANOVA ---
+    anova_results = pg.anova(data=clean_df, dv=DV, between=[IV1, IV2])
+
+    # Extract interaction row
+    interaction_row = anova_results[anova_results["Source"].str.contains(r"\*|:", regex=True)]
+    p_val = float(interaction_row["p-unc"].values[0])
+    is_sig = p_val < 0.05
+
+    logger.info(f"Interaction p-value = {p_val:.4f} | Significant = {is_sig}")
+
+    # Text for graph
+    sig_text = "Significant Interaction" if is_sig else "Non-Significant Interaction"
+    sig_color = "green" if is_sig else "red"
+
+    # --- Step 3: Plot interaction bar chart ---
+    sns.set_theme(style="whitegrid")
+    plt.figure(figsize=(10, 6))
+
+    sns.barplot(
+        data=clean_df,
+        x=IV1,
+        y=DV,
+        hue=IV2,
+        ci=None,      # No error bars
+        dodge=True
+    )
+
+    # Titles and labels
+    plt.title(f'Interaction Effect: {IV1} × {IV2} on {DV}', fontsize=14)
+    plt.xlabel(IV1, fontsize=12)
+    plt.ylabel(f'Mean {DV}', fontsize=12)
+
+    # Legend
+    plt.legend(
+        title=IV2,
+        title_fontsize=12,
+        fontsize=10,
+        loc="best"
+    )
+
+    # --- Step 4: Add significance box on graph ---
+    plt.text(
+        0.02, 0.95,
+        f"{sig_text}\np = {p_val:.4f}",
+        transform=plt.gca().transAxes,
+        fontsize=12,
+        color=sig_color,
+        bbox=dict(facecolor="white", alpha=0.7, edgecolor=sig_color)
+    )
+
+    plt.tight_layout()
+    plt.show()
+
+    return anova_results
+
+
+def run_post_hoc_tukey(df, DV, IV1, IV2):
+    """
+    Performs Tukey HSD post-hoc tests for simple effects
+    when an interaction between two independent variables is found.
+    The function runs Tukey separately within each level of IV2.
+    """
+
+    logger.info(f"Running Tukey HSD post-hoc analysis for: {IV1} within each level of {IV2}")
+
+    results = {}
+
     try:
-        logger.info(f"Generating interaction plot for: {IV1} and {IV2} on {DV}")
-        
-        # 1. Set the visual style
-        sns.set_theme(style="whitegrid")
-        plt.figure(figsize=(10, 6))
-        
-        # 2. Create the interaction plot (point plot)
-        # dodge=True prevents markers from overlapping
-        plot = sns.pointplot(data=df, x=IV1, y=DV, hue=IV2, 
-                             dodge=True, markers=['o', 's'], capsize=.1)
-        
-        # 3. Add labels and title
-        plt.title(f'Interaction Effect: {IV1} x {IV2} on {DV}', fontsize=14)
-        plt.xlabel(f'{IV1}', fontsize=12)
-        plt.ylabel(f'Mean {DV}', fontsize=12)
-        
-        # 4. Save the plot to a file
-        filename = f"interaction_plot_{IV1}_{IV2}.png"
-        plt.savefig(filename)
-        
-        # 5. Log success
-        logger.info(f"Interaction plot successfully created and saved as {filename}")
-        
-        plt.show()
-        
+        # Loop through each level of IV2 (simple effects)
+        for level in df[IV2].unique():
+
+            logger.info(f"Processing simple effect for {IV2} = {level}")
+
+            # Subset the data for the current level
+            subset = df[df[IV2] == level]
+
+            # Run Tukey HSD
+            tukey = pairwise_tukeyhsd(
+                endog=subset[DV],     # Dependent variable
+                groups=subset[IV1],   # Groups to compare (IV1 levels)
+                alpha=0.05
+            )
+
+            # Store results
+            results[level] = tukey.summary()
+
+            logger.info(f"Tukey HSD completed for {IV2} = {level}")
+
+        return results
+
     except Exception as e:
-        logger.error(f"Failed to generate interaction plot: {e}")
-
-
+        logger.error(f"Error during Tukey post-hoc analysis: {e}")
+        return None
 
 
 
