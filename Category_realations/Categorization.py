@@ -15,7 +15,7 @@ def categorization(binary_df, guideline):
     binary_df : pd.DataFrame
         A dataframe containing binary columns (0/1) for each variable.
     guideline : pd.DataFrame
-        A dataframe with two columns:
+        A dataframe with two main columns:
         - 'Category': category name
         - 'Variable': variable name that belongs to the category
 

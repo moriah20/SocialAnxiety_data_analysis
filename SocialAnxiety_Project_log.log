@@ -1,47 +1,47 @@
-2026-01-21 14:22:12,623 - __main__ - INFO - The application has started.
-2026-01-21 14:22:12,811 - __main__ - INFO - Data sources loaded successfully.
-2026-01-21 14:22:12,812 - __main__ - INFO - Starting initial analysis (nulls, outliers, frequencies)...
-2026-01-21 14:22:12,815 - Initial_Data_Analysis.initial_analysis - INFO - Null check completed. Contains nulls: False
-2026-01-21 14:22:12,853 - Initial_Data_Analysis.initial_analysis - INFO - Outlier detection completed. Found 666 outliers.
-2026-01-21 14:22:23,430 - Initial_Data_Analysis.initial_analysis - INFO - Removing 666 rows due to outliers.
-2026-01-21 14:22:25,880 - Initial_Data_Analysis.initial_analysis - INFO - Frequency plots generated successfully.
-2026-01-21 14:22:25,900 - __main__ - INFO - Applying data transformation based on health guidelines...
-2026-01-21 14:22:25,904 - Category_realations.binarize_category - INFO - Starting data binarization process.
-2026-01-21 14:22:25,969 - Category_realations.binarize_category - INFO - Transformation complete. Processed 14 variables.
-2026-01-21 14:22:25,975 - Category_realations.Categorization - INFO - Starting categorization process
-2026-01-21 14:22:25,993 - Category_realations.Categorization - INFO - Categorization completed successfully
-2026-01-21 14:22:25,997 - __main__ - INFO - Running Spearman rank correlation tests...
-2026-01-21 14:22:25,998 - Category_realations.spearman_test - INFO - Starting Spearman Rank Correlation Test...
-2026-01-21 14:22:25,999 - Category_realations.spearman_test - INFO - Calculating correlation against target: 'Anxiety Level (1-10)'
-2026-01-21 14:22:26,019 - Category_realations.spearman_test - INFO - Spearman Test completed successfully.
-2026-01-21 14:22:26,025 - Category_realations.stat_visualization - INFO - Generating Spearman correlation bar chart...
-2026-01-21 14:22:26,210 - Category_realations.stat_visualization - INFO - Displaying Spearman plot window.
-2026-01-21 14:22:27,688 - __main__ - INFO - Executing multiple linear regression analysis...
-2026-01-21 14:22:27,704 - Category_realations.multiple_linear_regression - INFO - Starting Multiple Linear Regression analysis...
-2026-01-21 14:22:27,707 - Category_realations.multiple_linear_regression - INFO - Fitting OLS regression model...
-2026-01-21 14:22:27,719 - Category_realations.multiple_linear_regression - INFO - Multiple Regression completed successfully.
-2026-01-21 14:22:27,719 - Category_realations.stat_visualization - INFO - Generating Regression Coefficients plot...
-2026-01-21 14:22:27,848 - Category_realations.stat_visualization - INFO - Displaying Regression plot window.
-2026-01-21 14:22:29,017 - __main__ - INFO - Analyzing main effects and interactions for Gender and Occupation...
-2026-01-21 14:22:29,039 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Calculating main effects for Gender and Occupation on Anxiety_Level
-2026-01-21 14:22:29,042 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Main effect for Gender calculated.
-2026-01-21 14:22:29,044 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Main effect for Occupation calculated.
-2026-01-21 14:22:29,045 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Initiating main effects plot generation for Gender and Occupation.
-2026-01-21 14:22:29,142 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Figure and axes created successfully.
-2026-01-21 14:22:29,227 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - First subplot (Gender) rendered.
-2026-01-21 14:22:29,324 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Second subplot (Occupation) rendered.
-2026-01-21 14:22:29,360 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Layout adjusted with tight_layout(). Displaying plot.
-2026-01-21 14:22:32,285 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Two-Way ANOVA for Gender and Occupation on Anxiety_Level
-2026-01-21 14:22:32,458 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - 
+2026-01-21 19:17:48,599 - __main__ - INFO - The application has started.
+2026-01-21 19:17:48,840 - __main__ - INFO - Data sources loaded successfully.
+2026-01-21 19:17:48,840 - __main__ - INFO - Starting initial analysis (nulls, outliers, frequencies)...
+2026-01-21 19:17:48,842 - Initial_Data_Analysis.initial_analysis - INFO - Null check completed. Contains nulls: False
+2026-01-21 19:17:48,873 - Initial_Data_Analysis.initial_analysis - INFO - Outlier detection completed. Found 666 outliers.
+2026-01-21 19:17:58,276 - Initial_Data_Analysis.initial_analysis - INFO - Removing 666 rows due to outliers.
+2026-01-21 19:18:00,378 - Initial_Data_Analysis.initial_analysis - INFO - Frequency plots generated successfully.
+2026-01-21 19:18:00,379 - __main__ - INFO - Applying data transformation based on health guidelines...
+2026-01-21 19:18:00,380 - Category_realations.binarize_category - INFO - Starting data binarization process.
+2026-01-21 19:18:00,432 - Category_realations.binarize_category - INFO - Transformation complete. Processed 14 variables.
+2026-01-21 19:18:00,433 - Category_realations.Categorization - INFO - Starting categorization process
+2026-01-21 19:18:00,438 - Category_realations.Categorization - INFO - Categorization completed successfully
+2026-01-21 19:18:00,439 - __main__ - INFO - Running Spearman rank correlation tests...
+2026-01-21 19:18:00,439 - Category_realations.spearman_test - INFO - Starting Spearman Rank Correlation Test...
+2026-01-21 19:18:00,440 - Category_realations.spearman_test - INFO - Calculating correlation against target: 'Anxiety Level (1-10)'
+2026-01-21 19:18:00,450 - Category_realations.spearman_test - INFO - Spearman Test completed successfully.
+2026-01-21 19:18:00,451 - Category_realations.stat_visualization - INFO - Generating Spearman correlation bar chart...
+2026-01-21 19:18:00,559 - Category_realations.stat_visualization - INFO - Displaying Spearman plot window.
+2026-01-21 19:18:01,846 - __main__ - INFO - Executing multiple linear regression analysis...
+2026-01-21 19:18:01,846 - Category_realations.multiple_linear_regression - INFO - Starting Multiple Linear Regression analysis...
+2026-01-21 19:18:01,849 - Category_realations.multiple_linear_regression - INFO - Fitting OLS regression model...
+2026-01-21 19:18:01,873 - Category_realations.multiple_linear_regression - INFO - Multiple Regression completed successfully.
+2026-01-21 19:18:01,874 - Category_realations.stat_visualization - INFO - Generating Regression Coefficients plot...
+2026-01-21 19:18:02,024 - Category_realations.stat_visualization - INFO - Displaying Regression plot window.
+2026-01-21 19:18:03,057 - __main__ - INFO - Analyzing main effects and interactions for Gender and Occupation...
+2026-01-21 19:18:03,058 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Calculating main effects for Gender and Occupation on Anxiety_Level
+2026-01-21 19:18:03,067 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Main effect for Gender calculated.
+2026-01-21 19:18:03,071 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Main effect for Occupation calculated.
+2026-01-21 19:18:03,071 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Initiating main effects plot generation for Gender and Occupation.
+2026-01-21 19:18:03,169 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Figure and axes created successfully.
+2026-01-21 19:18:03,196 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - First subplot (Gender) rendered.
+2026-01-21 19:18:03,258 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Second subplot (Occupation) rendered.
+2026-01-21 19:18:03,288 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Layout adjusted with tight_layout(). Displaying plot.
+2026-01-21 19:18:05,617 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Two-Way ANOVA for Gender and Occupation on Anxiety_Level
+2026-01-21 19:18:05,728 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - 
 --- ANOVA Analysis Results ---
-2026-01-21 14:22:32,460 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Gender: Not Significant (p = 0.9270)
-2026-01-21 14:22:32,461 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Occupation: Significant (p = 0.0000)
-2026-01-21 14:22:32,465 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Interaction Effect (Gender x Occupation): Not Significant (p = 0.7110)
-2026-01-21 14:22:32,468 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Generating interaction plot for: Anxiety_Level and Gender on Occupation
-2026-01-21 14:22:33,320 - Occupation_Gender_Two_Way_ANOVA.interctions - ERROR - Failed to generate interaction plot: 'Male'
-2026-01-21 14:22:33,320 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - Starting Two-Way ANOVA: Gender and Occupation predicting Anxiety_Score
-2026-01-21 14:22:33,325 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - Data cleaning complete. Rows before: 11000, Rows after dropna: 11000
-2026-01-21 14:22:33,432 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - 
+2026-01-21 19:18:05,729 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Gender: Not Significant (p = 0.9270)
+2026-01-21 19:18:05,729 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Occupation: Significant (p = 0.0000)
+2026-01-21 19:18:05,729 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Interaction Effect (Gender x Occupation): Not Significant (p = 0.7110)
+2026-01-21 19:18:05,730 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Generating interaction plot for: Anxiety_Level and Gender on Occupation
+2026-01-21 19:18:06,144 - Occupation_Gender_Two_Way_ANOVA.interctions - ERROR - Failed to generate interaction plot: 'Male'
+2026-01-21 19:18:06,144 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - Starting Two-Way ANOVA: Gender and Occupation predicting Anxiety_Score
+2026-01-21 19:18:06,148 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - Data cleaning complete. Rows before: 11000, Rows after dropna: 11000
+2026-01-21 19:18:06,231 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - 
 ==============================
 ANOVA TABLE
 ==============================
@@ -50,21 +50,21 @@ ANOVA TABLE
 1           Occupation    273.893992     12.0  22.824499  5.086044  1.552276e-08  0.005537
 2  Gender * Occupation     88.617917     24.0   3.692413  0.822790  7.109572e-01  0.001798
 3             Residual  49189.380741  10961.0   4.487673       NaN           NaN       NaN
-2026-01-21 14:22:33,433 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - Running Post-hoc analysis: Simple main effects for Gender within each Occupation
-2026-01-21 14:22:34,538 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - Generating interaction plot for Gender and Occupation
-2026-01-21 14:22:34,785 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - ERROR - Could not create interaction plot: 'Other'
-2026-01-21 14:22:34,785 - __main__ - INFO - Running linear regression for Age vs Anxiety Level...
-2026-01-21 14:22:34,785 - Age_Regression.regression - INFO - Starting regression analysis: Age predicting Anxiety_Level
-2026-01-21 14:22:34,789 - Age_Regression.regression - INFO - Regression analysis completed successfully.
-2026-01-21 14:22:34,794 - Age_Regression.regression - INFO - 
+2026-01-21 19:18:06,232 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - Running Post-hoc analysis: Simple main effects for Gender within each Occupation
+2026-01-21 19:18:06,909 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - INFO - Generating interaction plot for Gender and Occupation
+2026-01-21 19:18:07,064 - Occupation_Gender_Two_Way_ANOVA.two_way_anova - ERROR - Could not create interaction plot: 'Other'
+2026-01-21 19:18:07,064 - __main__ - INFO - Running linear regression for Age vs Anxiety Level...
+2026-01-21 19:18:07,065 - Age_Regression.regression - INFO - Starting regression analysis: Age predicting Anxiety_Level
+2026-01-21 19:18:07,081 - Age_Regression.regression - INFO - Regression analysis completed successfully.
+2026-01-21 19:18:07,083 - Age_Regression.regression - INFO - 
 ==============================
 REGRESSION RESULTS: Age -> Anxiety_Level
 ==============================
        names      coef        se          T          pval        r2    adj_r2  CI[2.5%]  CI[97.5%]
 0  Intercept  4.408933  0.064597  68.252551  0.000000e+00  0.005523  0.005432  4.282311   4.535556
 1        Age -0.011917  0.001525  -7.815222  5.986765e-15  0.005523  0.005432 -0.014906  -0.008928
-2026-01-21 14:22:34,794 - Age_Regression.regression - INFO - Generating regression plot for Age and Anxiety_Level
-2026-01-21 14:22:38,586 - Age_Regression.regression - INFO - Plot displayed successfully.
-2026-01-21 14:22:38,615 - Age_Regression.regression - INFO - Correlation Analysis: The correlation is a weak negative correlation (-0.0743)
-2026-01-21 14:22:38,615 - Age_Regression.regression - INFO - Regression p-value: 0.0000, Significant: True
-2026-01-21 14:22:38,617 - __main__ - INFO - Analysis Pipeline Complete. Predictor p-value: True
+2026-01-21 19:18:07,083 - Age_Regression.regression - INFO - Generating regression plot for Age and Anxiety_Level
+2026-01-21 19:18:13,535 - Age_Regression.regression - INFO - Plot displayed successfully.
+2026-01-21 19:18:13,538 - Age_Regression.regression - INFO - Correlation Analysis: The correlation is a weak negative correlation (-0.0743)
+2026-01-21 19:18:13,539 - Age_Regression.regression - INFO - Regression p-value: 0.0000, Significant: True
+2026-01-21 19:18:13,539 - __main__ - INFO - Analysis Pipeline Complete. Predictor p-value: True
