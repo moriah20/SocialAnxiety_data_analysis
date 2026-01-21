@@ -15,7 +15,7 @@ from Initial_Data_Analysis.initial_analysis import (is_null,
                                                     get_outliers_report, 
                                                     plot_outliers, 
                                                     frequency)
-from Binarization.binarize_category import apply_binary
+from binarization.binarize_category import apply_binary
 from Categorization.Categorization import categorization
 from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test
 from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
