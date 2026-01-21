@@ -2,7 +2,7 @@ import pytest
 import pandas as pd
 import numpy as np
 import math
-from Regression.regression import calculate_age_regression, extract_correlation_from_regression, interpret_regression
+from SocialAnxiety_data_analysis.Age_Regression.regression import calculate_age_regression, extract_correlation_from_regression, interpret_regression
 
 @pytest.fixture
 def regression_data():

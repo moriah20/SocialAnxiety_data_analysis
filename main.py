@@ -11,6 +11,7 @@ import pingouin as pg
 import os
 import logging
 from scipy.stats import spearmanr 
+from scipy import stats
 from Initial_Data_Analysis.initial_analysis import (is_null, 
                                                     get_outliers_report, 
                                                     plot_outliers, 
@@ -21,16 +22,15 @@ from Category_realations.spearman_test import spearman_test
 from Category_realations.multiple_linear_regression import run_multiple_regression
 from Category_realations.stat_visualization import (plot_spearman_bar_chart, 
                                                                      plot_regression_summary)
-from Age_Regression.regression import (calculate_age_regression, 
+from Age_Regression.regression import (calculate_regression, 
                                    plot_regression, 
                                    extract_correlation_from_regression, 
                                    interpret_regression)
-from Occupation_Gender_Two_Way_ANOVA.two_way_anova import (two_way_anova_test, plot_anova_results, run_post_hoc_analysis )
 from Occupation_Gender_Two_Way_ANOVA.interctions import (main_effects, 
                                        main_effects_plots, 
                                        calculate_interaction, 
                                        check_effects,
-                                       plot_interaction)
+                                       plot_interaction_bar,run_post_hoc_tukey)
 
 def main():
     """
@@ -97,16 +97,13 @@ def main():
 
     # Interaction analysis
     calculate_interaction(df, dv, iv1, iv2)
-    plot_interaction(df, dv, iv1, iv2)
+    print(plot_interaction_bar(df, iv1, iv2,dv))
+    run_post_hoc_tukey(df,dv,iv1,iv2)
     
-    # Full ANOVA table and Post-Hoc comparisons
-    two_way_anova_test(df, dv, iv1, iv2, "Anxiety_Score")
-    run_post_hoc_analysis(df, dv, iv1, iv2)
-    plot_anova_results(df, iv1, iv2, dv)
 
     # --- Step 7: Age-Based Regression Analysis ---
     logger.info("Running linear regression for Age vs Anxiety Level...")
-    reg_results = calculate_age_regression(df, dv, "Age")
+    reg_results =calculate_regression(df, dv, "Age")
     plot_regression(df, "Age", dv)
     
     # Extract statistics using imported regression logic
