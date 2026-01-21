@@ -51,58 +51,55 @@ logger = logging.getLogger(__name__)
 
 def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
     """
-    Generates vertical bar plots for main effects.
-    X-axis: Independent Variables (IV1, IV2)
-    Y-axis: Dependent Variable (DV) mean scores
+    Generates side-by-side vertical bar plots for main effects.
+    Includes logging for process tracking and error handling.
     """
-    # Clear any previous plots from memory
+    # Clear any previous figures from memory
     plt.close('all')
 
-    # Validate data types using your existing check_effects function
+    # Validate inputs before proceeding
     if check_effects(main_effect_1, main_effect_2) and all(isinstance(i, str) for i in [IV1, IV2, DV]):
         
-        logger.info(f"Starting generation of main effects plots for {IV1} and {IV2}")
+        logger.info(f"Initiating main effects plot generation for {IV1} and {IV2}.")
 
         try:
-            # Create a figure with two subplots side-by-side
+            # 1. Create the figure and subplots
             fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+            logger.info("Figure and axes created successfully.")
 
-            # --- Plot 1: Main effect of IV1 (e.g., Gender) ---
-            # Sort values descending to show highest scores first
+            # --- PLOT 1: IV1 (e.g., Gender) ---
+            plt.sca(ax1) # Set current axis to the first subplot
             m1 = main_effect_1.sort_values(ascending=False)
-            sns.barplot(ax=ax1, x=m1.index, y=m1.values, palette='viridis')
+            
+            sns.barplot(x=m1.index, y=m1.values, hue=m1.index, palette='viridis', ax=ax1, legend=False)
             
             ax1.set_title(f'Mean {DV} by {IV1}', fontsize=14)
-            ax1.set_xlabel(IV1)           # Independent Variable on X
-            ax1.set_ylabel(f'Mean {DV}')  # Dependent Variable on Y
-            ax1.tick_params(axis='x', rotation=45) # Slight rotation for readability
+            ax1.set_xlabel(IV1)
+            ax1.set_ylabel(f'Mean {DV}')
+            ax1.tick_params(axis='x', rotation=45)
+            logger.info(f"First subplot ({IV1}) rendered.")
 
-            # --- Plot 2: Main effect of IV2 (e.g., Occupation) ---
-            # Sort values descending
+            # --- PLOT 2: IV2 (e.g., Occupation) ---
+            plt.sca(ax2) # Set current axis to the second subplot
             m2 = main_effect_2.sort_values(ascending=False)
-            sns.barplot(ax=ax2, x=m2.index, y=m2.values, palette='magma')
+            
+            sns.barplot(x=m2.index, y=m2.values, hue=m2.index, palette='magma', ax=ax2, legend=False)
             
             ax2.set_title(f'Mean {DV} by {IV2}', fontsize=14)
-            ax2.set_xlabel(IV2)           # Independent Variable on X
-            ax2.set_ylabel(f'Mean {DV}')  # Dependent Variable on Y
-            
-            # Rotate labels to 90 degrees to handle many categories (e.g., 13 occupations)
+            ax2.set_xlabel(IV2)
+            ax2.set_ylabel(f'Mean {DV}')
             ax2.tick_params(axis='x', rotation=90) 
+            logger.info(f"Second subplot ({IV2}) rendered.")
 
-            # Adjust layout to prevent labels from being cut off
+            # 2. Final adjustments and display
             plt.tight_layout()
-            
-            # Log success and show the plot
-            logger.info("Main effects plots generated successfully.")
+            logger.info("Layout adjusted with tight_layout(). Displaying plot.")
             plt.show()
 
         except Exception as e:
-            logger.error(f"Failed to generate plots: {str(e)}")
-            
+            logger.error(f"An error occurred during plot generation: {e}", exc_info=True)
     else:
-        # Error handling for incorrect input types
-        logger.error("Invalid input types provided to main_effects_plots function.")
-        print("Error: Please check the logs for more details on variable types.")
+        logger.warning("Data validation failed: Check if main_effect inputs are Series/DataFrames and names are strings.")
 
 
 # Analyzes ANOVA results to determine the significance of main effects and interactions.

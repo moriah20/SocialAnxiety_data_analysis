@@ -24,63 +24,81 @@ from Statistic_Analysis_for_Binaraziation.stat_visualization import (plot_spearm
 from Regression.regression import (calculate_age_regression, 
                                    plot_regression, 
                                    extract_correlation_from_regression, 
-                                   interpret_regression_significance)
+                                   interpret_regression)
 from Two_Way_ANOVA import two_way_anova as twa
 from Two_Way_ANOVA import interctions as inter
-
-
-# --- Logger Configuration ---
-# This setup should be at the very top of your main.py
-logging.basicConfig(
-    # Set the threshold for recorded messages (INFO captures all major steps)
-    level=logging.INFO,
+def main():
+    """
+    Main execution pipeline for the Social Anxiety Data Analysis project.
+    Flow: Load -> Clean/Categorize -> Correlation -> Regression -> ANOVA -> Interaction.
+    """
+    # Initialize logging configuration
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger(__name__)
     
-    # Define the format: [Timestamp] - [Log Level] - [Your Message]
-    format='%(asctime)s - %(levelname)s - %(message)s',
+    # --- Step 1: Data Acquisition ---
+    try:
+        df = pd.read_csv('enhanced_anxiety_dataset.csv')
+        guideline = pd.read_excel('health_guidelines.xlsx')
+        logger.info("Data sources loaded successfully.")
+    except Exception as e:
+        logger.error(f"Critical Error: Required CSV/Excel files not found. {e}")
+        return
+
+    # --- Step 2: Preliminary Exploratory Data Analysis (EDA) ---
+    logger.info("Starting initial analysis (nulls, outliers, frequencies)...")
+    is_null(df)
+    plot_outliers(df)
+    frequency(df)
     
-    handlers=[
-        # 1. FileHandler: Saves all logs to a permanent text file
-        logging.FileHandler("final_project_analysis.log"), 
-        
-        # 2. StreamHandler: Displays logs in the VS Code terminal in real-time
-        logging.StreamHandler()                            
-    ]
-)
+    # --- Step 3: Data Transformation (Binarization & Categorization) ---
+    logger.info("Applying data transformation based on health guidelines...")
+    binarized_df = apply_binary(df, guideline)
+    categorized_df = categorization(binarized_df, guideline)
 
-try:
-  df = pd.read_csv('enhanced_anxiety_dataset.csv')
-  guideline = pd.read_excel('health_guidelines.xlsx')
-except:
-  raise FileNotFoundError("can't find files")
+    # --- Step 4: Non-Parametric Correlation (Spearman) ---
+    logger.info("Running Spearman rank correlation tests...")
+    original_target = "Anxiety Level (1-10)"
+    spearman_results = spearman_test(categorized_df, df, target_col=original_target)
+    plot_spearman_bar_chart(spearman_results)
 
-#initial data analysis
-null = is_null(df)
-outliers = plot_outliers(df)
-variable_frequency = frequency(df)
+    # --- Step 5: Predictive Analysis (Multiple Linear Regression) ---
+    logger.info("Executing multiple linear regression analysis...")
+    multi_reg = run_multiple_regression(categorized_df, df, target_col=original_target)
+    plot_regression_summary(multi_reg)
 
-#binarize and categorize
-binarized_df = apply_binary(df, guideline)
-categorized_df = categorization(binarized_df,guideline)
+    # --- Step 6: Inferential Statistics (Two-Way ANOVA & Interactions) ---
+    # Rename column to prevent syntax errors in statistical formulas
+    df = df.rename(columns={original_target: "Anxiety_Level"})
+    dv = "Anxiety_Level"
+    iv1, iv2 = "Gender", "Occupation"
 
-#stats spearman
-spearman_test_results = spearman_test(categorized_df, df, target_col="Anxiety Level (1-10)" )
-plot_spearman_bar_chart(spearman_test_results)
+    logger.info(f"Analyzing main effects and interactions for {iv1} and {iv2}...")
+    
+    # Calculate main effects and generate the corrected side-by-side plots
+    m1_effect, m2_effect = inter.main_effects(df, iv1, iv2, dv)
+    inter.check_effects(m1_effect, m2_effect)
+    inter.main_effects_plots(m1_effect, m2_effect, iv1, iv2, dv)
 
-#stats multi regression
-multi = run_multiple_regression(categorized_df, df, target_col="Anxiety Level (1-10)")
-plot_regression_summary(multi)
+    # Interaction analysis
+    inter.calculate_interaction(df, dv, iv1, iv2)
+    inter.plot_interaction(df, dv, iv1, iv2)
+    
+    # Full ANOVA table and Post-Hoc comparisons
+    twa.two_way_anova_test(df, dv, iv1, iv2, "Anxiety_Score")
+    twa.run_post_hoc_analysis(df, dv, iv1, iv2)
+    twa.plot_anova_results(df, iv1, iv2, dv)
 
-main_effect_1,main_effect_2=inter.main_effects(df, "Gender", "Occupation","Anxiety Level (1-10)")
-check_effects=inter.check_effects(main_effect_1, main_effect_2)
-inter.main_effects_plots(main_effect_1, main_effect_2, "Gender", "Occupation","Anxiety Level (1-10)")
-# 1. Rename the column in the DataFrame
-df = df.rename(columns={"Anxiety Level (1-10)": "Anxiety_Level"})
-status=inter.calculate_interaction(df, "Anxiety_Level", "Gender", "Occupation")
-inter.plot_interaction(df, "Anxiety_Level", "Gender", "Occupation")
-anova_tabel=twa.two_way_anova_test(df,  "Anxiety_Level", "Gender", "Occupation", "Anxiety_Score")
-twa.run_post_hoc_analysis(df,"Anxiety_Level", "Gender", "Occupation")
-twa.plot_anova_results(df, "Gender", "Occupation","Anxiety_Level")
-regression_results=calculate_age_regression(df, "Anxiety_Level", "Age")
-plot_regression(df, "Age",  "Anxiety_Level")
-correlation=extract_correlation_from_regression(regression_results)
-p_val=interpret_regression_significance(regression_results)
+    # --- Step 7: Age-Based Regression Analysis ---
+    logger.info("Running linear regression for Age vs Anxiety Level...")
+    reg_results = calculate_age_regression(df, dv, "Age")
+    plot_regression(df, "Age", dv)
+    
+    # Extract statistics using imported regression logic
+    correlation_val = extract_correlation_from_regression(reg_results)
+    p_val = interpret_regression(reg_results)
+    
+    logger.info(f"Analysis Pipeline Complete. Predictor p-value: {p_val}")
+
+if __name__ == "__main__":
+    main()
