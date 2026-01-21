@@ -23,12 +23,6 @@ def test_two_way_anova_empty_df(empty_df):
     result = two_way_anova_test(empty_df, "Score", "Gender", "Employment", "Score_Clean")
     assert result is None
 
-# Test 2: Check if it handles missing columns
-def test_two_way_anova_missing_column(sample_data):
-    """Should return None if a specified column does not exist."""
-    result = two_way_anova_test(sample_data, "Wrong_Column", "Gender", "Employment", "Score_Clean")
-    assert result is None
-
 # Test 3: Valid full run
 def test_two_way_anova_success(sample_data):
     """Should return a pandas DataFrame (the ANOVA table) on success."""
@@ -46,14 +40,23 @@ def test_run_post_hoc_success(sample_data):
     assert isinstance(result, pd.DataFrame)
     assert 'p-corr' in result.columns
 
-# Test 5: Handle non-numeric data in target column
+# Test 2: Updated to expect None if column is missing (assuming you fix the function)
+def test_two_way_anova_missing_column(sample_data):
+    """Should return None if a specified column does not exist."""
+    # The function should internally handle this or the test should expect None
+    result = two_way_anova_test(sample_data, "Wrong_Column", "Gender", "Employment", "Score_Clean")
+    assert result is None
+
+# Test 5: Updated with more rows to satisfy pingouin's minimum requirement (N>=5)
 def test_non_numeric_data():
-    """Should handle strings in numeric columns via coerce."""
+    """Should handle strings in numeric columns via coerce and have enough data for ANOVA."""
     df = pd.DataFrame({
-        'Gender': ['M', 'M', 'F', 'F'],
-        'Employment': ['Y', 'N', 'Y', 'N'],
-        'Score': ['10', '20', 'invalid', '40']
+        'Gender': ['M', 'M', 'F', 'F', 'M', 'F', 'M'], # 7 rows
+        'Employment': ['Y', 'N', 'Y', 'N', 'Y', 'N', 'Y'],
+        'Score': ['10', '20', 'invalid', '40', '30', '50', '60']
     })
     result = two_way_anova_test(df, "Score", "Gender", "Employment", "Score_Clean")
-    # 'invalid' should become NaN and be dropped, but ANOVA should still run on 3 rows
+    
+    # After dropping 'invalid', we have 6 valid rows. ANOVA requires >= 5.
     assert result is not None
+    assert isinstance(result, pd.DataFrame)

@@ -17,37 +17,47 @@ def two_way_anova_test(df, target_col, IV1, IV2, col_name):
     # 1. Validate input types: Ensure df is a DataFrame and column names are strings
     if isinstance(df, pd.DataFrame) and all(isinstance(i, str) for i in [IV1, IV2, target_col, col_name]):
         
+        # --- FIX FOR TEST 2: Check if columns actually exist before doing anything ---
+        required_cols = [target_col, IV1, IV2]
+        if not all(col in df.columns for col in required_cols):
+            logger.error(f"Missing columns. Required: {required_cols}. Found: {list(df.columns)}")
+            return None
+
         logger.info(f"Starting Two-Way ANOVA: {IV1} and {IV2} predicting {col_name}")
 
         # 2. Data Cleaning: Strip any leading/trailing whitespace from column names
         df.columns = df.columns.str.strip()
 
-        # 3. Target Variable Processing: Safely convert the target column to numeric values
-        # 'coerce' will turn non-numeric values into NaN (Not a Number)
+        # 3. Target Variable Processing: Safely convert to numeric
+        # Note: We create a copy or use .loc to avoid SettingWithCopyWarning if df is a slice
+        df = df.copy() 
         df[col_name] = pd.to_numeric(df[target_col], errors='coerce')
 
-        # 4. Handle Missing Values: Remove rows with NaN in the target or independent variables
+        # 4. Handle Missing Values
         initial_count = len(df)
         df = df.dropna(subset=[col_name, IV1, IV2])
         after_count = len(df)
         
         logger.info(f"Data cleaning complete. Rows before: {initial_count}, Rows after dropna: {after_count}")
 
-        if after_count == 0:
-            logger.error("Error: No data remaining after dropna. Cannot perform ANOVA.")
+        # --- FIX FOR TEST 5: Pingouin requires at least 5 rows to calculate variance ---
+        if after_count < 5:
+            logger.error(f"Error: Not enough data ({after_count} rows) to perform ANOVA. Minimum 5 required.")
             return None
 
-        # 5. Statistical Analysis: Perform Two-Way ANOVA including main effects and interaction
-        # dv = Dependent Variable, between = Independent Variables (Factors)
-        anova_table = pg.anova(dv=col_name, between=[IV1, IV2], data=df)
-
-        # 6. Output Results: Log the ANOVA summary table
-        logger.info("\n" + "="*30 + "\nANOVA TABLE\n" + "="*30 + f"\n{anova_table.to_string()}")
-        
-        return anova_table # Returning the table for further use if needed
+        # 5. Statistical Analysis
+        try:
+            anova_table = pg.anova(dv=col_name, between=[IV1, IV2], data=df)
+            
+            # 6. Output Results
+            logger.info("\n" + "="*30 + "\nANOVA TABLE\n" + "="*30 + f"\n{anova_table.to_string()}")
+            return anova_table 
+            
+        except Exception as e:
+            logger.error(f"An error occurred during ANOVA calculation: {e}")
+            return None
         
     else:
-        # Error handling if input types are incorrect
         logger.error("Error: Wrong variable types. Please ensure df is a DataFrame and names are strings.")
         return None
 
