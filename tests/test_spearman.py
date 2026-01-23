@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import logging
 
-from Statistic_Analysis_for_Binaraziation.spearman_test import spearman_test 
+from Category_realations.spearman_test import spearman_test 
 
 # --- Fixtures ---
 

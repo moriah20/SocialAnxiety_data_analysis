@@ -3,7 +3,7 @@ import pandas as pd
 import logging
 from unittest.mock import patch, MagicMock
 
-from Statistic_Analysis_for_Binaraziation.stat_visualization import plot_spearman_bar_chart
+from Category_realations.stat_visualization import plot_spearman_bar_chart
 
 # --- Fixtures ---
 

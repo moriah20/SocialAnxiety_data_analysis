@@ -7,6 +7,8 @@ from statsmodels.formula.api import ols
 import pingouin as pg
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 import logging
+from Visualization.visualization_saving_decorator import auto_save_plot
+
 
 logger = logging.getLogger(__name__)
 
@@ -47,9 +49,7 @@ def check_effects(main_effect_1, main_effect_2):
     # Return True if all checks pass
     return True
 
-# Assuming logger is already configured in your project
-logger = logging.getLogger(__name__)
-
+@auto_save_plot(output_dir="Visualization") #save and show plot
 def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
     """
     Generates side-by-side vertical bar plots for main effects.
@@ -66,6 +66,7 @@ def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
         try:
             # 1. Create the figure and subplots
             fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+            fig.suptitle(f"Main Effects: {IV1} and {IV2}", fontsize=18)
             logger.info("Figure and axes created successfully.")
 
             # --- PLOT 1: IV1 (e.g., Gender) ---
@@ -95,7 +96,6 @@ def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
             # 2. Final adjustments and display
             plt.tight_layout()
             logger.info("Layout adjusted with tight_layout(). Displaying plot.")
-            plt.show()
 
         except Exception as e:
             logger.error(f"An error occurred during plot generation: {e}", exc_info=True)
@@ -163,6 +163,7 @@ def calculate_interaction(df, col_name, IV1, IV2):
         return None
     
 
+@auto_save_plot(output_dir="Visualization") #save and show plot
 def plot_interaction_bar(df, IV1, IV2, DV):
     """
     Creates a bar-plot interaction graph and adds statistical significance
@@ -225,7 +226,7 @@ def plot_interaction_bar(df, IV1, IV2, DV):
     )
 
     plt.tight_layout()
-    plt.show()
+    #plt.show()
 
     return anova_results
 

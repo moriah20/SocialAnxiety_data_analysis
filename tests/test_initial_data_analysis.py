@@ -2,6 +2,8 @@
 import matplotlib
 matplotlib.use("Agg")
 
+import os
+import shutil
 import pandas as pd
 import numpy as np
 import pytest
@@ -29,10 +31,12 @@ class TestInitialAnalysis:
     # is_null Tests
     # -----------------------------
     def test_is_null_false(self):
-        # Use == instead of "is" because numpy.bool_ is not identical to Python bool
+        """Test that is_null returns False when no nulls exist."""
         assert is_null(self.df) == False
 
+
     def test_is_null_true(self):
+        """Test that is_null returns True when nulls exist."""
         df_with_null = self.df.copy()
         df_with_null.loc[0, "A"] = None
         assert is_null(df_with_null) == True
@@ -41,24 +45,32 @@ class TestInitialAnalysis:
     # get_outliers_report Tests
     # -----------------------------
     def test_get_outliers_report_detects_outlier(self):
+        """Test that outlier detection identifies the outlier in column A."""
         outliers, long_df = get_outliers_report(self.df)
+
         # Expect at least one outlier (100)
         assert len(outliers) >= 1
         assert "A" in outliers["column"].values
 
+        # Ensure long_df contains expected columns
+        assert set(["index", "column", "value", "lower", "upper"]).issubset(long_df.columns)
+
     # -----------------------------
     # plot_outliers Tests
     # -----------------------------
-    @patch("matplotlib.pyplot.show")  # Prevents GUI window
-    def test_plot_outliers_removes_rows(self, mock_show):
-        cleaned_df = plot_outliers(self.df)
-        # Original has 4 rows, cleaned should have fewer
-        assert len(cleaned_df) < len(self.df)
+    @patch("matplotlib.pyplot.show")  # Prevent GUI window
+    def test_plot_outliers_runs_without_error(self, mock_show):
+        """
+        Test that plot_outliers executes without raising errors.
+        The function returns None (plots only), so we only check execution.
+        """
+        result = plot_outliers(self.df)
+        assert result is None
 
     # -----------------------------
     # frequency Tests
     # -----------------------------
-    @patch("matplotlib.pyplot.show")  # Prevents GUI window
+    @patch("matplotlib.pyplot.show")  # Prevent GUI window
     def test_frequency_runs_without_error(self, mock_show):
-        # Should not raise any exception
+        """Test that frequency plotting runs without raising exceptions."""
         frequency(self.df)

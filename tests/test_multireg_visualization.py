@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # Import the functions from your module
 # Replace 'your_module_name' with the actual name of your python file
-from category_realations.stat_visualization import plot_spearman_bar_chart, plot_regression_summary
+from Category_realations.stat_visualization import plot_spearman_bar_chart, plot_regression_summary
 
 # --- Fixtures ---
 
