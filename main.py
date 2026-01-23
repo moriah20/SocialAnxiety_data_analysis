@@ -11,6 +11,7 @@ import pingouin as pg
 import os
 import logging
 from scipy.stats import spearmanr 
+from scipy import stats
 from Initial_Data_Analysis.initial_analysis import (is_null, 
                                                     get_outliers_report, 
                                                     plot_outliers, 
@@ -21,7 +22,7 @@ from Category_realations.spearman_test import spearman_test
 from Category_realations.multiple_linear_regression import run_multiple_regression
 from Category_realations.stat_visualization import (plot_spearman_bar_chart, 
                                                                      plot_regression_summary)
-from Age_Regression.regression import (calculate_age_regression, 
+from Age_Regression.regression import (calculate_regression, 
                                    plot_regression, 
                                    extract_correlation_from_regression, 
                                    interpret_regression)
@@ -102,7 +103,7 @@ def main():
 
     # --- Step 7: Age-Based Regression Analysis ---
     logger.info("Running linear regression for Age vs Anxiety Level...")
-    reg_results = calculate_age_regression(df, dv, "Age")
+    reg_results =calculate_regression(df, dv, "Age")
     plot_regression(df, "Age", dv)
     
     # Extract statistics using imported regression logic

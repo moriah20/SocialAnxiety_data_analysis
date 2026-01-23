@@ -6,9 +6,27 @@ logger = logging.getLogger(__name__)
 
 def apply_binary(df, guidelines):
     """
-    Processes binary and numeric transformations based on health guidelines.
+    Transforms raw columns into binary format (0/1) based on mapping and numeric range guidelines.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The source dataframe containing the raw data to be processed.
+    guidelines : pd.DataFrame
+        A configuration dataframe with the following required columns:
+        - 'Variable': Name of the column in `df` to process.
+        - 'Type': The logic to apply ('binary' or 'numeric').
+        - 'Condition': If 'no', binary values are reversed (0 becomes 1 and vice versa).
+        - 'Min' / 'Max': The inclusive range used to binarize 'numeric' types.
+
+    Returns
+    -------
+    pd.DataFrame
+        A filtered dataframe containing only the variables listed in the guidelines, 
+        where all values have been converted to integers (0 or 1).
+
     """
-    # Define constants to avoid hard-coding
+    # Define constants 
     BINARY_TYPE = "binary"
     NUMERIC_TYPE = "numeric"
     MAPPING = {"yes": 1, "no": 0}
@@ -55,11 +73,11 @@ def apply_binary(df, guidelines):
         return processed_df[target_cols]
 
     except (KeyError, ValueError) as e:
-        # Log specific data issues [cite: 45]
+        # Log specific data issues 
         logger.error(f"Data Validation Error: {e}")
         raise #stop run
     except Exception as e:
-        # Log any other unexpected system errors [cite: 44]
+        # Log any other unexpected system errors
         logger.exception("Unexpected error during transformation stage.")
         raise
     
