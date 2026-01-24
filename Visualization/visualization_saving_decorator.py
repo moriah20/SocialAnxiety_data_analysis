@@ -66,7 +66,7 @@ def auto_save_plot(output_dir):
                     logger.info(f"Saved figure: {full_path}")
 
                 # Show all figures
-                plt.show()
+                #plt.show()
 
             except Exception as e:
                 logger.error(f"Error while saving plot: {e}", exc_info=True)
