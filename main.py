@@ -30,7 +30,7 @@ from Occupation_Gender_Two_Way_ANOVA.interctions import (main_effects,
                                        main_effects_plots, 
                                        calculate_interaction, 
                                        check_effects,
-                                       plot_interaction,run_post_hoc_tukey)
+                                       plot_interaction_bar,run_post_hoc_tukey)
 
 def main():
     """
@@ -96,8 +96,8 @@ def main():
     main_effects_plots(m1_effect, m2_effect, iv1, iv2, dv)
 
     # Interaction analysis
-    calculate_interaction(df, dv, iv1, iv2)
-    print(plot_interaction(df, iv1, iv2,dv))
+    anova_results,clean_df=calculate_interaction(df, dv, iv1, iv2)
+    print(plot_interaction_bar(anova_results,clean_df, iv1, iv2,dv))
     run_post_hoc_tukey(df,dv,iv1,iv2)
     
 

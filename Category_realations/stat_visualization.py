@@ -2,10 +2,13 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 import logging
+from Visualization.visualization_saving_decorator import auto_save_plot
+
 
 # Configure logger for the current module
 logger = logging.getLogger(__name__)
 
+@auto_save_plot(output_dir="Visualization") #save and show plot
 def plot_spearman_bar_chart(spearman_df):
     """
     Plots a clean bar chart of Spearman correlation coefficients.
@@ -70,13 +73,14 @@ def plot_spearman_bar_chart(spearman_df):
         
         # Display the plot
         logger.info("Displaying Spearman plot window.")
-        plt.show()
+        #plt.show()
 
     except Exception as e:
         logger.exception("An error occurred while plotting the Spearman bar chart.")
         raise e
 
 
+@auto_save_plot(output_dir="Visualization") #save and show plot
 def plot_regression_summary(model):
     """
     Visualizes the regression coefficients with their 95% Confidence Intervals.
@@ -144,7 +148,7 @@ def plot_regression_summary(model):
         plt.tight_layout()
         
         logger.info("Displaying Regression plot window.")
-        plt.show()
+        #plt.show()
 
     except Exception as e:
         logger.exception("An error occurred while plotting the Regression summary.")

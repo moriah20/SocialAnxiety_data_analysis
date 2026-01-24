@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import logging
 
-from Statistic_Analysis_for_Binaraziation.multiple_linear_regression import run_multiple_regression
+from Category_realations.multiple_linear_regression import run_multiple_regression
 
 # --- Fixtures ---
 

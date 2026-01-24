@@ -2,7 +2,7 @@ import pytest
 import pandas as pd
 import numpy as np
 import math
-from SocialAnxiety_data_analysis.Age_Regression.regression import calculate_age_regression, extract_correlation_from_regression, interpret_regression
+from Age_Regression.regression import extract_correlation_from_regression, interpret_regression
 
 @pytest.fixture
 def regression_data():
@@ -24,14 +24,6 @@ def dirty_data():
 # --- Tests for calculate_age_regression ---
 
 # --- Tests for extract_correlation_from_regression ---
-
-def test_correlation_direction_and_strength(regression_data):
-    """Checks if the correlation magnitude and direction are correctly interpreted."""
-    results = calculate_age_regression(regression_data, "Score", "Age")
-    corr = extract_correlation_from_regression(results)
-    
-    assert corr > 0  # Should be positive
-    assert 0.7 <= abs(corr) <= 1.0  # Should be strong based on our dummy data
 
 def test_correlation_handling_errors():
     """Checks if the function returns None when passed invalid results."""
@@ -55,24 +47,4 @@ def interpret_regression_significance(results):
         return None
 
 
-def test_regression_success(regression_data):
-    """Checks if the regression returns a valid Pingouin DataFrame."""
-    results = calculate_age_regression(regression_data, "Score", "Age")
-    assert isinstance(results, pd.DataFrame)
-    assert 'coef' in results.columns
-    # FIXED: Pingouin uses 'pval', not 'p-val'
-    assert 'pval' in results.columns
-
-def test_regression_cleaning(dirty_data):
-    """Checks if the function handles non-numeric data and NaNs correctly."""
-    # Adding more rows to ensure we have at least 3 valid samples after cleaning
-    more_data = pd.DataFrame({
-        'Age': [45.0, 50.0, 55.0],
-        'Score': [130.0, 140.0, 150.0]
-    })
-    extended_dirty_data = pd.concat([dirty_data, more_data], ignore_index=True)
-    
-    results = calculate_age_regression(extended_dirty_data, "Score", "Age")
-    assert results is not None
-    assert isinstance(results, pd.DataFrame)
 

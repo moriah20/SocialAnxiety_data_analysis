@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 import numpy as np
-from Two_Way_ANOVA.interctions import main_effects, check_effects, calculate_interaction # Replace 'main' with your filename
+from Occupation_Gender_Two_Way_ANOVA.interctions import main_effects, check_effects, calculate_interaction # Replace 'main' with your filename
 
 @pytest.fixture
 def anova_data():

@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import math
 import logging
-import os
 from scipy import stats
+from Visualization.visualization_saving_decorator import auto_save_plot
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ def calculate_regression(df, target_col, IV):
         logger.error("Invalid input types. Please check your DataFrame and column names.")
         return None
 
-
+@auto_save_plot(output_dir="Visualization") #save and show plot
 def plot_regression(df, predictor_col, outcome_col):
     """
     Creates a scatter plot with a linear regression line and displays the equation.
@@ -87,7 +87,7 @@ def plot_regression(df, predictor_col, outcome_col):
         plt.ylabel(f'{outcome_col}', fontsize=12)
         plt.grid(True, linestyle='--', alpha=0.6)
         
-        plt.show()
+        #plt.show()
         logger.info("Plot displayed successfully with equation.")
     else:
         logger.error(f"Column '{predictor_col}' or '{outcome_col}' not found.")

@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import logging
+from Visualization.visualization_saving_decorator import auto_save_plot
+
 
 # -----------------------------
 # Logger Configuration
@@ -101,7 +103,7 @@ def get_outliers_report(df):
         logger.error(f"Error in get_outliers_report: {e}")
         raise
 
-
+@auto_save_plot(output_dir="Visualization") #save and show plot
 # -----------------------------
 # Outlier Plotting
 # -----------------------------
@@ -141,7 +143,7 @@ def plot_outliers(df):
             g.set_xticklabels(rotation=45)
             g.fig.suptitle(title, y=1.05, fontsize=16)
             plt.tight_layout()
-            plt.show()
+            plt.title(title)
 
         # Draw plots
         draw(long_df_raw, 'Raw Data (With Outliers)')
@@ -149,14 +151,14 @@ def plot_outliers(df):
 
         # Return cleaned wide-format dataframe
         idx_to_drop = outliers_df['index']
-        logger.info(f"Removing {len(idx_to_drop)} rows due to outliers.")
-        return df.drop(index=idx_to_drop)
+        logger.info("leaving outliers in data.")
+        return None
 
     except Exception as e:
         logger.error(f"Error in plot_outliers: {e}")
         raise
 
-
+@auto_save_plot(output_dir="Visualization") #save and show plot
 # -----------------------------
 # Frequency Plot for Categorical Variables
 # -----------------------------
@@ -194,8 +196,7 @@ def frequency(df):
 
         g.set_xticklabels(rotation=45)
         g.fig.subplots_adjust(hspace=1.2, bottom=0.2, top=0.9, left=0.1, right=0.9)
-        plt.show()
-
+        g.fig.suptitle("Frequency plots", y=1.05, fontsize=16)
         logger.info("Frequency plots generated successfully.")
 
     except Exception as e:

@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from category_realations.Categorization import categorization
+from Category_realations.Categorization import categorization
 
 
 class TestCategorization:
