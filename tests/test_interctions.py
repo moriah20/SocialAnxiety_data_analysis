@@ -1,7 +1,8 @@
 import pytest
 import pandas as pd
 import numpy as np
-from Occupation_Gender_Two_Way_ANOVA.interctions import main_effects, check_effects, calculate_interaction # Replace 'main' with your filename
+from statsmodels.stats.multicomp import MultiComparison
+from Occupation_Gender_Two_Way_ANOVA.interctions import  calculate_interaction,plot_interaction_bar,run_post_hoc_tukey
 
 @pytest.fixture
 def anova_data():
@@ -11,39 +12,6 @@ def anova_data():
         'Treatment': ['GroupA', 'GroupB', 'GroupA', 'GroupB'] * 5,
         'Score': [80, 70, 85, 75] * 5
     })
-
-# --- Tests for main_effects ---
-
-def test_main_effects_calculation(anova_data):
-    """Verifies that means are calculated correctly for both IVs."""
-    m1, m2 = main_effects(anova_data, 'Gender', 'Treatment', 'Score')
-    
-    # Check if results are Series
-    assert isinstance(m1, pd.Series)
-    assert isinstance(m2, pd.Series)
-    
-    # Check specific mean calculation (Female mean should be 80 in this dummy data)
-    assert m1['Female'] == 80.0
-    assert m2['GroupA'] == 82.5
-
-def test_main_effects_invalid_input():
-    """Should return (None, None) if input types are wrong."""
-    m1, m2 = main_effects("Not a DF", 'IV1', 'IV2', 'DV')
-    assert m1 is None and m2 is None
-
-# --- Tests for check_effects (The Validator) ---
-
-def test_check_effects_valid(anova_data):
-    """Should return True for valid pandas Series."""
-    s1 = anova_data.groupby('Gender')['Score'].mean()
-    s2 = anova_data.groupby('Treatment')['Score'].mean()
-    assert check_effects(s1, s2) is True
-
-def test_check_effects_non_numeric():
-    """Should return False if Series contains non-numeric data."""
-    s1 = pd.Series(['a', 'b'])
-    s2 = pd.Series([1, 2])
-    assert check_effects(s1, s2) is False
 
 # --- Tests for calculate_interaction (The ANOVA wrapper) ---
 
@@ -55,8 +23,73 @@ def test_calculate_interaction_success(anova_data):
     assert 'p-unc' in results.columns
 
 
-def test_calculate_interaction_error_handling(anova_data):
-    """Should return None if column names are incorrect."""
-    # Ensure this returns None instead of raising KeyError
-    results = calculate_interaction(anova_data, 'Wrong_Column', 'Gender', 'Treatment')
-    assert results is None
+def test_calculate_interaction_error_handling():
+    """
+    Tests if the function handles invalid input types.
+    Expected behavior: Returns (None, None) for failed calculation.
+    """
+    # Passing a string instead of a DataFrame to trigger error handling
+    results = calculate_interaction("Not a DataFrame", 'IV1', 'IV2', 'DV')
+    
+    # Updated: Checking for a tuple of two Nones
+    assert results == (None, None)
+
+
+def test_plot_interaction_runs_without_error(sample_anova_results, sample_df):
+    """Checks if the plotting function completes without crashing."""
+    try:
+        plot_interaction_bar(sample_anova_results, sample_df, 'Gender', 'Occupation', 'Anxiety')
+        plt.close('all') # Cleanup
+    except Exception as e:
+        pytest.fail(f"Plotting function raised an error: {e}")
+
+import pytest
+import pandas as pd
+
+# Ensure you import your function correctly
+# from your_module import run_post_hoc_tukey
+def tukey_data():
+    """Generates synthetic data for Tukey HSD testing."""
+    return pd.DataFrame({
+        'Anxiety_Level': [3.0, 3.2, 5.0, 5.2, 2.0, 2.1, 4.0, 4.3],
+        'Gender': ['Male', 'Male', 'Female', 'Female', 'Male', 'Male', 'Female', 'Female'],
+        'Occupation': ['Doctor', 'Doctor', 'Doctor', 'Doctor', 'Artist', 'Artist', 'Artist', 'Artist']
+    })
+
+def test_run_post_hoc_tukey_structure(tukey_data):
+    """
+    Verifies that the function returns a dictionary where keys are IV2 levels
+    and values are Tukey summary tables.
+    """
+    results = run_post_hoc_tukey(tukey_data, 'Anxiety_Level', 'Gender', 'Occupation')
+    
+    # 1. Check if the output is a dictionary
+    assert isinstance(results, dict)
+    
+    # 2. Check if all levels of IV2 (Occupation) are present in the keys
+    expected_levels = set(tukey_data['Occupation'].unique())
+    assert set(results.keys()) == expected_levels
+
+def test_run_post_hoc_tukey_execution(tukey_data):
+    """
+    Smoke test to ensure the Tukey analysis completes without errors
+    and produces summary objects.
+    """
+    try:
+        results = run_post_hoc_tukey(tukey_data, 'Anxiety_Level', 'Gender', 'Occupation')
+        # Check if the summary table for a specific level is not empty
+        assert "Doctor" in results
+        assert results["Doctor"] is not None
+    except Exception as e:
+        pytest.fail(f"Tukey Post-Hoc failed unexpectedly: {e}")
+
+def test_run_post_hoc_tukey_error_handling():
+    """
+    Tests if the function handles empty DataFrames gracefully.
+    Expected behavior: Returns an empty dictionary {} instead of None.
+    """
+    empty_df = pd.DataFrame(columns=['Anxiety_Level', 'Gender', 'Occupation'])
+    results = run_post_hoc_tukey(empty_df, 'Anxiety_Level', 'Gender', 'Occupation')
+    
+    # Updated: Checking for an empty dictionary
+    assert results == {}
