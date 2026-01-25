@@ -1,0 +1,14 @@
+# Python bytecode (the pycache you saw)
+__pycache__/
+*.pyc
+
+# Local data (optional: if you don't want to upload huge data files)
+# data/cleaned_data.csv
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
