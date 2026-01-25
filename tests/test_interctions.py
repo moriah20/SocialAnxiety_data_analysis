@@ -1,27 +1,57 @@
+
 import pytest
 import pandas as pd
-import numpy as np
-from statsmodels.stats.multicomp import MultiComparison
-from Occupation_Gender_Two_Way_ANOVA.interctions import  calculate_interaction,plot_interaction_bar,run_post_hoc_tukey
+import matplotlib.pyplot as plt
+from Occupation_Gender_Two_Way_ANOVA.interctions import calculate_interaction, plot_interaction_bar, run_post_hoc_tukey
 
 @pytest.fixture
-def anova_data():
-    """Generates a valid dummy dataset for ANOVA testing."""
+def interaction_data():
+    """
+    Generates a synthetic dataset designed to guarantee a statistical interaction.
+    Logic: 
+    - Males perform better in Treatment A than B.
+    - Females perform better in Treatment B than A.
+    This 'cross-over' effect is what creates the interaction.
+    """
     return pd.DataFrame({
-        'Gender': ['Male', 'Male', 'Female', 'Female'] * 5,
-        'Treatment': ['GroupA', 'GroupB', 'GroupA', 'GroupB'] * 5,
-        'Score': [80, 70, 85, 75] * 5
+        'Gender': ['Male']*10 + ['Female']*10,
+        'Treatment': (['A']*5 + ['B']*5) * 2,
+        'Score': [
+            90, 92, 88, 91, 89,  # Male A: High scores
+            20, 22, 18, 21, 19,  # Male B: Low scores
+            15, 17, 14, 16, 15,  # Female A: Low scores
+            85, 87, 84, 86, 85   # Female B: High scores
+        ]
     })
 
+def test_calculate_interaction_success(interaction_data):
+    """
+    Tests if the interaction calculation returns valid results.
+    Checks that both the p-value and the ANOVA model are not None.
+    """
+    # Unpack the results from the function
+    p_val, model = calculate_interaction(interaction_data, 'Gender', 'Treatment', 'Score')
+    
+    # Assertions to verify successful calculation
+    assert p_val is not None, "p-value should not be None"
+    assert model is not None, "The statistical model should not be None"
+
+def test_plot_interaction_runs_without_error(interaction_data):
+    """
+    Smoke test: Ensures the plotting function executes without crashing.
+    Uses a try-except block to capture any runtime plotting errors.
+    """
+    try:
+        plot_interaction_bar(interaction_data, 'Gender', 'Treatment', 'Score')
+        # Close all figures to prevent memory issues and popup windows during tests
+        plt.close('all') 
+    except Exception as e:
+        pytest.fail(f"Plotting function crashed. Error: {e}")
+
+
+
+
 # --- Tests for calculate_interaction (The ANOVA wrapper) ---
-
-def test_calculate_interaction_success(anova_data):
-    """Verifies that pg.anova is called and returns a results table."""
-    results = calculate_interaction(anova_data, 'Score', 'Gender', 'Treatment')
-    assert isinstance(results, pd.DataFrame)
-    assert 'Source' in results.columns
-    assert 'p-unc' in results.columns
-
 
 def test_calculate_interaction_error_handling():
     """
@@ -35,16 +65,7 @@ def test_calculate_interaction_error_handling():
     assert results == (None, None)
 
 
-def test_plot_interaction_runs_without_error(sample_anova_results, sample_df):
-    """Checks if the plotting function completes without crashing."""
-    try:
-        plot_interaction_bar(sample_anova_results, sample_df, 'Gender', 'Occupation', 'Anxiety')
-        plt.close('all') # Cleanup
-    except Exception as e:
-        pytest.fail(f"Plotting function raised an error: {e}")
 
-import pytest
-import pandas as pd
 
 # Ensure you import your function correctly
 # from your_module import run_post_hoc_tukey
@@ -70,19 +91,17 @@ def test_run_post_hoc_tukey_structure(tukey_data):
     expected_levels = set(tukey_data['Occupation'].unique())
     assert set(results.keys()) == expected_levels
 
-def test_run_post_hoc_tukey_execution(tukey_data):
-    """
-    Smoke test to ensure the Tukey analysis completes without errors
-    and produces summary objects.
-    """
-    try:
-        results = run_post_hoc_tukey(tukey_data, 'Anxiety_Level', 'Gender', 'Occupation')
-        # Check if the summary table for a specific level is not empty
-        assert "Doctor" in results
-        assert results["Doctor"] is not None
-    except Exception as e:
-        pytest.fail(f"Tukey Post-Hoc failed unexpectedly: {e}")
 
+def test_run_post_hoc_tukey_execution(interaction_data):
+    """
+    Tests if the Tukey post-hoc analysis executes correctly on interaction data.
+    """
+    # Running the post-hoc analysis
+    results = run_post_hoc_tukey(interaction_data, 'Score', 'Gender', 'Treatment')
+    
+    # Verify that the results are returned (usually as a dictionary or DataFrame)
+    assert results is not None
+    assert len(results) > 0, "Tukey results should not be empty for this dataset"
 def test_run_post_hoc_tukey_error_handling():
     """
     Tests if the function handles empty DataFrames gracefully.

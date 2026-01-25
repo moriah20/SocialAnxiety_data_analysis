@@ -33,10 +33,6 @@ def spearman_test(scores_df, original_df, target_col="Anxiety Level (1-10)"):
         # Log the initiation of the calculation against the specific target
         logger.info(f"Calculating correlation against target: '{target_col}'")
         
-        # Print table header to the console for visual confirmation
-        print(f"{'Category':<35} | {'Spearman Coeff':<15} | {'P-value':<15}")
-        print("-" * 80)
-
         # Iterate over all columns (categories) in the scores DataFrame
         for col in scores_df.columns:
             # Perform Spearman correlation calculation
@@ -49,12 +45,18 @@ def spearman_test(scores_df, original_df, target_col="Anxiety Level (1-10)"):
                 'P-value': p_val
             })
             
-            # Print result to console and log as debug info
-            print(f"{col:<35} | {corr:.4f}{' ':>9} | {p_val:.4e}")
-            logger.debug(f"Category: {col} | Coeff: {corr:.4f} | P-value: {p_val:.4e}")
+            # Log as debug info instead of printing
+            logger.debug(f"Finished calculating for Category: {col} | Coeff: {corr:.4f} | P-value: {p_val:.4e}")
+
+        # Create the results DataFrame
+        results_df = pd.DataFrame(results)
+
+        # Log the final table nicely formatted using to_string()
+        # This replaces the manual print loop and keeps the log clean
+        logger.info(f"Spearman Correlation Results:\n{results_df.to_string(index=False)}")
 
         logger.info("Spearman Test completed successfully.")
-        return pd.DataFrame(results)
+        return results_df
 
     except Exception as e:
         # Log the full stack trace if an error occurs

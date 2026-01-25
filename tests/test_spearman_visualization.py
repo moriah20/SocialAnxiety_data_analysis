@@ -1,88 +1,73 @@
 import pytest
 import pandas as pd
 import logging
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from Category_realations.stat_visualization import plot_spearman_bar_chart
 
 # --- Fixtures ---
 
 @pytest.fixture
-def valid_spearman_df():
+def mock_spearman_df():
     """
-    Creates a valid dummy DataFrame for testing the plot.
-    Includes positive and negative values to test the text positioning logic.
+    Creates a dummy DataFrame representing Spearman correlation results.
+    Used specifically for the Spearman bar chart tests.
     """
     data = {
         'Category': ['Lifestyle', 'Health', 'History'],
-        'Spearman Coeff': [0.5, -0.3, 0.1]
+        'Spearman Coeff': [0.85, -0.4, 0.1]
     }
     return pd.DataFrame(data)
 
 # --- Tests ---
 
-@patch('matplotlib.pyplot.show')
-@patch('seaborn.barplot')
-def test_plot_spearman_success(mock_barplot, mock_show, valid_spearman_df, caplog):
+@patch("Category_realations.stat_visualization.plt") 
+@patch("Category_realations.stat_visualization.sns")
+def test_plot_spearman_bar_chart_success(mock_sns, mock_plt, mock_spearman_df):
     """
-    Test the 'Happy Path':
-    1. Verifies that seaborn.barplot is called (the graph is created).
-    2. Verifies that plt.show() is called (the window attempts to open).
-    3. Verifies that the success log message is recorded.
-    
-    Note: We mock 'show' and 'barplot' to prevent actual windows from popping up.
+    Verifies that the Spearman chart plotting function calls the correct plotting methods.
     """
-    # 1. Run the function
-    with caplog.at_level(logging.INFO):
-        plot_spearman_bar_chart(valid_spearman_df)
+    # Run the function
+    plot_spearman_bar_chart(mock_spearman_df)
     
-    # 2. Verify that seaborn tried to plot data
-    # We check if it was called at least once
-    mock_barplot.assert_called_once()
+    # 1. Assert that a figure was created
+    mock_plt.figure.assert_called_once()
     
-    # 3. Verify that the function tried to display the plot
-    mock_show.assert_called_once()
+    # 2. Assert that seaborn barplot was called with correct data
+    mock_sns.barplot.assert_called_once()
     
-    # 4. Verify logging
-    assert "Generating Spearman correlation bar chart..." in caplog.text
-    assert "Displaying Spearman plot window." in caplog.text
+    # Check arguments passed to barplot
+    call_args = mock_sns.barplot.call_args[1] # Get keyword arguments
+    assert call_args['x'] == 'Category'
+    assert call_args['y'] == 'Spearman Coeff'
+    
+    # 3. Assert title and labels were set
+    mock_plt.title.assert_called()
+    mock_plt.xlabel.assert_called_with('Category', fontsize=12)
 
-
-@patch('matplotlib.pyplot.show')
-def test_plot_spearman_empty_df(mock_show, caplog):
+def test_plot_spearman_empty_df(caplog):
     """
-    Test the 'Edge Case': Empty DataFrame.
-    The function should log a warning and return WITHOUT attempting to plot.
+    Verifies that the function handles empty DataFrames gracefully without crashing.
     """
-    # 1. Create an empty DataFrame
-    empty_df = pd.DataFrame()
+    empty_df = pd.DataFrame(columns=['Category', 'Spearman Coeff'])
     
-    # 2. Run the function
-    with caplog.at_level(logging.WARNING):
-        plot_spearman_bar_chart(empty_df)
+    # Run function
+    plot_spearman_bar_chart(empty_df)
     
-    # 3. Verify the Warning log
+    # Check if a warning was logged
     assert "Spearman DataFrame is empty. Skipping plot." in caplog.text
-    
-    # 4. Verify that plt.show() was NOT called
-    mock_show.assert_not_called()
 
-
-@patch('seaborn.barplot')
-def test_plot_spearman_error_handling(mock_barplot, valid_spearman_df, caplog):
+def test_spearman_plot_error_handling(mock_spearman_df, caplog):
     """
-    Test Exception Handling:
-    We deliberately force seaborn to crash to ensure the function catches the error,
-    logs it properly, and re-raises it.
+    Verifies that exceptions during plotting are caught and logged.
     """
-    # 1. Configure the mock to raise an error when called
-    mock_barplot.side_effect = Exception("Simulated Plotting Error")
-    
-    # 2. Run the function and expect it to fail
-    with pytest.raises(Exception, match="Simulated Plotting Error"):
-        plot_spearman_bar_chart(valid_spearman_df)
+    # We patch plt to raise an exception when 'figure' is called
+    with patch("Category_realations.stat_visualization.plt") as mock_plt:
+        mock_plt.figure.side_effect = RuntimeError("Plotting crashed!")
         
-    # 3. Verify that the exception was logged with traceback
-    assert "An error occurred while plotting" in caplog.text
-    # Check if the log level is ERROR
-    assert any(record.levelname == "ERROR" for record in caplog.records)
+        # Expect the function to raise the error eventually
+        with pytest.raises(RuntimeError):
+            plot_spearman_bar_chart(mock_spearman_df)
+            
+        # Verify the error was logged before re-raising
+        assert "An error occurred while plotting" in caplog.text

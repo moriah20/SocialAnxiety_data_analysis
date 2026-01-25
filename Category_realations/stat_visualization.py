@@ -73,7 +73,6 @@ def plot_spearman_bar_chart(spearman_df):
         
         # Display the plot
         logger.info("Displaying Spearman plot window.")
-        #plt.show()
 
     except Exception as e:
         logger.exception("An error occurred while plotting the Spearman bar chart.")
@@ -148,7 +147,6 @@ def plot_regression_summary(model):
         plt.tight_layout()
         
         logger.info("Displaying Regression plot window.")
-        #plt.show()
 
     except Exception as e:
         logger.exception("An error occurred while plotting the Regression summary.")
