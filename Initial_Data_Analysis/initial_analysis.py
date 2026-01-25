@@ -34,8 +34,7 @@ def is_null(df):
         null_count = df.isnull().sum(axis=0)
         has_nulls = null_count.sum() != 0
         logger.info(f"Null check completed. Contains nulls: {has_nulls}")
-        return has_nulls
-
+        return bool(has_nulls)
     except Exception as e:
         logger.error(f"Error in is_null: {e}")
         raise

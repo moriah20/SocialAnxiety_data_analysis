@@ -5,40 +5,42 @@ import matplotlib.pyplot as plt
 
 logger = logging.getLogger(__name__)
 
+
 def auto_save_plot(output_dir):
     """
-    Decorator that automatically saves ALL matplotlib figures created inside the
-    wrapped function. It supports:
+    Decorator that automatically saves all matplotlib figures created inside the
+    wrapped function. Supports:
         - Multiple figures
         - FacetGrid objects
-        - Suptitles
-        - Axes titles
-    The wrapped function does NOT need to return anything.
+        - Suptitles and axes titles
+    The wrapped function may return a value, and this decorator will preserve it.
     """
 
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
+            # Close any previously open figures to avoid cross-contamination
+            plt.close('all')
+
             try:
-                # Close previous figures
-                plt.close('all')
+                # Execute the wrapped function and capture its return value
+                result = func(*args, **kwargs)
 
-                # Run the plotting function
-                func(*args, **kwargs)
-
-                # Get ALL open figures
-                figures = list(map(plt.figure, plt.get_fignums()))
+                # Collect all figures created during execution
+                figure_numbers = plt.get_fignums()
+                figures = [plt.figure(num) for num in figure_numbers]
 
                 if not figures:
-                    logger.warning("No figures were created.")
-                    return
+                    logger.warning(
+                        f"No figures were generated inside function '{func.__name__}'."
+                    )
+                    return result
 
-                # Ensure directory exists
+                # Ensure output directory exists
                 os.makedirs(output_dir, exist_ok=True)
 
                 for i, fig in enumerate(figures, start=1):
-
-                    # --- Extract title ---
+                    # Determine a meaningful title for the saved file
                     title = ""
 
                     # 1. Try suptitle
@@ -49,11 +51,11 @@ def auto_save_plot(output_dir):
                     if not title and fig.axes:
                         title = fig.axes[0].get_title()
 
-                    # 3. Fallback
+                    # 3. Fallback title
                     if not title:
-                        title = f"figure_{i}"
+                        title = f"{func.__name__}_figure_{i}"
 
-                    # Clean title for filename
+                    # Sanitize title for filesystem compatibility
                     safe_title = "".join(
                         c for c in title if c.isalnum() or c in (' ', '_', '-')
                     ).rstrip()
@@ -61,15 +63,17 @@ def auto_save_plot(output_dir):
                     filename = f"{safe_title}.png"
                     full_path = os.path.join(output_dir, filename)
 
-                    # Save figure
+                    # Save the figure
                     fig.savefig(full_path)
-                    logger.info(f"Saved figure: {full_path}")
+                    logger.info(f"Saved figure to: {full_path}")
 
-                # Show all figures
-                #plt.show()
+                return result
 
             except Exception as e:
-                logger.error(f"Error while saving plot: {e}", exc_info=True)
+                logger.error(
+                    f"Error occurred while executing or saving plots in '{func.__name__}': {e}",
+                    exc_info=True
+                )
                 raise
 
         return wrapper

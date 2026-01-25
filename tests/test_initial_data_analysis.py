@@ -1,12 +1,6 @@
-# Use a non-GUI backend so matplotlib won't try to open windows during tests
-import matplotlib
-matplotlib.use("Agg")
-
-import os
-import shutil
+import pytest
 import pandas as pd
 import numpy as np
-import pytest
 from unittest.mock import patch
 
 from Initial_Data_Analysis.initial_analysis import (
@@ -17,60 +11,102 @@ from Initial_Data_Analysis.initial_analysis import (
 )
 
 
-class TestInitialAnalysis:
-
-    def setup_method(self):
-        """Create sample data for all tests."""
-        self.df = pd.DataFrame({
-            "A": [1, 2, 3, 100],   # 100 is an outlier
-            "B": [5, 6, 7, 8],
-            "C": ["yes", "no", "yes", "no"]
-        })
-
-    # -----------------------------
-    # is_null Tests
-    # -----------------------------
-    def test_is_null_false(self):
-        """Test that is_null returns False when no nulls exist."""
-        assert is_null(self.df) == False
+# -----------------------------
+# Fixtures
+# -----------------------------
+@pytest.fixture
+def df_numeric():
+    return pd.DataFrame({
+        "A": [1, 2, 3, 100],   # Outlier
+        "B": [10, 11, 12, 13]
+    })
 
 
-    def test_is_null_true(self):
-        """Test that is_null returns True when nulls exist."""
-        df_with_null = self.df.copy()
-        df_with_null.loc[0, "A"] = None
-        assert is_null(df_with_null) == True
+@pytest.fixture
+def df_with_nulls():
+    return pd.DataFrame({
+        "A": [1, None, 3],
+        "B": [4, 5, 6]
+    })
 
-    # -----------------------------
-    # get_outliers_report Tests
-    # -----------------------------
-    def test_get_outliers_report_detects_outlier(self):
-        """Test that outlier detection identifies the outlier in column A."""
-        outliers, long_df = get_outliers_report(self.df)
 
-        # Expect at least one outlier (100)
-        assert len(outliers) >= 1
-        assert "A" in outliers["column"].values
+@pytest.fixture
+def df_categorical():
+    return pd.DataFrame({
+        "Color": ["Red", "Blue", "Red", "Green"],
+        "Type": ["A", "B", "A", "C"]
+    })
 
-        # Ensure long_df contains expected columns
-        assert set(["index", "column", "value", "lower", "upper"]).issubset(long_df.columns)
 
-    # -----------------------------
-    # plot_outliers Tests
-    # -----------------------------
-    @patch("matplotlib.pyplot.show")  # Prevent GUI window
-    def test_plot_outliers_runs_without_error(self, mock_show):
-        """
-        Test that plot_outliers executes without raising errors.
-        The function returns None (plots only), so we only check execution.
-        """
-        result = plot_outliers(self.df)
-        assert result is None
+# -----------------------------
+# Tests for is_null
+# -----------------------------
+def test_is_null_true(df_with_nulls):
+    assert is_null(df_with_nulls) is True
 
-    # -----------------------------
-    # frequency Tests
-    # -----------------------------
-    @patch("matplotlib.pyplot.show")  # Prevent GUI window
-    def test_frequency_runs_without_error(self, mock_show):
-        """Test that frequency plotting runs without raising exceptions."""
-        frequency(self.df)
+
+def test_is_null_false(df_numeric):
+    assert is_null(df_numeric) is False
+
+
+def test_is_null_invalid_input():
+    with pytest.raises(Exception):
+        is_null(None)
+
+
+# -----------------------------
+# Tests for get_outliers_report
+# -----------------------------
+def test_get_outliers_report_returns_correct_types(df_numeric):
+    outliers, long_df, should_remove = get_outliers_report(df_numeric)
+
+    assert isinstance(outliers, pd.DataFrame)
+    assert isinstance(long_df, pd.DataFrame)
+    assert isinstance(should_remove, bool)
+
+
+def test_get_outliers_report_detects_outliers(df_numeric):
+    outliers, _, _ = get_outliers_report(df_numeric)
+    assert len(outliers) > 0
+    assert "reason" in outliers.columns
+
+
+def test_get_outliers_report_invalid_input():
+    with pytest.raises(TypeError):
+        get_outliers_report(None)
+
+
+def test_get_outliers_report_no_numeric_columns():
+    df = pd.DataFrame({"A": ["x", "y", "z"]})
+    with pytest.raises(ValueError):
+        get_outliers_report(df)
+
+# -----------------------------
+# Tests for plot_outliers
+# -----------------------------
+@patch("matplotlib.pyplot.show")  # Prevent actual plotting
+def test_plot_outliers_returns_df(mock_show, df_numeric):
+    cleaned_df = plot_outliers(df_numeric)
+    assert isinstance(cleaned_df, pd.DataFrame)
+
+
+@patch("matplotlib.pyplot.show")
+def test_plot_outliers_invalid_input(mock_show):
+    with pytest.raises(TypeError):
+        plot_outliers("not a df")
+
+
+# -----------------------------
+# Tests for frequency
+# -----------------------------
+@patch("matplotlib.pyplot.show")
+def test_frequency_valid(mock_show, df_categorical):
+    # Should not raise
+    frequency(df_categorical)
+
+
+@patch("matplotlib.pyplot.show")
+def test_frequency_no_categorical(mock_show):
+    df = pd.DataFrame({"A": [1, 2, 3]})
+    with pytest.raises(ValueError):
+        frequency(df)
