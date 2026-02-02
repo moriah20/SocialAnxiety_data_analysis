@@ -1,268 +1,126 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-2026-01-24 20:51:20,621 - __main__ - INFO - The application has started.
-2026-01-24 20:51:20,782 - __main__ - INFO - Data sources loaded successfully.
-2026-01-24 20:51:20,782 - __main__ - INFO - Starting initial analysis (nulls, outliers, frequencies)...
-2026-01-24 20:51:20,785 - Initial_Data_Analysis.initial_analysis - INFO - Null check completed. Contains nulls: False
-2026-01-24 20:51:20,804 - Initial_Data_Analysis.initial_analysis - INFO - Outlier detection completed. Found 666 outliers.
-2026-01-24 20:51:22,657 - Initial_Data_Analysis.initial_analysis - INFO - leaving outliers in data.
-2026-01-24 20:51:22,809 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Raw Data With Outliers.png
-2026-01-24 20:51:22,957 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Clean Data After Removing Outliers.png
-2026-01-24 20:51:26,646 - Initial_Data_Analysis.initial_analysis - INFO - Frequency plots generated successfully.
-2026-01-24 20:51:26,889 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Frequency plots.png
-2026-01-24 20:51:28,002 - __main__ - INFO - Applying data transformation based on health guidelines...
-2026-01-24 20:51:28,003 - Category_realations.binarize_category - INFO - Starting data binarization process.
-2026-01-24 20:51:28,063 - Category_realations.binarize_category - INFO - Transformation complete. Processed 14 variables.
-2026-01-24 20:51:28,065 - Category_realations.Categorization - INFO - Starting categorization process
-2026-01-24 20:51:28,078 - Category_realations.Categorization - INFO - Categorization completed successfully
-2026-01-24 20:51:28,079 - __main__ - INFO - Running Spearman rank correlation tests...
-2026-01-24 20:51:28,079 - Category_realations.spearman_test - INFO - Starting Spearman Rank Correlation Test...
-2026-01-24 20:51:28,080 - Category_realations.spearman_test - INFO - Calculating correlation against target: 'Anxiety Level (1-10)'
-2026-01-24 20:51:28,094 - Category_realations.spearman_test - INFO - Spearman Test completed successfully.
-2026-01-24 20:51:28,094 - Category_realations.stat_visualization - INFO - Generating Spearman correlation bar chart...
-2026-01-24 20:51:28,247 - Category_realations.stat_visualization - INFO - Displaying Spearman plot window.
-2026-01-24 20:51:28,303 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Spearman Correlation Coefficients.png
-2026-01-24 20:51:29,121 - __main__ - INFO - Executing multiple linear regression analysis...
-2026-01-24 20:51:29,122 - Category_realations.multiple_linear_regression - INFO - Starting Multiple Linear Regression analysis...
-2026-01-24 20:51:29,129 - Category_realations.multiple_linear_regression - INFO - Fitting OLS regression model...
-2026-01-24 20:51:29,153 - Category_realations.multiple_linear_regression - INFO - Multiple Regression completed successfully.
-2026-01-24 20:51:29,154 - Category_realations.stat_visualization - INFO - Generating Regression Coefficients plot...
-2026-01-24 20:51:29,325 - Category_realations.stat_visualization - INFO - Displaying Regression plot window.
-2026-01-24 20:51:29,377 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Regression Coefficients Impact on Anxiety Level.png
-2026-01-24 20:51:30,233 - __main__ - INFO - Analyzing main effects and interactions for Gender and Occupation...
-2026-01-24 20:51:30,234 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Calculating main effects for Gender and Occupation on Anxiety_Level
-2026-01-24 20:51:30,237 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Main effect for Gender calculated.
-2026-01-24 20:51:30,242 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Main effect for Occupation calculated.
-2026-01-24 20:51:30,242 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Initiating main effects plot generation for Gender and Occupation.
-2026-01-24 20:51:30,441 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Figure and axes created successfully.
-2026-01-24 20:51:30,476 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - First subplot (Gender) rendered.
-2026-01-24 20:51:30,557 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Second subplot (Occupation) rendered.
-2026-01-24 20:51:30,588 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Layout adjusted with tight_layout(). Displaying plot.
-2026-01-24 20:51:32,027 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Two-Way ANOVA for Gender and Occupation on Anxiety_Level
-2026-01-24 20:51:32,168 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - 
+2026-02-02 14:43:23,652 - __main__ - INFO - The application has started.
+2026-02-02 14:43:23,928 - __main__ - INFO - Data sources loaded successfully.
+2026-02-02 14:43:23,928 - __main__ - INFO - Starting initial analysis (nulls, outliers, frequencies)...
+2026-02-02 14:43:23,930 - Initial_Data_Analysis.initial_analysis - INFO - Null check completed. Contains nulls: False
+2026-02-02 14:43:23,930 - Initial_Data_Analysis.initial_analysis - INFO - Starting outlier plotting process.
+2026-02-02 14:43:23,931 - Initial_Data_Analysis.initial_analysis - INFO - Starting outlier detection using IQR method.
+2026-02-02 14:43:23,951 - Initial_Data_Analysis.initial_analysis - INFO - Outlier detection completed. Found 666 outliers (0.50% of data). Removal decision: NO.
+2026-02-02 14:43:26,395 - Initial_Data_Analysis.initial_analysis - INFO - Outlier removal skipped due to low impact.
+2026-02-02 14:43:26,538 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Raw Data Outliers Detected but Not Removed.png
+2026-02-02 14:43:26,678 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Clean Data After Removing Outliers.png
+2026-02-02 14:43:27,448 - Initial_Data_Analysis.initial_analysis - INFO - Frequency plots generated successfully.
+2026-02-02 14:43:27,597 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Frequency plots.png
+2026-02-02 14:43:27,597 - __main__ - INFO - Applying data transformation based on health guidelines...
+2026-02-02 14:43:27,598 - Category_realations.binarize_category - INFO - Starting data binarization process.
+2026-02-02 14:43:27,621 - Category_realations.binarize_category - INFO - Transformation complete. Processed 14 variables.
+2026-02-02 14:43:27,622 - Category_realations.Categorization - INFO - Starting categorization process
+2026-02-02 14:43:27,628 - Category_realations.Categorization - INFO - Categorization completed successfully
+2026-02-02 14:43:27,629 - __main__ - INFO - Running Spearman rank correlation tests...
+2026-02-02 14:43:27,629 - Category_realations.spearman_test - INFO - Starting Spearman Rank Correlation Test...
+2026-02-02 14:43:27,630 - Category_realations.spearman_test - INFO - Calculating correlation against target: 'Anxiety Level (1-10)'
+2026-02-02 14:43:27,637 - Category_realations.spearman_test - INFO - Spearman Correlation Results:
+                         Category  Spearman Coeff       P-value
+                Lifestyle Factors       -0.276541 2.766138e-192
+Health & Physiological Indicators       -0.363725  0.000000e+00
+            Mental Health History       -0.081241  1.417116e-17
+2026-02-02 14:43:27,637 - Category_realations.spearman_test - INFO - Spearman Test completed successfully.
+2026-02-02 14:43:27,648 - Category_realations.stat_visualization - INFO - Generating Spearman correlation bar chart...
+2026-02-02 14:43:27,742 - Category_realations.stat_visualization - INFO - Displaying Spearman plot window.
+2026-02-02 14:43:27,781 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Spearman Correlation Coefficients.png
+2026-02-02 14:43:27,781 - __main__ - INFO - Executing multiple linear regression analysis...
+2026-02-02 14:43:27,781 - Category_realations.multiple_linear_regression - INFO - Starting Multiple Linear Regression analysis...
+2026-02-02 14:43:27,782 - Category_realations.multiple_linear_regression - INFO - Fitting OLS regression model...
+2026-02-02 14:43:27,803 - Category_realations.multiple_linear_regression - INFO - Regression Results:
+                             OLS Regression Results                             
+================================================================================
+Dep. Variable:     Anxiety Level (1-10)   R-squared:                       0.296
+Model:                              OLS   Adj. R-squared:                  0.296
+Method:                   Least Squares   F-statistic:                     1542.
+Date:                  Mon, 02 Feb 2026   Prob (F-statistic):               0.00
+Time:                          14:43:27   Log-Likelihood:                -21955.
+No. Observations:                 11000   AIC:                         4.392e+04
+Df Residuals:                     10996   BIC:                         4.395e+04
+Df Model:                             3                                         
+Covariance Type:              nonrobust                                         
+=====================================================================================================
+                                        coef    std err          t      P>|t|      [0.025      0.975]
+-----------------------------------------------------------------------------------------------------
+const                                 7.2004      0.062    116.654      0.000       7.079       7.321
+Lifestyle Factors                    -3.4132      0.084    -40.685      0.000      -3.578      -3.249
+Health & Physiological Indicators    -3.3047      0.075    -44.033      0.000      -3.452      -3.158
+Mental Health History                -0.4879      0.073     -6.699      0.000      -0.631      -0.345
+==============================================================================
+Omnibus:                      172.918   Durbin-Watson:                   1.995
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              176.263
+Skew:                           0.296   Prob(JB):                     5.31e-39
+Kurtosis:                       2.817   Cond. No.                         7.31
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+2026-02-02 14:43:27,804 - Category_realations.multiple_linear_regression - INFO - Multiple Regression completed successfully.
+2026-02-02 14:43:27,813 - Category_realations.stat_visualization - INFO - Generating Regression Coefficients plot...
+2026-02-02 14:43:27,908 - Category_realations.stat_visualization - INFO - Displaying Regression plot window.
+2026-02-02 14:43:27,954 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Regression Coefficients Impact on Anxiety Level.png
+2026-02-02 14:43:27,955 - __main__ - INFO - Analyzing main effects and interactions for Gender and Occupation...
+2026-02-02 14:43:27,955 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Starting main effects calculation
+2026-02-02 14:43:27,959 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Main effects calculated successfully
+2026-02-02 14:43:27,959 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Checking validity of main effects
+2026-02-02 14:43:27,960 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Main effects validation passed
+2026-02-02 14:43:27,968 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Checking validity of main effects
+2026-02-02 14:43:27,968 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Main effects validation passed
+2026-02-02 14:43:27,969 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Initiating main effects plot generation for Gender and Occupation.
+2026-02-02 14:43:28,041 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Figure and axes created successfully.
+2026-02-02 14:43:28,088 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - First subplot (Gender) rendered.
+2026-02-02 14:43:28,199 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Second subplot (Occupation) rendered.
+2026-02-02 14:43:28,225 - Occupation_Gender_Two_Way_ANOVA.main_effects - INFO - Layout adjusted with tight_layout(). Displaying plot.
+2026-02-02 14:43:31,471 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Two-Way ANOVA for Gender and Occupation on Anxiety_Level
+2026-02-02 14:43:31,584 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - 
 --- ANOVA Analysis Results ---
-2026-01-24 20:51:32,169 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Gender: Not Significant (p = 0.9270)
-2026-01-24 20:51:32,169 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Occupation: Significant (p = 0.0000)
-2026-01-24 20:51:32,170 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Interaction Effect (Gender x Occupation): Not Significant (p = 0.7110)
-2026-01-24 20:51:33,491 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Plot generated successfully.
-2026-01-24 20:51:33,492 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Tukey HSD post-hoc analysis for: Gender within each level of Occupation
-2026-01-24 20:51:33,493 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Artist
-2026-01-24 20:51:33,732 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Artist
-2026-01-24 20:51:33,733 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Nurse
-2026-01-24 20:51:33,963 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Nurse
-2026-01-24 20:51:33,964 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Other
-2026-01-24 20:51:34,202 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Other
-2026-01-24 20:51:34,202 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Scientist
-2026-01-24 20:51:34,420 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Scientist
-2026-01-24 20:51:34,421 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Lawyer
-2026-01-24 20:51:34,651 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Lawyer
-2026-01-24 20:51:34,652 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Teacher
-2026-01-24 20:51:34,886 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Teacher
-2026-01-24 20:51:34,886 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Doctor
-2026-01-24 20:51:35,122 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Doctor
-2026-01-24 20:51:35,122 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Musician
-2026-01-24 20:51:35,337 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Musician
-2026-01-24 20:51:35,337 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Student
-2026-01-24 20:51:35,581 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Student
-2026-01-24 20:51:35,581 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Engineer
-2026-01-24 20:51:35,842 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Engineer
-2026-01-24 20:51:35,843 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Freelancer
-2026-01-24 20:51:36,080 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Freelancer
-2026-01-24 20:51:36,080 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Chef
-2026-01-24 20:51:36,314 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Chef
-2026-01-24 20:51:36,314 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Athlete
-2026-01-24 20:51:36,557 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Athlete
-2026-01-24 20:51:36,557 - __main__ - INFO - Running linear regression for Age vs Anxiety Level...
-2026-01-24 20:51:36,557 - Age_Regression.regression - INFO - Starting regression analysis: Age predicting Anxiety_Level
-2026-01-24 20:51:36,562 - Age_Regression.regression - INFO - Regression analysis completed successfully.
-2026-01-24 20:51:36,565 - Age_Regression.regression - INFO - 
-=======
-2026-01-24 22:15:13,749 - __main__ - INFO - The application has started.
-2026-01-24 22:15:13,943 - __main__ - INFO - Data sources loaded successfully.
-2026-01-24 22:15:13,944 - __main__ - INFO - Starting initial analysis (nulls, outliers, frequencies)...
-2026-01-24 22:15:13,946 - Initial_Data_Analysis.initial_analysis - INFO - Null check completed. Contains nulls: False
-2026-01-24 22:15:13,946 - Initial_Data_Analysis.initial_analysis - INFO - Starting outlier plotting process.
-2026-01-24 22:15:13,947 - Initial_Data_Analysis.initial_analysis - INFO - Starting outlier detection using IQR method.
-2026-01-24 22:15:13,980 - Initial_Data_Analysis.initial_analysis - INFO - Outlier detection completed. Found 666 outliers (0.50% of data). Removal decision: NO.
-2026-01-24 22:15:16,512 - Initial_Data_Analysis.initial_analysis - INFO - Outlier removal skipped due to low impact.
-2026-01-24 22:15:16,824 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Raw Data Outliers Detected but Not Removed.png
-2026-01-24 22:15:17,124 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Clean Data After Removing Outliers.png
-2026-01-24 22:15:19,563 - Initial_Data_Analysis.initial_analysis - INFO - Frequency plots generated successfully.
-2026-01-24 22:15:19,954 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Frequency plots.png
-2026-01-24 22:15:19,957 - __main__ - INFO - Applying data transformation based on health guidelines...
-2026-01-24 22:15:19,961 - Category_realations.binarize_category - INFO - Starting data binarization process.
-2026-01-24 22:15:20,027 - Category_realations.binarize_category - INFO - Transformation complete. Processed 14 variables.
-2026-01-24 22:15:20,030 - Category_realations.Categorization - INFO - Starting categorization process
-2026-01-24 22:15:20,043 - Category_realations.Categorization - INFO - Categorization completed successfully
-2026-01-24 22:15:20,046 - __main__ - INFO - Running Spearman rank correlation tests...
-2026-01-24 22:15:20,048 - Category_realations.spearman_test - INFO - Starting Spearman Rank Correlation Test...
-2026-01-24 22:15:20,049 - Category_realations.spearman_test - INFO - Calculating correlation against target: 'Anxiety Level (1-10)'
-2026-01-24 22:15:20,075 - Category_realations.spearman_test - INFO - Spearman Test completed successfully.
-2026-01-24 22:15:20,098 - Category_realations.stat_visualization - INFO - Generating Spearman correlation bar chart...
-2026-01-24 22:15:20,331 - Category_realations.stat_visualization - INFO - Displaying Spearman plot window.
-2026-01-24 22:15:20,442 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Spearman Correlation Coefficients.png
-2026-01-24 22:15:20,445 - __main__ - INFO - Executing multiple linear regression analysis...
-2026-01-24 22:15:20,448 - Category_realations.multiple_linear_regression - INFO - Starting Multiple Linear Regression analysis...
-2026-01-24 22:15:20,460 - Category_realations.multiple_linear_regression - INFO - Fitting OLS regression model...
-2026-01-24 22:15:20,479 - Category_realations.multiple_linear_regression - INFO - Multiple Regression completed successfully.
-2026-01-24 22:15:20,491 - Category_realations.stat_visualization - INFO - Generating Regression Coefficients plot...
-2026-01-24 22:15:20,737 - Category_realations.stat_visualization - INFO - Displaying Regression plot window.
-2026-01-24 22:15:20,838 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Regression Coefficients Impact on Anxiety Level.png
-2026-01-24 22:15:20,840 - __main__ - INFO - Analyzing main effects and interactions for Gender and Occupation...
-2026-01-24 22:15:20,840 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Calculating main effects for Gender and Occupation on Anxiety_Level
-2026-01-24 22:15:20,842 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Main effect for Gender calculated.
-2026-01-24 22:15:20,844 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Main effect for Occupation calculated.
-2026-01-24 22:15:20,856 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Initiating main effects plot generation for Gender and Occupation.
-2026-01-24 22:15:21,037 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Figure and axes created successfully.
-2026-01-24 22:15:21,161 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - First subplot (Gender) rendered.
-2026-01-24 22:15:21,314 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Second subplot (Occupation) rendered.
-2026-01-24 22:15:21,419 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Layout adjusted with tight_layout(). Displaying plot.
-2026-01-24 22:15:26,620 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Two-Way ANOVA for Gender and Occupation on Anxiety_Level
-2026-01-24 22:15:26,745 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - 
---- ANOVA Analysis Results ---
-2026-01-24 22:15:26,747 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Gender: Not Significant (p = 0.9270)
-2026-01-24 22:15:26,747 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Occupation: Significant (p = 0.0000)
-2026-01-24 22:15:26,748 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Interaction Effect (Gender x Occupation): Not Significant (p = 0.7110)
-2026-01-24 22:15:28,558 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Plot generated successfully.
-2026-01-24 22:15:28,563 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Tukey HSD post-hoc analysis for: Gender within each level of Occupation
-2026-01-24 22:15:28,564 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Artist
-2026-01-24 22:15:28,915 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Artist
-2026-01-24 22:15:28,916 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Nurse
-2026-01-24 22:15:29,191 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Nurse
-2026-01-24 22:15:29,192 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Other
-2026-01-24 22:15:29,470 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Other
-2026-01-24 22:15:29,471 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Scientist
-2026-01-24 22:15:29,735 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Scientist
-2026-01-24 22:15:29,736 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Lawyer
-2026-01-24 22:15:30,001 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Lawyer
-2026-01-24 22:15:30,002 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Teacher
-2026-01-24 22:15:30,271 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Teacher
-2026-01-24 22:15:30,271 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Doctor
-2026-01-24 22:15:30,540 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Doctor
-2026-01-24 22:15:30,540 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Musician
-2026-01-24 22:15:30,773 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Musician
-2026-01-24 22:15:30,773 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Student
-2026-01-24 22:15:31,037 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Student
-2026-01-24 22:15:31,038 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Engineer
-2026-01-24 22:15:31,311 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Engineer
-2026-01-24 22:15:31,312 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Freelancer
-2026-01-24 22:15:31,587 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Freelancer
-2026-01-24 22:15:31,588 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Chef
-2026-01-24 22:15:31,870 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Chef
-2026-01-24 22:15:31,871 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Athlete
-2026-01-24 22:15:32,151 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Athlete
-2026-01-24 22:15:32,151 - __main__ - INFO - Running linear regression for Age vs Anxiety Level...
-2026-01-24 22:15:32,151 - Age_Regression.regression - INFO - Starting regression analysis: Age predicting Anxiety_Level
-2026-01-24 22:15:32,155 - Age_Regression.regression - INFO - Regression analysis completed successfully.
-2026-01-24 22:15:32,158 - Age_Regression.regression - INFO - 
->>>>>>> 5fe25bdc6d05fe53c45f6eeccf2f0db3d4aec768
-=======
-2026-01-25 12:48:04,634 - __main__ - INFO - The application has started.
-2026-01-25 12:48:04,838 - __main__ - INFO - Data sources loaded successfully.
-2026-01-25 12:48:04,839 - __main__ - INFO - Starting initial analysis (nulls, outliers, frequencies)...
-2026-01-25 12:48:04,841 - Initial_Data_Analysis.initial_analysis - INFO - Null check completed. Contains nulls: False
-2026-01-25 12:48:04,842 - Initial_Data_Analysis.initial_analysis - INFO - Starting outlier plotting process.
-2026-01-25 12:48:04,842 - Initial_Data_Analysis.initial_analysis - INFO - Starting outlier detection using IQR method.
-2026-01-25 12:48:04,870 - Initial_Data_Analysis.initial_analysis - INFO - Outlier detection completed. Found 666 outliers (0.50% of data). Removal decision: NO.
-2026-01-25 12:48:07,185 - Initial_Data_Analysis.initial_analysis - INFO - Outlier removal skipped due to low impact.
-2026-01-25 12:48:07,386 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Raw Data Outliers Detected but Not Removed.png
-2026-01-25 12:48:07,581 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Clean Data After Removing Outliers.png
-2026-01-25 12:48:08,682 - Initial_Data_Analysis.initial_analysis - INFO - Frequency plots generated successfully.
-2026-01-25 12:48:08,886 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Frequency plots.png
-2026-01-25 12:48:08,887 - __main__ - INFO - Applying data transformation based on health guidelines...
-2026-01-25 12:48:08,888 - Category_realations.binarize_category - INFO - Starting data binarization process.
-2026-01-25 12:48:08,926 - Category_realations.binarize_category - INFO - Transformation complete. Processed 14 variables.
-2026-01-25 12:48:08,928 - Category_realations.Categorization - INFO - Starting categorization process
-2026-01-25 12:48:08,936 - Category_realations.Categorization - INFO - Categorization completed successfully
-2026-01-25 12:48:08,937 - __main__ - INFO - Running Spearman rank correlation tests...
-2026-01-25 12:48:08,937 - Category_realations.spearman_test - INFO - Starting Spearman Rank Correlation Test...
-2026-01-25 12:48:08,937 - Category_realations.spearman_test - INFO - Calculating correlation against target: 'Anxiety Level (1-10)'
-2026-01-25 12:48:08,945 - Category_realations.spearman_test - INFO - Spearman Test completed successfully.
-2026-01-25 12:48:08,955 - Category_realations.stat_visualization - INFO - Generating Spearman correlation bar chart...
-2026-01-25 12:48:09,082 - Category_realations.stat_visualization - INFO - Displaying Spearman plot window.
-2026-01-25 12:48:09,134 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Spearman Correlation Coefficients.png
-2026-01-25 12:48:09,134 - __main__ - INFO - Executing multiple linear regression analysis...
-2026-01-25 12:48:09,134 - Category_realations.multiple_linear_regression - INFO - Starting Multiple Linear Regression analysis...
-2026-01-25 12:48:09,136 - Category_realations.multiple_linear_regression - INFO - Fitting OLS regression model...
-2026-01-25 12:48:09,146 - Category_realations.multiple_linear_regression - INFO - Multiple Regression completed successfully.
-2026-01-25 12:48:09,154 - Category_realations.stat_visualization - INFO - Generating Regression Coefficients plot...
-2026-01-25 12:48:09,271 - Category_realations.stat_visualization - INFO - Displaying Regression plot window.
-2026-01-25 12:48:09,330 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Regression Coefficients Impact on Anxiety Level.png
-2026-01-25 12:48:09,331 - __main__ - INFO - Analyzing main effects and interactions for Gender and Occupation...
-2026-01-25 12:48:09,332 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Calculating main effects for Gender and Occupation on Anxiety_Level
-2026-01-25 12:48:09,333 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Main effect for Gender calculated.
-2026-01-25 12:48:09,334 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Main effect for Occupation calculated.
-2026-01-25 12:48:09,340 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Initiating main effects plot generation for Gender and Occupation.
-2026-01-25 12:48:09,427 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Figure and axes created successfully.
-2026-01-25 12:48:09,472 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - First subplot (Gender) rendered.
-2026-01-25 12:48:09,551 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Second subplot (Occupation) rendered.
-2026-01-25 12:48:09,589 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Layout adjusted with tight_layout(). Displaying plot.
-2026-01-25 12:48:12,687 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Two-Way ANOVA for Gender and Occupation on Anxiety_Level
-2026-01-25 12:48:12,826 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - 
---- ANOVA Analysis Results ---
-2026-01-25 12:48:12,830 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Gender: Not Significant (p = 0.9270)
-2026-01-25 12:48:12,832 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Occupation: Significant (p = 0.0000)
-2026-01-25 12:48:12,837 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Interaction Effect (Gender x Occupation): Not Significant (p = 0.7110)
-2026-01-25 12:48:14,927 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Plot generated successfully.
-2026-01-25 12:48:14,934 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Tukey HSD post-hoc analysis for: Gender within each level of Occupation
-2026-01-25 12:48:14,936 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Artist
-2026-01-25 12:48:15,304 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Artist
-2026-01-25 12:48:15,305 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Nurse
-2026-01-25 12:48:15,739 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Nurse
-2026-01-25 12:48:15,742 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Other
-2026-01-25 12:48:16,172 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Other
-2026-01-25 12:48:16,172 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Scientist
-2026-01-25 12:48:16,555 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Scientist
-2026-01-25 12:48:16,558 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Lawyer
-2026-01-25 12:48:17,016 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Lawyer
-2026-01-25 12:48:17,017 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Teacher
-2026-01-25 12:48:17,396 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Teacher
-2026-01-25 12:48:17,396 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Doctor
-2026-01-25 12:48:17,715 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Doctor
-2026-01-25 12:48:17,715 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Musician
-2026-01-25 12:48:17,958 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Musician
-2026-01-25 12:48:17,959 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Student
-2026-01-25 12:48:18,276 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Student
-2026-01-25 12:48:18,276 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Engineer
-2026-01-25 12:48:18,654 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Engineer
-2026-01-25 12:48:18,682 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Freelancer
-2026-01-25 12:48:19,133 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Freelancer
-2026-01-25 12:48:19,133 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Chef
-2026-01-25 12:48:19,548 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Chef
-2026-01-25 12:48:19,548 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Athlete
-2026-01-25 12:48:19,939 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Athlete
-2026-01-25 12:48:19,939 - __main__ - INFO - Running linear regression for Age vs Anxiety Level...
-2026-01-25 12:48:19,939 - Age_Regression.regression - INFO - Starting regression analysis: Age predicting Anxiety_Level
-2026-01-25 12:48:19,944 - Age_Regression.regression - INFO - Regression analysis completed successfully.
-2026-01-25 12:48:19,949 - Age_Regression.regression - INFO - 
->>>>>>> c564e3e6c3df1e26fb4b3ff011d72a6038d3de7b
+2026-02-02 14:43:31,584 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Gender: Not Significant (p = 0.9270)
+2026-02-02 14:43:31,585 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Main Effect of Occupation: Significant (p = 0.0000)
+2026-02-02 14:43:31,585 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - * Interaction Effect (Gender x Occupation): Not Significant (p = 0.7110)
+2026-02-02 14:43:33,142 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Plot generated successfully.
+2026-02-02 14:43:33,142 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Running Tukey HSD post-hoc analysis for: Gender within each level of Occupation
+2026-02-02 14:43:33,144 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Artist
+2026-02-02 14:43:33,472 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Artist
+2026-02-02 14:43:33,472 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Nurse
+2026-02-02 14:43:33,710 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Nurse
+2026-02-02 14:43:33,710 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Other
+2026-02-02 14:43:33,952 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Other
+2026-02-02 14:43:33,952 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Scientist
+2026-02-02 14:43:34,161 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Scientist
+2026-02-02 14:43:34,161 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Lawyer
+2026-02-02 14:43:34,397 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Lawyer
+2026-02-02 14:43:34,397 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Teacher
+2026-02-02 14:43:34,632 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Teacher
+2026-02-02 14:43:34,633 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Doctor
+2026-02-02 14:43:34,863 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Doctor
+2026-02-02 14:43:34,863 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Musician
+2026-02-02 14:43:35,064 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Musician
+2026-02-02 14:43:35,064 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Student
+2026-02-02 14:43:35,297 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Student
+2026-02-02 14:43:35,297 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Engineer
+2026-02-02 14:43:35,531 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Engineer
+2026-02-02 14:43:35,531 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Freelancer
+2026-02-02 14:43:35,762 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Freelancer
+2026-02-02 14:43:35,762 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Chef
+2026-02-02 14:43:35,988 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Chef
+2026-02-02 14:43:35,988 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Processing simple effect for Occupation = Athlete
+2026-02-02 14:43:36,221 - Occupation_Gender_Two_Way_ANOVA.interctions - INFO - Tukey HSD completed for Occupation = Athlete
+2026-02-02 14:43:36,222 - __main__ - INFO - Running linear regression for Age vs Anxiety Level...
+2026-02-02 14:43:36,222 - Age_Regression.regression - INFO - Starting regression analysis: Age predicting Anxiety_Level
+2026-02-02 14:43:36,229 - Age_Regression.regression - INFO - Regression analysis completed successfully.
+2026-02-02 14:43:36,231 - Age_Regression.regression - INFO - 
 ==============================
 REGRESSION RESULTS: Age -> Anxiety_Level
 ==============================
        names      coef        se          T          pval        r2    adj_r2  CI[2.5%]  CI[97.5%]
 0  Intercept  4.408933  0.064597  68.252551  0.000000e+00  0.005523  0.005432  4.282311   4.535556
 1        Age -0.011917  0.001525  -7.815222  5.986765e-15  0.005523  0.005432 -0.014906  -0.008928
-<<<<<<< HEAD
-<<<<<<< HEAD
-2026-01-24 20:51:36,566 - Age_Regression.regression - INFO - Generating regression plot for Age and Anxiety_Level
-2026-01-24 20:51:36,868 - Age_Regression.regression - INFO - Plot displayed successfully with equation.
-2026-01-24 20:51:37,022 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Linear Regression Age Predicting Anxiety_Level.png
-2026-01-24 20:51:38,562 - Age_Regression.regression - INFO - Correlation Analysis: The correlation is a weak negative correlation (-0.0743)
-2026-01-24 20:51:38,567 - Age_Regression.regression - INFO - Regression p-value: 0.0000, Significant: True
-2026-01-24 20:51:38,569 - __main__ - INFO - Analysis Pipeline Complete. Predictor p-value: True
-=======
-2026-01-24 22:15:32,158 - Age_Regression.regression - INFO - Generating regression plot for Age and Anxiety_Level
-2026-01-24 22:15:32,539 - Age_Regression.regression - INFO - Plot displayed successfully with equation.
-2026-01-24 22:15:32,705 - Visualization.visualization_saving_decorator - INFO - Saved figure: Visualization\Linear Regression Age Predicting Anxiety_Level.png
-2026-01-24 22:15:32,706 - Age_Regression.regression - INFO - Correlation Analysis: The correlation is a weak negative correlation (-0.0743)
-2026-01-24 22:15:32,706 - Age_Regression.regression - INFO - Regression p-value: 0.0000, Significant: True
-2026-01-24 22:15:32,707 - __main__ - INFO - Analysis Pipeline Complete. Predictor p-value: True
->>>>>>> 5fe25bdc6d05fe53c45f6eeccf2f0db3d4aec768
-=======
-2026-01-25 12:48:19,950 - Age_Regression.regression - INFO - Generating regression plot for Age and Anxiety_Level
-2026-01-25 12:48:20,507 - Age_Regression.regression - INFO - Plot displayed successfully with equation.
-2026-01-25 12:48:20,676 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Linear Regression Age Predicting Anxiety_Level.png
-2026-01-25 12:48:20,677 - Age_Regression.regression - INFO - Correlation Analysis: The correlation is a weak negative correlation (-0.0743)
-2026-01-25 12:48:20,678 - Age_Regression.regression - INFO - Regression p-value: 0.0000, Significant: True
-2026-01-25 12:48:20,678 - __main__ - INFO - Analysis Pipeline Complete. Predictor p-value: True
->>>>>>> c564e3e6c3df1e26fb4b3ff011d72a6038d3de7b
+2026-02-02 14:43:36,231 - Age_Regression.regression - INFO - Generating regression plot for Age and Anxiety_Level
+2026-02-02 14:43:36,522 - Age_Regression.regression - INFO - Plot displayed successfully with equation.
+2026-02-02 14:43:36,669 - Visualization.visualization_saving_decorator - INFO - Saved figure to: Visualization\Linear Regression Age Predicting Anxiety_Level.png
+2026-02-02 14:43:36,670 - Age_Regression.regression - INFO - Correlation Analysis: The correlation is a weak negative correlation (-0.0743)
+2026-02-02 14:43:36,671 - Age_Regression.regression - INFO - Regression p-value: 0.0000, Significant: True
+2026-02-02 14:43:36,671 - __main__ - INFO - Analysis Pipeline Complete. Predictor p-value: True

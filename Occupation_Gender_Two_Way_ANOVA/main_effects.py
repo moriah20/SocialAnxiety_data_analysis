@@ -10,41 +10,61 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Calculates group means for main effects analysis.
-def main_effects(df, IV1, IV2, col_name):
-    # Validate inputs: Check if df is a DataFrame and column names are strings
-    if isinstance(df, pd.DataFrame) and all(isinstance(i, str) for i in [IV1, IV2, col_name]):
-        
-        logger.info(f"Calculating main effects for {IV1} and {IV2} on {col_name}")
-        
-        # Calculate Main Effect for IV1: Group by IV1 and compute mean
-        main_IV1 = df.groupby(IV1)[col_name].mean().sort_values(ascending=False)
-        logger.info(f"Main effect for {IV1} calculated.")
-        
-        # Calculate Main Effect for IV2: Group by IV2 and compute mean
-        main_IV2 = df.groupby(IV2)[col_name].mean().sort_values(ascending=False)
-        logger.info(f"Main effect for {IV2} calculated.")
-        
-        return main_IV1, main_IV2
-    
-    else:
-        # Error handling for incorrect input types
-        logger.error("Error: Wrong variable types. Please enter valid DataFrame and strings.")
+def main_effects(df, IV1, IV2, DV):
+    """
+    Calculates the main effects for two independent variables."""
+
+    logger.info("Starting main effects calculation")
+
+    # Validate input type
+    if not isinstance(df, pd.DataFrame):
+        logger.error("Invalid input: df is not a pandas DataFrame")
         return None, None
 
-# Validates that the input effects are Pandas Series with numeric data.
-def check_effects(main_effect_1, main_effect_2):
-    # Iterate through both effects to verify data types
-    for effect in [main_effect_1, main_effect_2]:
-        # Check if the variable is a Pandas Series
-        if not isinstance(effect, pd.Series):
-            logger.error("Error: Input must be a Pandas Series")
-            return False   
-        # Check if the data within the Series is numeric (int or float)
-        if not pd.api.types.is_numeric_dtype(effect):
-            logger.error("Error: Series values must be numeric")
-            return False       
-    # Return True if all checks pass
+    try:
+        # Calculate mean of DV for each level of the first IV
+        logger.debug(f"Calculating main effect for {IV1}")
+        m1 = df.groupby(IV1)[DV].mean()
+
+        # Calculate mean of DV for each level of the second IV
+        logger.debug(f"Calculating main effect for {IV2}")
+        m2 = df.groupby(IV2)[DV].mean()
+
+        logger.info("Main effects calculated successfully")
+
+        return m1, m2
+
+    except Exception as e:
+        # Log full error traceback for debugging
+        logger.exception("An error occurred during main effects calculation")
+        return None, None
+
+def check_effects(m1, m2):
+    """
+    Validates the main effects results before further analysis or plotting.
+
+    This function checks whether both inputs are valid pandas Series
+    and ensures they are not empty.
+    """
+
+    logger.info("Checking validity of main effects")
+
+    # Check if the first input is a pandas Series
+    if not isinstance(m1, pd.Series):
+        logger.error("Invalid input: m1 is not a pandas Series")
+        return False
+
+    # Check if the second input is a pandas Series
+    if not isinstance(m2, pd.Series):
+        logger.error("Invalid input: m2 is not a pandas Series")
+        return False
+
+    # Check if any of the Series is empty
+    if m1.empty or m2.empty:
+        logger.warning("One or both main effect Series are empty")
+        return False
+
+    logger.info("Main effects validation passed")
     return True
 
 def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):

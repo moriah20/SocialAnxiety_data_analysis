@@ -23,31 +23,21 @@ def test_main_effects_invalid_input():
     m1, m2 = main_effects("Not a DF", 'IV1', 'IV2', 'DV')
     assert m1 is None and m2 is None
 
-# --- Tests for check_effects (The Validator) ---
+
 
 def test_check_effects_valid(anova_data):
-    """Verifies the validator returns True for valid pandas Series."""
-    # 1. Prepare the means (this is the step you were missing)
+    # Convert DataFrame to the Series the function expects
     m1 = anova_data.groupby('Gender')['Score'].mean()
     m2 = anova_data.groupby('Treatment')['Score'].mean()
-    
-    # 2. Assert the validation passes
     assert check_effects(m1, m2) == True
 
 def test_main_effects_plots_execution(anova_data):
-    """Ensures the plotting function runs without crashing (Smoke Test)."""
-    # 1. Prepare the means
     m1 = anova_data.groupby('Gender')['Score'].mean()
     m2 = anova_data.groupby('Treatment')['Score'].mean()
-    
     try:
-        # 2. Run the plot function with the calculated means
+        # Passing all 5 required arguments
         main_effects_plots(m1, m2, 'Gender', 'Treatment', 'Score')
         plt.close('all')
     except Exception as e:
-        pytest.fail(f"Plotting failed even with valid Series: {e}")
-
-
-
-
+        pytest.fail(f"Main effects plot failed: {e}")
 

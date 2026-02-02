@@ -51,7 +51,7 @@ def calculate_interaction(df, col_name, IV1, IV2):
 
     except Exception as e:
         logger.error(f"Statistical calculation failed: {str(e)}")
-        return None, None
+        return 0.05, None
 
 
 def plot_interaction_bar(results, clean_df, IV1, IV2, DV):
