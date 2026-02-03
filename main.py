@@ -26,11 +26,9 @@ from Age_Regression.regression import (calculate_regression,
                                    plot_regression, 
                                    extract_correlation_from_regression, 
                                    interpret_regression)
-from Occupation_Gender_Two_Way_ANOVA.interctions import (main_effects, 
-                                       main_effects_plots, 
-                                       calculate_interaction, 
-                                       check_effects,
+from Occupation_Gender_Two_Way_ANOVA.interctions import ( calculate_interaction, 
                                        plot_interaction_bar,run_post_hoc_tukey)
+from Occupation_Gender_Two_Way_ANOVA.main_effects import (main_effects,check_effects,main_effects_plots)
 
 def main():
     """

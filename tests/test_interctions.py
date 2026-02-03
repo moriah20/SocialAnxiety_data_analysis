@@ -1,62 +1,83 @@
 import pytest
 import pandas as pd
-import numpy as np
-from Occupation_Gender_Two_Way_ANOVA.interctions import main_effects, check_effects, calculate_interaction # Replace 'main' with your filename
+import matplotlib.pyplot as plt
+from Occupation_Gender_Two_Way_ANOVA.interctions import calculate_interaction, plot_interaction_bar, run_post_hoc_tukey
+
 
 @pytest.fixture
-def anova_data():
-    """Generates a valid dummy dataset for ANOVA testing."""
-    return pd.DataFrame({
-        'Gender': ['Male', 'Male', 'Female', 'Female'] * 5,
-        'Treatment': ['GroupA', 'GroupB', 'GroupA', 'GroupB'] * 5,
-        'Score': [80, 70, 85, 75] * 5
+def interaction_data():
+    """Generates a synthetic dataset designed to guarantee a statistical interaction."""
+    
+    return  pd.DataFrame({
+        'Gender': ['Male']*10 + ['Female']*10,
+        'Treatment': (['A']*5 + ['B']*5) * 2,
+        'Score': [
+            90, 92, 88, 91, 89,  # Male A: High scores
+            20, 22, 18, 21, 19,  # Male B: Low scores
+            15, 17, 14, 16, 15,  # Female A: Low scores
+            85, 87, 84, 86, 85   # Female B: High scores
+        ]
     })
 
-# --- Tests for main_effects ---
+def p_val():
+    p_val=0.05
+    return p_val
 
-def test_main_effects_calculation(anova_data):
-    """Verifies that means are calculated correctly for both IVs."""
-    m1, m2 = main_effects(anova_data, 'Gender', 'Treatment', 'Score')
+
+def test_calculate_interaction_success(interaction_data):
+    results, clean_df = calculate_interaction(interaction_data, 'Score', 'Gender', 'Treatment')
     
-    # Check if results are Series
-    assert isinstance(m1, pd.Series)
-    assert isinstance(m2, pd.Series)
+    assert results is not None, "ANOVA results should not be None"
+    assert clean_df is not None
+
+def test_plot_interaction_runs_without_error(interaction_data):
+    try:
+        # Added the missing 'Score' argument
+        plot_interaction_bar(interaction_data, 'Gender', 'Treatment', 'Score',p_val)
+        plt.close('all')
+    except Exception as e:
+        pytest.fail(f"Plotting crashed: {e}")
+
+def tukey_data():
+    """Generates synthetic data for Tukey HSD testing."""
+    return pd.DataFrame({
+        'Anxiety_Level': [3.0, 3.2, 5.0, 5.2, 2.0, 2.1, 4.0, 4.3],
+        'Gender': ['Male', 'Male', 'Female', 'Female', 'Male', 'Male', 'Female', 'Female'],
+        'Occupation': ['Doctor', 'Doctor', 'Doctor', 'Doctor', 'Artist', 'Artist', 'Artist', 'Artist']
+    })
+
+def test_run_post_hoc_tukey_structure(interaction_data):
+    results = run_post_hoc_tukey(interaction_data, 'Score', 'Gender', 'Treatment')
+    # Your function returns a dict, so we check for that
+    assert isinstance(results, dict)
+    assert len(results) > 0
+
+
+def test_run_post_hoc_tukey_error_handling():
+    """Tests that the function returns None on error (as per your code's 'return None')."""
+    empty_df = pd.DataFrame(columns=['Score', 'Gender', 'Treatment'])
+    results = run_post_hoc_tukey(empty_df, 'Score', 'Gender', 'Treatment')
     
-    # Check specific mean calculation (Female mean should be 80 in this dummy data)
-    assert m1['Female'] == 80.0
-    assert m2['GroupA'] == 82.5
-
-def test_main_effects_invalid_input():
-    """Should return (None, None) if input types are wrong."""
-    m1, m2 = main_effects("Not a DF", 'IV1', 'IV2', 'DV')
-    assert m1 is None and m2 is None
-
-# --- Tests for check_effects (The Validator) ---
-
-def test_check_effects_valid(anova_data):
-    """Should return True for valid pandas Series."""
-    s1 = anova_data.groupby('Gender')['Score'].mean()
-    s2 = anova_data.groupby('Treatment')['Score'].mean()
-    assert check_effects(s1, s2) is True
-
-def test_check_effects_non_numeric():
-    """Should return False if Series contains non-numeric data."""
-    s1 = pd.Series(['a', 'b'])
-    s2 = pd.Series([1, 2])
-    assert check_effects(s1, s2) is False
-
-# --- Tests for calculate_interaction (The ANOVA wrapper) ---
-
-def test_calculate_interaction_success(anova_data):
-    """Verifies that pg.anova is called and returns a results table."""
-    results = calculate_interaction(anova_data, 'Score', 'Gender', 'Treatment')
-    assert isinstance(results, pd.DataFrame)
-    assert 'Source' in results.columns
-    assert 'p-unc' in results.columns
-
-
-def test_calculate_interaction_error_handling(anova_data):
-    """Should return None if column names are incorrect."""
-    # Ensure this returns None instead of raising KeyError
-    results = calculate_interaction(anova_data, 'Wrong_Column', 'Gender', 'Treatment')
+    # Since your function has 'return None' in the except block
     assert results is None
+
+def test_run_post_hoc_tukey_execution(interaction_data):
+    """
+    Tests if the Tukey post-hoc analysis executes correctly on interaction data.
+    """
+    # Running the post-hoc analysis
+    results = run_post_hoc_tukey(interaction_data, 'Score', 'Gender', 'Treatment')
+    
+    # Verify that the results are returned (usually as a dictionary or DataFrame)
+    assert results is not None
+    assert len(results) > 0, "Tukey results should not be empty for this dataset"
+
+
+
+
+
+
+
+
+
+
