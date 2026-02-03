@@ -1,6 +1,10 @@
 import pytest
 import pandas as pd
 import logging
+import matplotlib
+matplotlib.use("Agg")  # Force non-GUI backend for tests
+import matplotlib.pyplot as plt
+
 from unittest.mock import patch
 
 from Category_realations.stat_visualization import plot_spearman_bar_chart

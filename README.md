@@ -4,7 +4,7 @@
 [![Data Source](https://img.shields.io/badge/Data-Kaggle-orange)](https://www.kaggle.com/datasets/natezhang123/social-anxiety-dataset)
 
 ## Project Description
-This project investigates the factors influencing social anxiety levels using a synthetic dataset of 11,000 observations. The analysis explores how individual lifestyle choices, physiological indicators, and demographic variables—specifically age, gender, and occupation—associate with anxiety severity.
+This project investigates the factors influencing social anxiety levels using a synthetic dataset of 11,000 observations. The analysis explores how individual lifestyle choices, physiological indicators, and demographic variables-specifically age, gender, and occupation-associate with anxiety severity.
 
 
 ### Main Objectives
@@ -55,7 +55,7 @@ project/
 
 ### 2. Statistical Research Questions
 
-### **Q1: Which life category shows the strongest association?**
+### **Q1: Which life category shows the strongest association to social anxiety?**
 * **Method:**
 * ***Binarization:*** Variables were converted into binary format (0/1) based on **NIH** and **WHO** guidelines. Values within "healthy" ranges were assigned a value of 1.
 * ***Classification:*** Variables grouped into three categories: Lifestyle, Mental Health History, Physiological Health.

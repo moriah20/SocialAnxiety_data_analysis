@@ -2,6 +2,9 @@ import pytest
 import pandas as pd
 import numpy as np
 from unittest.mock import patch
+import matplotlib
+matplotlib.use("Agg")  # Force non-GUI backend for tests
+import matplotlib.pyplot as plt
 
 from Initial_Data_Analysis.initial_analysis import (
     is_null,
@@ -85,8 +88,8 @@ def test_get_outliers_report_no_numeric_columns():
 # Tests for plot_outliers
 # -----------------------------
 @patch("matplotlib.pyplot.show")  # Prevent actual plotting
-def test_plot_outliers_returns_df(mock_show, df_numeric):
-    cleaned_df = plot_outliers(df_numeric)
+def test_plot_outliers_returns_df(mock_show, df_numeric, tmp_path):
+    cleaned_df = plot_outliers(df_numeric, output_dir=tmp_path / "plots")
     assert isinstance(cleaned_df, pd.DataFrame)
 
 
@@ -100,9 +103,9 @@ def test_plot_outliers_invalid_input(mock_show):
 # Tests for frequency
 # -----------------------------
 @patch("matplotlib.pyplot.show")
-def test_frequency_valid(mock_show, df_categorical):
+def test_frequency_valid(mock_show, df_categorical, tmp_path):
     # Should not raise
-    frequency(df_categorical)
+    frequency(df_categorical, output_dir=tmp_path / "plots")
 
 
 @patch("matplotlib.pyplot.show")

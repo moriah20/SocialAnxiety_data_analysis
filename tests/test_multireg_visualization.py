@@ -1,6 +1,10 @@
 import pytest
 import pandas as pd
 import logging
+import matplotlib
+matplotlib.use("Agg")  # Force non-GUI backend for tests
+import matplotlib.pyplot as plt
+
 from unittest.mock import MagicMock, patch
 
 from Category_realations.stat_visualization import plot_regression_summary

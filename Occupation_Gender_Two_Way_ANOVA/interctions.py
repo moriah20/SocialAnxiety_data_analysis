@@ -6,6 +6,7 @@ import statsmodels as sm
 from statsmodels.formula.api import ols
 import pingouin as pg
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from Visualization.visualization_saving_decorator import auto_save_plot
 import logging
 
 logger = logging.getLogger(__name__)
@@ -63,6 +64,7 @@ def calculate_interaction(df, col_name, IV1, IV2):
         # FIX: Consistently return (None, None) on failure
         return None, None
 
+@auto_save_plot(output_dir="Visualization") #save and show plot
 def plot_interaction_bar(df, IV1, IV2, DV, p_val):
 
     """
@@ -86,8 +88,9 @@ def plot_interaction_bar(df, IV1, IV2, DV, p_val):
 
         # 1. Setup visualization theme and canvas
         sns.set_theme(style="whitegrid")
-        plt.figure(figsize=(10, 6))
-        
+        fig, ax = plt.subplots(figsize=(10, 6))
+
+
         # 2. Create the bar plot
         sns.barplot(data=df, x=IV1, y=DV, hue=IV2, errorbar=None, palette='flare')
 
@@ -107,7 +110,6 @@ def plot_interaction_bar(df, IV1, IV2, DV, p_val):
 
         # 5. Finalize and display plot
         plt.tight_layout()
-        plt.show()
         logger.info("Plot generated successfully.")
         
     except Exception as e:

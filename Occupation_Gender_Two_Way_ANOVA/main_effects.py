@@ -7,6 +7,7 @@ import statsmodels as sm
 from statsmodels.formula.api import ols
 import pingouin as pg
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from Visualization.visualization_saving_decorator import auto_save_plot
 import logging
 
 logger = logging.getLogger(__name__)
@@ -74,6 +75,7 @@ def check_effects(main_effect_1, main_effect_2):
     logger.info("Main effects successfully validated for plotting/analysis")
     return True
 
+@auto_save_plot(output_dir="Visualization") #save and show plot
 def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
     """
     Generates side-by-side vertical bar plots for main effects.
@@ -84,9 +86,6 @@ def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
     matplotlib.use('Agg') 
 
 
-    # Clear any previous figures from memory
-    plt.close('all')
-
     # Validate inputs before proceeding
     if check_effects(main_effect_1, main_effect_2) and all(isinstance(i, str) for i in [IV1, IV2, DV]):
         
@@ -95,6 +94,7 @@ def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
         try:
             # 1. Create the figure and subplots
             fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+            fig.suptitle(f"Main Effects of {IV1} and {IV2} on {DV}", fontsize=18)
             logger.info("Figure and axes created successfully.")
 
             # --- PLOT 1: IV1 ---

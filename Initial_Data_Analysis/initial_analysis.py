@@ -164,8 +164,9 @@ def plot_outliers(df):
             g.map(sns.boxplot, "value", color="skyblue")
             g.set_titles("{col_name}")
             g.set_xticklabels(rotation=45)
-            g.fig.suptitle(title, y=1.05, fontsize=16)
-            plt.tight_layout()
+
+            g.fig.suptitle(title, fontsize=16) 
+            g.fig.subplots_adjust(top=0.88)
 
         # Remove outliers
         long_df_clean = long_df_raw.drop(outliers_df.index)
@@ -230,8 +231,9 @@ def frequency(df):
         )
 
         g.set_xticklabels(rotation=45)
-        g.fig.subplots_adjust(hspace=1.2, bottom=0.2, top=0.9, left=0.1, right=0.9)
-        g.fig.suptitle("Frequency plots", y=1.05, fontsize=16)
+        g.fig.suptitle("Frequency plots", fontsize=16)
+        g.fig.subplots_adjust(top=0.88, hspace=1.2, bottom=0.2, left=0.1, right=0.9)
+
         logger.info("Frequency plots generated successfully.")
 
     except Exception as e:
