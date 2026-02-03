@@ -7,6 +7,8 @@ from statsmodels.formula.api import ols
 import pingouin as pg
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 import logging
+from Visualization.visualization_saving_decorator import auto_save_plot
+
 logger = logging.getLogger(__name__)
 
 # Calculates group means for main effects analysis.
@@ -46,14 +48,13 @@ def check_effects(main_effect_1, main_effect_2):
     # Return True if all checks pass
     return True
 
+@auto_save_plot(output_dir="Visualization") #save and show plot
 def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
     """
     Generates side-by-side vertical bar plots for main effects.
     Includes logging for process tracking and error handling.
     """
-    # Clear any previous figures from memory
-    plt.close('all')
-
+    
     # Validate inputs before proceeding
     if check_effects(main_effect_1, main_effect_2) and all(isinstance(i, str) for i in [IV1, IV2, DV]):
         
@@ -62,6 +63,7 @@ def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
         try:
             # 1. Create the figure and subplots
             fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+            fig.suptitle(f"Main Effects of {IV1} and {IV2} on {DV}", fontsize=18)
             logger.info("Figure and axes created successfully.")
 
             # --- PLOT 1: IV1 (e.g., Gender) ---
@@ -91,7 +93,6 @@ def main_effects_plots(main_effect_1, main_effect_2, IV1, IV2, DV):
             # 2. Final adjustments and display
             plt.tight_layout()
             logger.info("Layout adjusted with tight_layout(). Displaying plot.")
-            plt.show()
 
         except Exception as e:
             logger.error(f"An error occurred during plot generation: {e}", exc_info=True)
@@ -141,7 +142,7 @@ def calculate_interaction(df, col_name, IV1, IV2):
         logger.error(f"Statistical calculation failed: {str(e)}")
         return None, None
 
-
+@auto_save_plot(output_dir="Visualization") #save and show plot
 def plot_interaction_bar(results, clean_df, IV1, IV2, DV):
     """Generates a bar plot based on calculated ANOVA results."""
     if results is None or clean_df is None:
@@ -173,7 +174,6 @@ def plot_interaction_bar(results, clean_df, IV1, IV2, DV):
                  bbox=dict(facecolor='white', alpha=0.8, edgecolor=color))
 
         plt.tight_layout()
-        plt.show()
         logger.info("Plot generated successfully.")
     except Exception as e:
         logger.error(f"Plot failed: {e}")
