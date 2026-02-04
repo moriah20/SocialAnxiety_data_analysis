@@ -27,15 +27,15 @@ def main_effects(df, IV1, IV2, DV):
     try:
         # Calculate mean of DV for each level of the first IV
         logger.debug(f"Calculating main effect for {IV1}")
-        m1 = df.groupby(IV1)[DV].mean()
+        main_effect_1 = df.groupby(IV1)[DV].mean()
 
         # Calculate mean of DV for each level of the second IV
         logger.debug(f"Calculating main effect for {IV2}")
-        m2 = df.groupby(IV2)[DV].mean()
+        main_effect_2 = df.groupby(IV2)[DV].mean()
 
         logger.info("Main effects calculated successfully")
 
-        return m1, m2
+        return main_effect_1, main_effect_2
 
     except Exception as e:
         # Log full error traceback for debugging

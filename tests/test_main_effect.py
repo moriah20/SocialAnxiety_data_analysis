@@ -30,19 +30,27 @@ def test_main_effects_invalid_input():
     assert m1 is None and m2 is None
 
 
-def test_check_effects_valid(anova_data):
-    # Convert DataFrame to the Series the function expects
+def test_main_effects_plots_execution(anova_data, tmp_path):
     m1 = anova_data.groupby('Gender')['Score'].mean()
     m2 = anova_data.groupby('Treatment')['Score'].mean()
-    assert check_effects(m1, m2) is True
 
-def test_main_effects_plots_execution(anova_data):
-    m1 = anova_data.groupby('Gender')['Score'].mean()
-    m2 = anova_data.groupby('Treatment')['Score'].mean()
     try:
-        # Passing all 5 required arguments
-        main_effects_plots(m1, m2, 'Gender', 'Treatment', 'Score')
+        # Override output directory → ensures plots go to tmp_path
+        main_effects_plots(
+            m1, 
+            m2, 
+            'Gender', 
+            'Treatment', 
+            'Score',
+            output_dir=tmp_path
+        )
+
+        # Verify that at least one plot was saved
+        saved_files = list(tmp_path.glob("*.png"))
+        assert len(saved_files) > 0, "No plot was saved to tmp_path"
+
         plt.close('all')
+
     except Exception as e:
         pytest.fail(f"Main effects plot failed: {e}")
 

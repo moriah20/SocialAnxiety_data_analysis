@@ -77,11 +77,22 @@ def test_interpret_regression_boolean(regression_data):
 
 # --- Smoke Test for Plotting ---
 
-def test_plot_regression_no_crash(regression_data):
-    """Ensures the plotting function runs without errors."""
+def test_plot_regression_no_crash(regression_data, tmp_path):
     try:
-        plot_regression(regression_data, 'Age', 'Score')
+        plot_regression(
+            regression_data,
+            'Age',
+            'Score',
+            output_dir=tmp_path
+        )
+
+        # Optional: verify that a file was saved
+        saved = list(tmp_path.glob("*.png"))
+        assert len(saved) > 0
+
         plt.close('all')
+
     except Exception as e:
         pytest.fail(f"Plotting crashed: {e}")
+
 

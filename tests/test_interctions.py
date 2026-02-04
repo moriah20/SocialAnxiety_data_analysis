@@ -25,19 +25,70 @@ def p_val():
 
 
 def test_calculate_interaction_success(interaction_data):
-    results, clean_df = calculate_interaction(interaction_data, 'Score', 'Gender', 'Treatment')
+    """
+    Test if calculate_interaction correctly returns three values 
+    and successfully processes valid data.
+    """
+    # Act: Perform the calculation
+    # Now expecting 3 return values: results, clean_df, and p_val
+    results, clean_df, p_val = calculate_interaction(interaction_data, 'Score', 'Gender', 'Treatment')
     
-    assert results is not None, "ANOVA results should not be None"
-    assert clean_df is not None
+    # Assert: Verify outputs are not None
+    assert results is not None, "ANOVA results table should not be None"
+    assert clean_df is not None, "Cleaned DataFrame should not be None"
+    
+    # Verify that p_val is either a number (float/int) or None (if no interaction found)
+    assert p_val is None or isinstance(p_val, (float, int)), "p_val should be a numeric type or None"
 
-def test_plot_interaction_runs_without_error(interaction_data):
+def test_plot_interaction_runs_without_error(interaction_data, tmp_path):
+    """
+    Test if the plotting function executes without crashing (smoke test),
+    and ensure plots are saved only to a temporary directory.
+    """
     try:
-        # Added the missing 'Score' argument
-        plot_interaction_bar(interaction_data, 'Gender', 'Treatment', 'Score',p_val)
-        plt.close('all')
-    except Exception as e:
-        pytest.fail(f"Plotting crashed: {e}")
+        # Arrange
+        res, clean_df, p_val = calculate_interaction(interaction_data, 'Score', 'Gender', 'Treatment')
 
+        # Act — override output directory to tmp_path
+        plot_interaction_bar(
+            clean_df,
+            'Gender',
+            'Treatment',
+            'Score',
+            p_val,
+            output_dir=tmp_path
+        )
+
+        # Assert — check that at least one file was saved
+        saved_files = list(tmp_path.glob("*.png"))
+        assert len(saved_files) > 0, "No plot was saved to tmp_path"
+
+        # Cleanup
+        plt.close('all')
+
+    except Exception as e:
+        pytest.fail(f"Plotting function crashed unexpectedly: {e}")
+
+def test_calculate_interaction_insufficient_data():
+    """
+    Test if the function handles cases with very few rows gracefully.
+    """
+    # Arrange: Create a tiny dataframe (less than 5 rows)
+    small_df = pd.DataFrame({
+        'Score': [1, 2],
+        'Gender': ['M', 'F'],
+        'Treatment': ['A', 'B']
+    })
+    
+    # Act: Run the function
+    results, clean_df, p_val = calculate_interaction(small_df, 'Score', 'Gender', 'Treatment')
+    
+    # Assert: Should return (None, None, None) as per our error handling logic
+    assert results is None
+    assert clean_df is None
+    assert p_val is None
+
+    
 def tukey_data():
     """Generates synthetic data for Tukey HSD testing."""
     return pd.DataFrame({
