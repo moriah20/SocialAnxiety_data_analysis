@@ -63,58 +63,91 @@ def calculate_interaction(df, col_name, IV1, IV2):
         #logger.error(f"Statistical calculation failed: {str(e)}")
         # FIX: Consistently return (None, None) on failure
         return None, None
-
-@auto_save_plot(output_dir="Visualization") #save and show plot
+@auto_save_plot(output_dir="Visualization")  # Automatically save and log generated plots
 def plot_interaction_bar(df, IV1, IV2, DV, p_val):
+    logger.debug(f"Received p_val={p_val} (type={type(p_val)})")
 
     """
-    Generates a bar plot based on data and a pre-calculated p-value.
+    Generates an interaction bar plot for two categorical independent variables (IV1, IV2)
+    and one dependent variable (DV), including a significance annotation based on a 
+    pre-calculated p-value.
+
+    Parameters:
+        df (pd.DataFrame): The dataset containing the variables.
+        IV1 (str): First independent variable (x-axis).
+        IV2 (str): Second independent variable (hue).
+        DV (str): Dependent variable to be plotted.
+        p_val (float): Pre-computed p-value for the interaction effect.
+
+    Notes:
+        - The function relies on the auto_save_plot decorator to save the figure.
+        - The decorator automatically detects the figure title for filename generation.
     """
-    # Basic validation to ensure data exists
+
+    # Validate that data exists
     if df is None or df.empty or p_val is None:
-        logger.warning("No data available to plot.")
+        logger.warning("Plot aborted: Missing data or p-value.")
         return
-    
-    #  Safety Check: Ensure p_val is a numeric type (float/int) before comparison
+
+    # Ensure p_val is numeric
     try:
         p_val = float(p_val)
     except (ValueError, TypeError):
-        logger.error(f"Plotting failed: p_val must be a number, but received {type(p_val)} with value '{p_val}'")
+        logger.error(
+            f"Plotting failed: p_val must be numeric, received {type(p_val)} with value '{p_val}'"
+        )
         return
 
     try:
-        # Determine if the interaction is statistically significant
-        is_sig = p_val < 0.05
+        logger.info("Starting interaction plot generation...")
 
-        # 1. Setup visualization theme and canvas
+        # Determine statistical significance
+        is_sig = p_val < 0.05
+        logger.debug(f"Interaction significance evaluated: is_sig={is_sig}, p={p_val}")
+
+        # Set visualization theme
         sns.set_theme(style="whitegrid")
         fig, ax = plt.subplots(figsize=(10, 6))
+        logger.debug("Matplotlib figure and axes created.")
 
+        # Create the bar plot
+        sns.barplot(
+            data=df,
+            x=IV1,
+            y=DV,
+            hue=IV2,
+            errorbar=None,
+            palette="flare"
+        )
+        logger.debug("Seaborn barplot rendered successfully.")
 
-        # 2. Create the bar plot
-        sns.barplot(data=df, x=IV1, y=DV, hue=IV2, errorbar=None, palette='flare')
+        # Use suptitle so the decorator can detect it
+        fig.suptitle(f"Interaction: {IV1} × {IV2} on {DV}", fontsize=14)
 
-        # 3. Add Titles and Labels
-        plt.title(f'Interaction: {IV1} × {IV2} on {DV}', fontsize=14)
-        plt.xlabel(IV1)
-        plt.ylabel(f'Mean {DV}')
+        # Axis labels
+        ax.set_xlabel(IV1)
+        ax.set_ylabel(f"Mean {DV}")
 
-        # 4. Add Significance Annotation Box
+        # Add significance annotation box
         sig_text = "Significant" if is_sig else "Non-Significant"
         box_color = "darkgreen" if is_sig else "darkred"
-        
-        plt.text(0.02, 0.95, f"{sig_text} Interaction\np = {p_val:.4f}", 
-                 transform=plt.gca().transAxes, fontsize=11, 
-                 verticalalignment='top',
-                 bbox=dict(facecolor='white', alpha=0.8, edgecolor=box_color))
 
-        # 5. Finalize and display plot
-        plt.tight_layout()
-        logger.info("Plot generated successfully.")
-        
+        ax.text(
+            0.02, 0.95,
+            f"{sig_text} Interaction\np = {p_val:.4f}",
+            transform=ax.transAxes,
+            fontsize=11,
+            verticalalignment="top",
+            bbox=dict(facecolor="white", alpha=0.8, edgecolor=box_color)
+        )
+        logger.debug("Significance annotation added to plot.")
+
+        # Ensure figure is fully registered before decorator saves it
+        fig.canvas.draw()
+        logger.info("Interaction plot generated successfully.")
+
     except Exception as e:
-        logger.error(f"Plot generation failed: {e}")
-
+        logger.error(f"Plot generation failed due to unexpected error: {e}", exc_info=True)
 
 def run_post_hoc_tukey(df, DV, IV1, IV2):
     """

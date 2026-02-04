@@ -3,8 +3,11 @@
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 [![Data Source](https://img.shields.io/badge/Data-Kaggle-orange)](https://www.kaggle.com/datasets/natezhang123/social-anxiety-dataset)
 
+**Pipeline Overview:**  
+Data Import → Integrity & Outlier Assessment → Categorization & Binarization → Statistical Modeling → Visualization (Auto‑Saved) → Logging
+
 ## Project Description
-This project investigates the factors influencing social anxiety levels using a synthetic dataset of 11,000 observations. The analysis explores how individual lifestyle choices, physiological indicators, and demographic variables-specifically age, gender, and occupation-associate with anxiety severity.
+This project investigates the factors influencing social anxiety levels using a synthetic dataset of 11,000 observations. The analysis explores how individual lifestyle choices, physiological indicators, and demographic variables -specifically age, gender, and occupation- are associated with anxiety severity.
 
 
 ### Main Objectives
@@ -14,9 +17,9 @@ This project investigates the factors influencing social anxiety levels using a 
 4.  **Statistical Modeling:** Build models to quantify the impact of each factor category.
 
 ### Assumptions & Hypotheses
-* **Health & Lifestyle:** We hypothesize that daily habits and physiological indicators influence anxiety levels the most.
-* **Age:** We expect a mild negative correlation (anxiety potentially decreasing with age).
-* **Gender & Occupation:** We explore if these factors influence anxiety independently or through an interactive effect.
+* **Lifestyle, Physiological Health and Mental Health History:** it is hypothesized that physiological indices, such as heart rate and respiration rate, will exhibit the most robust statistical association with social anxiety severity, surpassing the predictive value of lifestyle factors or clinical and therapeutic history.
+* **Age:** We hypothesize a significant inverse linear relationship between respondent age and social anxiety levels; specifically, we predict that as chronological age increases, reported levels of social anxiety will significantly decline.
+* **Gender & Occupation:** A significant interaction is hypothesized between gender and occupation, such that the impact of occupation type on social anxiety levels will be moderated by the individual's gender.
 
 ---
 
@@ -24,33 +27,62 @@ This project investigates the factors influencing social anxiety levels using a 
 ```text
 project/
 │
-├── data/
-│   ├── raw_data.csv            # Original dataset
-│   ├── cleaned_data.csv        # Processed data
-│   └── health_guidelines.xlsx  # Reference thresholds (NIH/WHO)
+├── Data/
+│   ├── SocialAnxiety_dataset.csv      # Primary dataset (11,000 rows)
+│   └── health_guidelines.xlsx         # WHO/NIH reference thresholds
 │
-├── src/
-│   ├── data_import.py          # Loading datasets
-│   ├── data_cleaning.py        # Handling missing values and formatting
-│   ├── outlier_detection.py    # IQR analysis
-│   ├── feature_engineering.py  # Binarization based on health standards
-│   ├── analysis_correlations.py # Spearman & Pearson correlations
-│   ├── regression_models.py    # Multiple Linear Regression
-│   ├── anova_analysis.py       # Two-way ANOVA implementation
-│   └── visualization.py        # Chart generation
+├── Initial_Data_Analysis/
+│   └── initial_analysis.py            # Data integrity checks & IQR outlier detection
 │
-├── main.py                     # Entry point for the full pipeline
+├── Category_relations/
+│   ├── binarize_category.py           # Binarization based on health standards
+│   ├── Categorization.py              # Variable grouping into conceptual categories
+│   ├── multiple_linear_regression.py  # Regression model for category contributions
+│   ├── spearman_test.py               # Spearman correlation analysis
+│   └── stat_visualization.py          # Statistical plots (correlations, coefficients)
+│
+├── Age_Regression/
+│   └── regression.py                  # Pearson correlation & linear regression (Age → Anxiety)
+│
+├── Occupation_Gender_Two_Way_ANOVA/
+│   ├── main_effects.py                # Main effects of Gender & Occupation
+│   ├── interactions.py                # Interaction effect analysis
+│   └── __init__.py
+│
+├── Visualization/
+│   ├── *.png                          # All generated plots
+│   └── visualization_saving_decorator.py  # Auto-save decorator for figures
+│
+├── Tests/
+│   ├── test_binarization.py
+│   ├── test_categorization.py
+│   ├── test_initial_data_analysis.py
+│   ├── test_interactions.py
+│   ├── test_main_effect.py
+│   ├── test_multi_regression.py
+│   ├── test_multireg_visualization.py
+│   ├── test_regression.py
+│   ├── test_spearman.py
+│   └── test_spearman_visualization.py
+│
+├── main.py                            # Full pipeline execution
+├── requirements.txt                   # Dependencies
 ├── README.md
-└── requirements.txt            # List of dependencies
+└── SocialAnxiety_Project.log          # Execution log
+
+
 ```
 
 ---
 
 ## Methodology & Key Stages
 
-### 1. Data Processing & Cleaning
-* **Integrity Check:** The dataset (11,000 rows, 19 variables) was verified for completeness with **no missing values**.
-* **Outlier Detection:** Using the **IQR (Interquartile Range)** method, 666 potential outliers were identified. These were retained do to low impact.
+### 1. Data Importing, Processing & Cleaning
+* **Integrity Check:** The dataset (11,000 rows, 19 variables) was verified for completeness, with **no missing** values and no structural inconsistencies.
+* **Outlier Detection:** Using the **IQR (Interquartile Range)** method, 666 potential outliers were identified. After evaluation, these values were retained due to their **minimal impact** on the distribution and statistical results.
+* **Data Cleaning Decision:** Since the dataset showed full completeness and the detected outliers did not meaningfully affect the analysis, **no data cleaning or removal procedures were required.**
+
+
 
 
 ### 2. Statistical Research Questions
@@ -66,9 +98,14 @@ project/
 * **Method:** Pearson correlation and linear regression.
 * **Result:** The correlation was statistically significant but **extremely weak (r ≈ -0.01)**, suggesting age is not a meaningful linear predictor here.
 
-### **Q3: Impact of Gender and Occupation?**
+### **Q3: To what extent do gender and occupation, both as independent factors and through their interaction, influence levels of social anxiety?**
 * **Method:** **Two-Way ANOVA** to calculate main and interaction effects.
-* **Result:** Analysis showed that **neither gender, occupation, nor their interaction** produced a statistically significant effect on anxiety levels.
+* **Result:** Analysis revealed no significant main effect of gender and no significant gender–occupation interaction on social anxiety levels (p = .711). **However, a significant main effect of occupation was observed**, indicating meaningful differences in anxiety levels across occupational groups independent of gender
+
+### 3. Results Visualization
+The visual outputs for each research question were generated through **dedicated plotting functions**, all of which are wrapped with an automatic saving **decorator** and saved automatically in the [Visualization](Visualization/) directory.
+
+This mechanism ensures that every figure produced during the analysis is consistently saved to the visualization directory without requiring manual export, thereby maintaining a complete and reproducible record of all graphical results.
 
 ---
 
@@ -103,8 +140,24 @@ Using the auto_save_plot decorator.
 
 ## **References**
 * ***NIH:*** Standards for physiological health indicators.
-* ***WHO:*** Guidelines for lifestyle and mental health.
-* ***Kaggle:*** Dataset documentation and community insights.
+https://www.ncbi.nlm.nih.gov/books/NBK596717/table/ch1survey.T.normal_respiratory_rate_by_a/
+https://www.ncbi.nlm.nih.gov/books/NBK593193/table/ch1survey.T.normal_heart_rate_by_age/
+https://www.ncbi.nlm.nih.gov/books/NBK591812/table/ch12sleepandrest.T.recommended_amounts_o/
+https://pmc.ncbi.nlm.nih.gov/articles/PMC6296805/
+
+* ***WHO:*** Guidelines for physical activity lifestyle
+https://www.emro.who.int/health-education/physical-activity/recommended-levels-of-physical-activity-for-health.html
+
+* ***CDC:*** Guidelines for Alcohol Use
+https://www.cdc.gov/alcohol/about-alcohol-use/moderate-alcohol-use.html
+
+* ***charlie health:*** Recomended Frequently for Therapy Sessions
+https://www.charliehealth.com/treatment-modalities/cognitive-behavioral-therapy/how-often-should-you-go-to-therapy
+
+* ***Kaggle:*** Dataset 
+https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset?select=healthcare-dataset-stroke-data.csv
+
+
 
 Developed by **Moriah, Orin & Aviya**
 

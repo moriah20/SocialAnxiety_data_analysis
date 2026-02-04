@@ -40,7 +40,7 @@ def main():
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler("SocialAnxiety_Project_log.log", mode='w', encoding='utf-8'), # Writes to file ('w' overwrites, 'a' appends)
+            logging.FileHandler("SocialAnxiety_Project.log", mode='w', encoding='utf-8'), # Writes to file ('w' overwrites, 'a' appends)
             logging.StreamHandler() # Also prints to the console
         ]
     )
@@ -50,8 +50,8 @@ def main():
     
     # --- Step 1: Data Acquisition ---
     try:
-        df = pd.read_csv('enhanced_anxiety_dataset.csv')
-        guideline = pd.read_excel('health_guidelines.xlsx')
+        df = pd.read_csv('Data/SocialAnxiety_dataset.csv')
+        guideline = pd.read_excel('Data/health_guidelines.xlsx')
         logger.info("Data sources loaded successfully.")
     except Exception as e:
         logger.error(f"Critical Error: Required CSV/Excel files not found. {e}")
