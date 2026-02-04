@@ -12,108 +12,68 @@ import logging
 logger = logging.getLogger(__name__)
 
 def calculate_interaction(df, col_name, IV1, IV2):
-    """Performs Two-Way ANOVA and prepares data for visualization."""
-    # 1. Basic Validations and Data Cleaning
-    if not isinstance(df, pd.DataFrame) or not all(isinstance(i, str) for i in [IV1, IV2, col_name]):
-        logger.error("Invalid input types.")
-        return None, None
+    """Performs Two-Way ANOVA and extracts the interaction p-value."""
+    if df is None or df.empty:
+        logger.error("Dataframe is empty.")
+        return None, None, None
 
     req_cols = [col_name, IV1, IV2]
-    if not all(c in df.columns for c in req_cols):
-        logger.error(f"Missing columns: {req_cols}")
-        return None, None
-
     clean_df = df.dropna(subset=req_cols).copy()
     
-    # Critical: Ensure enough data for 2-way ANOVA
     if len(clean_df) < 5:
-        logger.error(f"Insufficient data: {len(clean_df)} rows.")
-        return None, None
+        return None, None, None
 
     try:
-        logger.info(f"Running Two-Way ANOVA for {IV1} and {IV2} on {col_name}")
-        
-        # Performing the actual calculation
         results = pg.anova(data=clean_df, dv=col_name, between=[IV1, IV2])
-
-        # 2. Results Interpretation
-        logger.info("\n--- ANOVA Analysis Results ---")
-        for _, row in results.iterrows():
-            src = row['Source']
-            p = row['p-unc']
-            
-            # Identify the effect type
-            if src == IV1:
-                label = f"Main Effect of {IV1}"
-            elif src == IV2:
-                label = f"Main Effect of {IV2}"
-            elif "*" in src or ":" in src:
-                label = f"Interaction Effect ({IV1} x {IV2})"
-            else:
-                continue  # Skip Residuals or other sources
-
-            status = "Significant" if p < 0.05 else "Not Significant"
-            logger.info(f"* {label}: {status} (p = {p:.4f})")
         
-        return results, clean_df
+        # Flexible search: look for a row that contains both IV names
+        mask = results['Source'].str.contains(IV1) & results['Source'].str.contains(IV2)
+        interaction_row = results[mask]
+        
+        p_interaction = None
+        if not interaction_row.empty:
+            p_interaction = interaction_row['p-unc'].values[0]
+            
+        return results, clean_df, p_interaction
 
     except Exception as e:
-        print(f"\nSTDOUT DEBUG: The ANOVA failed because: {e}") 
-        logger.error(f"Analysis failed: {str(e)}")
-        #logger.error(f"Statistical calculation failed: {str(e)}")
-        # FIX: Consistently return (None, None) on failure
-        return None, None
+        logger.error(f"ANOVA failed: {e}")
+        return None, None, None
+    
 
 @auto_save_plot(output_dir="Visualization") #save and show plot
 def plot_interaction_bar(df, IV1, IV2, DV, p_val):
-
-    """
-    Generates a bar plot based on data and a pre-calculated p-value.
-    """
-    # Basic validation to ensure data exists
-    if df is None or df.empty or p_val is None:
+    """Generates a bar plot even if p_val is non-significant or None."""
+    if df is None or df.empty:
         logger.warning("No data available to plot.")
         return
-    
-    #  Safety Check: Ensure p_val is a numeric type (float/int) before comparison
-    try:
-        p_val = float(p_val)
-    except (ValueError, TypeError):
-        logger.error(f"Plotting failed: p_val must be a number, but received {type(p_val)} with value '{p_val}'")
-        return
 
-    try:
-        # Determine if the interaction is statistically significant
-        is_sig = p_val < 0.05
+    sns.set_theme(style="whitegrid")
+    plt.figure(figsize=(10, 6))
 
-        # 1. Setup visualization theme and canvas
-        sns.set_theme(style="whitegrid")
-        fig, ax = plt.subplots(figsize=(10, 6))
+    # Create the plot
+    sns.barplot(data=df, x=IV1, y=DV, hue=IV2, errorbar=None, palette='flare')
 
+    plt.title(f'Interaction Plot: {IV1} × {IV2}', fontsize=14)
+    plt.xlabel(IV1)
+    plt.ylabel(f'Mean {DV}')
 
-        # 2. Create the bar plot
-        sns.barplot(data=df, x=IV1, y=DV, hue=IV2, errorbar=None, palette='flare')
+    # Handle the significance text logic
+    if p_val is not None:
+        sig_text = "Significant" if p_val < 0.05 else "Non-Significant"
+        box_color = "darkgreen" if p_val < 0.05 else "darkred"
+        label_text = f"{sig_text} Interaction\np = {p_val:.4f}"
+    else:
+        box_color = "gray"
+        label_text = "Interaction: N/A"
 
-        # 3. Add Titles and Labels
-        plt.title(f'Interaction: {IV1} × {IV2} on {DV}', fontsize=14)
-        plt.xlabel(IV1)
-        plt.ylabel(f'Mean {DV}')
+    plt.text(0.02, 0.95, label_text, 
+             transform=plt.gca().transAxes, fontsize=11, 
+             verticalalignment='top',
+             bbox=dict(facecolor='white', alpha=0.8, edgecolor=box_color))
 
-        # 4. Add Significance Annotation Box
-        sig_text = "Significant" if is_sig else "Non-Significant"
-        box_color = "darkgreen" if is_sig else "darkred"
-        
-        plt.text(0.02, 0.95, f"{sig_text} Interaction\np = {p_val:.4f}", 
-                 transform=plt.gca().transAxes, fontsize=11, 
-                 verticalalignment='top',
-                 bbox=dict(facecolor='white', alpha=0.8, edgecolor=box_color))
-
-        # 5. Finalize and display plot
-        plt.tight_layout()
-        logger.info("Plot generated successfully.")
-        
-    except Exception as e:
-        logger.error(f"Plot generation failed: {e}")
+    plt.tight_layout()
+    plt.show()
 
 
 def run_post_hoc_tukey(df, DV, IV1, IV2):

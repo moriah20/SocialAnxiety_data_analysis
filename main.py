@@ -93,13 +93,19 @@ def main():
     check_effects(m1_effect, m2_effect)
     main_effects_plots(m1_effect, m2_effect, iv1, iv2, dv)
 
-    # Interaction analysis
-    anova_results,clean_df=calculate_interaction(df, dv, iv1, iv2)
-    print(plot_interaction_bar(anova_results,clean_df, iv1, iv2,dv))
+  # 1. Calculation
+    anova_results, clean_df, p = calculate_interaction(df, dv, iv1, iv2)
+
+# 2. Check if anova actually returned something before plotting
+    if clean_df is not None:
+    # Use clean_df here, not df!
+       plot_interaction_bar(clean_df, iv1, iv2, dv, p)
+    else:
+        logger.error("ANOVA failed to return clean data. Check your inputs.")
     run_post_hoc_tukey(df,dv,iv1,iv2)
     
 
-    # --- Step 7: Age-Based Regression Analysis ---
+    # ---  Age-Based Regression Analysis ---
     logger.info("Running linear regression for Age vs Anxiety Level...")
     reg_results =calculate_regression(df, dv, "Age")
     plot_regression(df, "Age", dv)
