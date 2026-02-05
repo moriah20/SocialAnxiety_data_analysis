@@ -88,10 +88,10 @@ project/
 * **Data Cleaning Decision:** Since the dataset showed full completeness and the detected outliers did not meaningfully affect the analysis, **no data cleaning or removal procedures were required.**
 
 ### Raw Data: Outliers Detected but Not Removed
-![Raw Data Outliers Detected but Not Removed](Visualization/Raw Data Outliers Detected but Not Removed.png)
+![Raw Data Outliers Detected but Not Removed]("Visualization/Raw Data Outliers Detected but Not Removed.png")
 
 ### Clean Data After Removing Outliers
-![Clean Data After Removing Outliers](Visualization/Clean Data After Removing Outliers.png)
+![Clean Data After Removing Outliers]("Visualization/Clean Data After Removing Outliers.png")
 
 
 ### 2. Statistical Research Questions
@@ -107,24 +107,24 @@ project/
 ![Spearman Correlation Coefficients](Visualization/Spearman Correlation Coefficients.png)
 
 ### Regression Coefficients: Impact on Anxiety Level
-![Regression Coefficients Impact on Anxiety Level](Visualization/Regression Coefficients Impact on Anxiety Level.png)
+![Regression Coefficients Impact on Anxiety Level]("Visualization/Regression Coefficients Impact on Anxiety Level.png")
 
 ### **Q2: Does age significantly impact social anxiety?**
 * **Method:** Pearson correlation and linear regression.
 * **Result:** The correlation was statistically significant but **extremely weak (r ≈ -0.01)**, suggesting age is not a meaningful linear predictor here.
 
 ### Linear Regression: Age Predicting Anxiety Level
-![Linear Regression Age Predicting Anxiety Level](Visualization/Linear Regression Age Predicting Anxiety_Level.png)
+![Linear Regression Age Predicting Anxiety Level]("Visualization/Linear Regression Age Predicting Anxiety_Level.png")
 
 ### **Q3: To what extent do gender and occupation, both as independent factors and through their interaction, influence levels of social anxiety?**
 * **Method:** **Two-Way ANOVA** to calculate main and interaction effects.
 * **Result:** Analysis revealed no significant main effect of gender and no significant gender–occupation interaction on social anxiety levels (p = .711). **However, a significant main effect of occupation was observed**, indicating meaningful differences in anxiety levels across occupational groups independent of gender
 
 ### Main Effects of Gender and Occupation
-![Main Effects of Gender and Occupation](Visualization/Main Effects of Gender and Occupation on Anxiety_Level.png)
+![Main Effects of Gender and Occupation]("Visualization/Main Effects of Gender and Occupation on Anxiety_Level.png")
 
 ### Interaction Effect: Gender × Occupation
-![Gender × Occupation Interaction](Visualization/Interaction Plot Gender  Occupation.png)
+![Gender × Occupation Interaction]("Visualization/Interaction Plot Gender  Occupation.png")
 
 
 ### 3. Results Visualization
