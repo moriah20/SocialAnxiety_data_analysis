@@ -81,18 +81,16 @@ project/
 * **Integrity Check:** The dataset (11,000 rows, 19 variables) was verified for completeness, with **no missing** values and no structural inconsistencies.
 
 ### Frequency Plots
-![Frequency Plots](Visualization/Frequency plots.png)
-
+<img alt="Frequency Plots" src="Visualization/Frequency%20plots.png" width="450">
 
 * **Outlier Detection:** Using the **IQR (Interquartile Range)** method, 666 potential outliers were identified. After evaluation, these values were retained due to their **minimal impact** on the distribution and statistical results.
 * **Data Cleaning Decision:** Since the dataset showed full completeness and the detected outliers did not meaningfully affect the analysis, **no data cleaning or removal procedures were required.**
 
 ### Raw Data: Outliers Detected but Not Removed
-![Raw Data Outliers Detected but Not Removed]("Visualization/Raw Data Outliers Detected but Not Removed.png")
+<img alt="Raw Data Outliers Detected but Not Removed" src="Visualization/Raw%20Data%20Outliers%20Detected%20but%20Not%20Removed.png" width="450">
 
 ### Clean Data After Removing Outliers
-![Clean Data After Removing Outliers]("Visualization/Clean Data After Removing Outliers.png")
-
+<img alt="Clean Data After Removing Outliers" src="Visualization/Clean%20Data%20After%20Removing%20Outliers.png" width="450">
 
 ### 2. Statistical Research Questions
 
@@ -104,27 +102,27 @@ project/
 * **Result:** The model explained **29.6%** of the variance (**R² = 0.296**). **Lifestyle habits** and **Physiological health** were the strongest predictors.
 
 ### Spearman Correlation Coefficients
-![Spearman Correlation Coefficients](Visualization/Spearman Correlation Coefficients.png)
+<img alt="Spearman Correlation Coefficients" src="Visualization/Spearman%20Correlation%20Coefficients.png" width="450">
 
 ### Regression Coefficients: Impact on Anxiety Level
-![Regression Coefficients Impact on Anxiety Level]("Visualization/Regression Coefficients Impact on Anxiety Level.png")
+<img alt="Regression Coefficients Impact on Anxiety Level" src="Visualization/Regression%20Coefficients%20Impact%20on%20Anxiety%20Level.png" width="450">
 
 ### **Q2: Does age significantly impact social anxiety?**
 * **Method:** Pearson correlation and linear regression.
 * **Result:** The correlation was statistically significant but **extremely weak (r ≈ -0.01)**, suggesting age is not a meaningful linear predictor here.
 
 ### Linear Regression: Age Predicting Anxiety Level
-![Linear Regression Age Predicting Anxiety Level]("Visualization/Linear Regression Age Predicting Anxiety_Level.png")
+<img alt="Linear Regression Age Predicting Anxiety Level" src="Visualization/Linear%20Regression%20Age%20Predicting%20Anxiety_Level.png" width="450">
 
 ### **Q3: To what extent do gender and occupation, both as independent factors and through their interaction, influence levels of social anxiety?**
 * **Method:** **Two-Way ANOVA** to calculate main and interaction effects.
 * **Result:** Analysis revealed no significant main effect of gender and no significant gender–occupation interaction on social anxiety levels (p = .711). **However, a significant main effect of occupation was observed**, indicating meaningful differences in anxiety levels across occupational groups independent of gender
 
 ### Main Effects of Gender and Occupation
-![Main Effects of Gender and Occupation]("Visualization/Main Effects of Gender and Occupation on Anxiety_Level.png")
+<img alt="Main Effects of Gender and Occupation" src="Visualization/Main%20Effects%20of%20Gender%20and%20Occupation%20on%20Anxiety_Level.png" width="450">
 
 ### Interaction Effect: Gender × Occupation
-![Gender × Occupation Interaction]("Visualization/Interaction Plot Gender  Occupation.png")
+<img alt="Gender × Occupation Interaction" src="Visualization/Interaction%20Plot%20Gender%20%20Occupation.png" width="450">
 
 
 ### 3. Results Visualization
