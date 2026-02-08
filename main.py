@@ -17,7 +17,7 @@ from Initial_Data_Analysis.initial_analysis import (is_null,
                                                     plot_outliers, 
                                                     frequency)
 from Category_realations.binarize_category import apply_binary
-from Category_realations.Categorization import categorization
+from Category_realations.categorization import categorization
 from Category_realations.spearman_test import spearman_test
 from Category_realations.multiple_linear_regression import run_multiple_regression
 from Category_realations.stat_visualization import (plot_spearman_bar_chart, 
@@ -40,7 +40,7 @@ def main():
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler("SocialAnxiety_Project.log", mode='w', encoding='utf-8'), # Writes to file ('w' overwrites, 'a' appends)
+            logging.FileHandler("SocialAnxiety_Project_Process.log", mode='w', encoding='utf-8'), # Writes to file ('w' overwrites, 'a' appends)
             logging.StreamHandler() # Also prints to the console
         ]
     )
